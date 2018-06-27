@@ -30,3 +30,4 @@ class StudentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Marks)
+admin.site.register(StdSubject)

@@ -50,11 +50,12 @@ class Marks(StdCommon):
 
 
     def subject_grade(self):
-        grade=SubjectGrade(self.subject_marks).subgrade()
+        grade = SubjectGrade(self.subject_marks,
+                             self.subject_name.subject_full_marks).subgrade()
         return grade
 
     def subject_grade_point(self):
-        grade = SubjectGradePoint(self.subject_marks).subgrade()
+        grade = SubjectGradePoint( self.subject_marks, self.subject_name.subject_full_marks).subgrade()
         return grade
 
 
