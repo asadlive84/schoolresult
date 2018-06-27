@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from .grade_sheet import SubjectGrade, SubjectGradePoint
 
 class CustomUser(AbstractUser):
     name=models.CharField('Full Name',max_length=100)
@@ -49,8 +49,13 @@ class Marks(StdCommon):
 
 
 
+    def subject_grade(self):
+        grade=SubjectGrade(self.subject_marks).subgrade()
+        return grade
 
-
+    def subject_grade_point(self):
+        grade = SubjectGradePoint(self.subject_marks).subgrade()
+        return grade
 
 
 

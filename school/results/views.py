@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import StudentInfo, StdSubject, Marks
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 
 
 class Homepage(ListView):
@@ -14,3 +14,8 @@ class Homepage(ListView):
         context['obj']=StudentInfo.objects.all()
         return context
     
+
+
+class StudentDetails(DetailView):
+    template_name='results/student_details.html'
+    model=StudentInfo

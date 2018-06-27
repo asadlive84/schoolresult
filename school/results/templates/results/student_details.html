@@ -1,0 +1,52 @@
+{% extends "results/base.html" %} {% block main_content %}
+
+
+
+Name: {{object.std_name}}
+Roll: {{object.std_roll}}
+Class: {{object.std_class}}
+
+
+
+
+
+
+
+
+
+
+{% if object.marks_set.all %}
+  
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Subject Name</th>
+            <th>Full Marks</th>
+            <th>Marks</th>
+            <th>Grade Point</th>
+            <th>Grade</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in object.marks_set.all %}
+        <tr>
+            <td> {{i.subject_name}}</td>
+            <td>{{i.subject_name.subject_full_marks}}</td>
+            <td>{{i.subject_marks}}</td>
+            <td>{{i.subject_grade_point}}</td>
+            <td>{{i.subject_grade}}</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+<p>no update</p>
+{% endif %}
+
+
+
+
+
+{% endblock main_content %}
