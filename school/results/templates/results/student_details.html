@@ -30,11 +30,11 @@
     <tbody>
         {% for i in object.marks_set.all %}
         <tr>
-            <td> {{i.subject_name}}</td>
+            <td>{{i.subject_name}}</td>
             <td>{{i.subject_name.subject_full_marks}}</td>
             <td>{{i.subject_marks}}</td>
-            <td>{{i.subject_grade_point}}</td>
-            <td>{{i.subject_grade}}</td>
+            <td>{{i.subject_gradepoint}}</td>
+            <td>{{i.subject_gpa}}</td>
 
         </tr>
         {% endfor %}

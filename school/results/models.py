@@ -47,16 +47,35 @@ class Marks(StdCommon):
     subject_name = models.ForeignKey(StdSubject, on_delete=models.CASCADE)
     subject_marks=models.DecimalField(max_digits=5, decimal_places=2)
 
+    subject_gradepoint=models.DecimalField('Grade Point', max_digits=3, decimal_places=1, blank=True, null=True, help_text="Please keep blank")
+    subject_gpa = models.CharField('Subject GPA', max_length=5, blank=True, null=True, help_text="Please keep blank")
+
+   
+
+
+    def __str__(self):
+        return str(self.subject_marks)
+
 
 
     def subject_grade(self):
-        grade = SubjectGrade(self.subject_marks,
-                             self.subject_name.subject_full_marks).subgrade()
+        grade = SubjectGrade(self.subject_marks,self.subject_name.subject_full_marks).subgrade()
         return grade
 
     def subject_grade_point(self):
         grade = SubjectGradePoint( self.subject_marks, self.subject_name.subject_full_marks).subgrade()
         return grade
+
+
+    def save(self, *args, **kwargs):
+        grade_point = SubjectGradePoint(self.subject_marks, self.subject_name.subject_full_marks).subgrade()
+        gpa = SubjectGrade(self.subject_marks,self.subject_name.subject_full_marks).subgrade()
+        self.subject_gradepoint = grade_point
+        self.subject_gpa=gpa
+        super().save(*args, **kwargs)
+
+
+    
 
 
 
