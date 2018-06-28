@@ -1,63 +1,97 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <title>Fulhata High School Result Syestem</title>
 
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <!-- Bootstrap core CSS -->
+<link href="{% static '/results/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'results/css/full-width-pics.css' %}" rel="stylesheet">
+
 </head>
+
 <body>
-    <div>
-        <div class="logo_area">
-            <div class="container">
-                <div class="col-lg-12">
-                    <h1>Main page</h1>
-                </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">Fulhata High School</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Search Result</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Log in</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </div>
+    </nav>
 
+    <!-- Header - set the background image for the header in the line below -->
+    <header class="py-5 bg-image-full" style="background-image: url('https://unsplash.it/1900/1080?image=1076');">
+        <img class="img-fluid d-block mx-auto" style="height:12em" src="{% static 'results/logo.jpg' %}" alt="">
+    </header>
 
-    <div>
-        <div class="menu_area">
-
+    <!-- Content section -->
+    <section class="py-5">
+        <div class="container">
+            {% block main_content %}
+              
+            {% endblock main_content %}
         </div>
-    </div>
+    </section>
 
+    <!-- Image Section - set the background image for the header in the line below -->
+    <section class="py-5 bg-image-full" style="background-image: url('https://unsplash.it/1900/1080?image=1081');">
+        <!-- Put anything you want here! There is just a spacer below for demo purposes! -->
+        <div style="height: 200px;"></div>
+    </section>
 
-    <div>
-        <div class="main_content_area">
-            <div class="container">
-                <div class="row">
-                    <div class="col md-12">
-                        {% block main_content %}{% endblock main_content %}
-                    </div>
-
-                </div>
-            </div>
+    <!-- Content section -->
+    <section class="py-5">
+        <div class="container">
+            <h1>Section Heading</h1>
+            <p class="lead">
+                
+            </p>
         </div>
-    </div>
+    </section>
 
-
-    <div>
-        <div class="footer">
-
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Fulhata High School 2018</p>
         </div>
-    </div>
+        <!-- /.container -->
+    </footer>
 
-
-
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'results/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'results/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 </body>
+
 </html>

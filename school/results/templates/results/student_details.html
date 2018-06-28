@@ -4,7 +4,12 @@
 
 <p>Name: {{object.std_name}}</p>
 <p>Roll: {{object.std_roll}}</p>
-<p>Class: {{object.std_class}}</p>
+<p>Class: {{object.std_class}}</p> 
+{% if fail >= 1 %}
+<p>Result: Fail {{fail}} Subject</p>
+{% else %}
+<p>GPA: {{toatal_grade_point|floatformat:2}} | Total Marks: {{toatal_marks|floatformat}}</p>
+{% endif %}
 
 
 
@@ -20,6 +25,7 @@
 <table class="table table-hover">
     <thead>
         <tr>
+            <th>No</th>
             <th>Subject Name</th>
             <th>Full Marks</th>
             <th>Marks</th>
@@ -30,11 +36,21 @@
     <tbody>
         {% for i in object.marks_set.all %}
         <tr>
+            <td>{{forloop.counter}}</td>
+            {% if i.subject_gpa == "F" %}
+            <td style="color:red">{{i.subject_name}}</td>
+            {% else %}
             <td>{{i.subject_name}}</td>
-            <td>{{i.subject_name.subject_full_marks}}</td>
-            <td>{{i.subject_marks}}</td>
-            <td>{{i.subject_gradepoint}}</td>
+            {% endif %}
+           
+            <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
+            <td>{{i.subject_marks|floatformat}}</td>
+            <td>{{i.subject_gradepoint|floatformat}}</td>
+            {% if i.subject_gpa == "F" %}
+            <td style="color:red">{{i.subject_gpa}}</td>
+            {% else %}
             <td>{{i.subject_gpa}}</td>
+            {% endif %}
 
         </tr>
         {% endfor %}

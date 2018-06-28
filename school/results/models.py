@@ -60,7 +60,7 @@ class Marks(StdCommon):
 
     subject_gradepoint=models.DecimalField('Grade Point', max_digits=3, decimal_places=1, blank=True, null=True, help_text="Please keep blank")
     subject_gpa = models.CharField('Subject GPA', max_length=5, blank=True, null=True, help_text="Please keep blank")
-
+    std_result=models.FloatField(blank=True, null=True)
    
 
 

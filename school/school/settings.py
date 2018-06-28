@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +123,8 @@ STATIC_URL = '/static/'
 
 
 AUTH_USER_MODEL="results.CustomUser"
+
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
+# msg_project/settings.py
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
