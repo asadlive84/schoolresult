@@ -35,6 +35,9 @@ class SubjectGrade:
 
         elif self.subject_number >= number_f and self.subject_number <= (number_d-1):
             return 'F'
+
+        elif self.subject_number == 0:
+            return 'F'
         
 
 class SubjectGradePoint:
@@ -70,4 +73,7 @@ class SubjectGradePoint:
             return 1
 
         elif self.subject_number >= number_f and self.subject_number <= (number_d-1):
+            return 0
+
+        elif self.subject_number==0:
             return 0

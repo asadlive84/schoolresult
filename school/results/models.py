@@ -13,7 +13,18 @@ class StdCommon(models.Model):
 
 
 class StdSubject(StdCommon):
+    REGULAR='R'
+    OPTIONAL='O'
+
+    SUBJECT_TYPE_CHOICE=(
+        (REGULAR, 'REGULAR'),
+        (OPTIONAL, 'OPTIONAL')
+    )
+
+
     subject_name = models.CharField('Subject Name', max_length=100)
+    subject_type = models.CharField(
+        'Subject Type', max_length=1, default=REGULAR, choices=SUBJECT_TYPE_CHOICE)
     subject_full_marks = models.DecimalField(
         'Full Marks', max_digits=5, decimal_places=2, default=100)
     subject_pass_marks = models.DecimalField(
@@ -54,7 +65,7 @@ class Marks(StdCommon):
 
 
     def __str__(self):
-        return str(self.subject_marks)
+        return self.std_name.std_name+' Class: '+str(self.std_name.std_class)+' Roll: '+str(self.std_name.std_roll) +' ' + self.subject_name.subject_name +' '+str(self.subject_marks)
 
 
 
@@ -70,8 +81,30 @@ class Marks(StdCommon):
     def save(self, *args, **kwargs):
         grade_point = SubjectGradePoint(self.subject_marks, self.subject_name.subject_full_marks).subgrade()
         gpa = SubjectGrade(self.subject_marks,self.subject_name.subject_full_marks).subgrade()
-        self.subject_gradepoint = grade_point
-        self.subject_gpa=gpa
+
+        if self.subject_name.subject_type=='O':
+            if self.subject_marks >= ((self.subject_name.subject_full_marks/100)*50) and self.subject_marks <= self.subject_name.subject_full_marks:
+                subject_opt_grade_point = grade_point-2
+
+                self.subject_gradepoint = subject_opt_grade_point
+                self.subject_gpa = gpa
+            elif self.subject_marks >= ((self.subject_name.subject_full_marks/100)*33) and self.subject_marks < ((self.subject_name.subject_full_marks/100)*50):
+                self.subject_gradepoint = 0
+                self.subject_gpa=gpa
+
+            elif self.subject_marks < ((self.subject_name.subject_full_marks/100)*33):
+                self.subject_gradepoint = 0
+                self.subject_gpa = gpa
+
+                
+        elif self.subject_name.subject_type=='R':
+            self.subject_gradepoint = grade_point
+            self.subject_gpa = gpa
+
+        
+
+        
+
         super().save(*args, **kwargs)
 
 
