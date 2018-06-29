@@ -9,17 +9,7 @@ class Homepage(ListView):
     model=StudentInfo
     form_class = ProfileSearchForm
 
-    def get_queryset(self):
-        try:
-            name = self.kwargs['name']
-        except:
-            name = ''
-        if (name != ''):
-            object_list = self.StudentInfo.objects.filter(
-                std_class__icontains=name)
-        else:
-            object_list = StudentInfo.objects.all()
-        return object_list
+   
     
     def get_context_data(self, **kwargs):
         context = super(Homepage, self).get_context_data(**kwargs)

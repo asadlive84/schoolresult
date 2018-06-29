@@ -1,26 +1,25 @@
 {% extends "results/base.html" %}
 
 {% block main_content %}
-<form>
-<div class="form-group">
-    <label for="usr">Name:</label>
-    <input type="text" class="form-control" id="usr" name="username">
-</div>
-<div class="form-group">
-    <label for="pwd">Password:</label>
-    <input type="password" class="form-control" id="pwd" name="password">
-</div>
-<button type="submit" class="btn btn-primary">Submit</button>
-</form>
+
+<div class="col-md-3 offset-md-4  centered">
+    <p>Online Result Syestem</p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="std_class">Class:</label>
+            <input type="number" class="form-control" id="std_class" name="std_class">
+        </div>
+        <div class="form-group">
+            <label for="std_roll">Roll Number:</label>
+            <input type="number" class="form-control" id="std_roll" name="std_roll">
+        </div>
+       
+        <button type="submit" class="btn btn-primary">Search Your Result</button>
+    </form>
 </div>
 
-hey
-
-<form action="">
-    {% csrf_token %}
-    {{form}}
-</form>
-
+<h2>{{tuck}}</h2>
 
 
 
