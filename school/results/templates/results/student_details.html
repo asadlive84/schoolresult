@@ -2,27 +2,67 @@
 
 
 
-<p>Name: {{object.std_name}}</p>
-<p>Roll: {{object.std_roll}}</p>
-<p>Class: {{object.std_class}}</p> 
-{% if fail >= 1 %}
-<p>Result: Fail {{fail}} Subject</p>
+<div class="col-md-4 offset-md-4  centered">
+    <div>
+<p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-info text-white card-title">Student Name - {{object.std_name}}
+
+
+<!-- <a href="{% url 'std_update' object.id %}">
+                <span class="badge badge-warning">Update</span>
+            </a>
+            <a href="{% url 'stdAdd_marks' object.id %}">
+                <span class="badge badge-warning">Add Marks</span>
+            </a>
+            <a href="{% url 'stdmarks_update' object.pk %}">
+                <span class="badge badge-warning">Added Update</span>
+            </a>-->
+           
+
+        </p>
+
+       
+
+
+
+        
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Gender</th>
+            <th>Roll</th>
+            <th>Class</th>
+            <th>Group</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{object.get_std_gender_display}}</td>
+            <td>{{object.std_roll}}</td>
+            <td>{{object.get_std_class_display}}</td>
+            <td>{{object.get_std_group_display}}</td>
+        </tr>
+    </tbody>
+</table>
+<hr>
+ {% if fail >= 1 %}
+<button type="button" class="btn btn-danger centered">Result: Fail {{fail}} Subject</button>
+
 {% else %}
-<p>GPA: {{toatal_grade_point|floatformat:2}} | Total Marks: {{toatal_marks|floatformat}}</p>
+<button style="text-align:center;font-size:15px;color:white;padding:10px" type="button" class="btn btn-success centered">Result: {% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total Marks-
+    {{ total_marks|floatformat}}
+    {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5)| Total Marks- {{ total_marks|floatformat}} {% endif %}
+</button>
 {% endif %}
 
 
-
-
-
-
-
-
-
-
+    </div>
+</div>
+<hr>
 {% if object.marks_set.all %}
   
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
     <thead>
         <tr>
             <th>No</th>
@@ -62,6 +102,10 @@
 {% endif %}
 
 
+<hr>
+<p style="font-size:8px">
+<i>updated: {{object.update_date}} published: {{object.pub_date}}</i>
+</p>
 
 
 

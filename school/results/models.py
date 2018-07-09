@@ -1,15 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .grade_sheet import SubjectGrade, SubjectGradePoint
-
+from django.utils import timezone
 class CustomUser(AbstractUser):
     name=models.CharField('Full Name',max_length=100)
 
 
 
 class StdCommon(models.Model):
-    pub_date=models.DateTimeField(auto_now=True)
-    update_date = models.DateTimeField(auto_now_add=True)
+    pub_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
+
+    
 
 
 class StdSubject(StdCommon):
@@ -37,13 +39,30 @@ class StdSubject(StdCommon):
 
 class StudentInfo(StdCommon):
     STD_CLASS=(
-        ('6','SIX'),
-        ('7','SEVEN'),
+        ('6','Six'),
+        ('7','Seven'),
+        ('8','Eight'),
+        ('9','Nine'),
+        ('10','Ten'),
     )
-    std_name = models.CharField('Student Name',max_length=100, help_text='Mr Monir')
-    std_class = models.CharField('Student Class',max_length=2, choices=STD_CLASS, default=6, help_text='Select a class')
-    std_roll = models.IntegerField('Roll Number',help_text='Only Number')
 
+    STD_GENDER=(
+        ('MALE','Male'),
+        ('FEMALE','Female'),
+    )
+
+    STD_GROUP=(
+        ('S', 'Science'),
+        ('B', 'Business Studies'),
+        ('H', 'Humatics'),
+        ('G', 'General')
+    )
+
+    std_name = models.CharField('Student Name',max_length=100, help_text='Type only student Full Name like as Nazmul Islam or Nazrul Islam')
+    std_class = models.CharField('Student Class',max_length=2, choices=STD_CLASS, default=6, help_text='Select a class')
+    std_roll = models.IntegerField('Roll Number',help_text='Type Student Roll Number (Only Number)')
+    std_group=models.CharField('Group', choices=STD_GROUP, max_length=1, default='G')
+    std_gender=models.CharField('Gender', max_length=10, choices=STD_GENDER, default='MALE')
     std_subjects = models.ManyToManyField(StdSubject)
 
     def __str__(self):
@@ -54,9 +73,10 @@ class StudentInfo(StdCommon):
 
 
 class Marks(StdCommon):
-    std_name=models.ForeignKey(StudentInfo, on_delete=models.CASCADE)
+    std_name = models.ForeignKey(
+        StudentInfo, on_delete=models.CASCADE)
     subject_name = models.ForeignKey(StdSubject, on_delete=models.CASCADE)
-    subject_marks=models.DecimalField(max_digits=5, decimal_places=2)
+    subject_marks=models.DecimalField(max_digits=5, decimal_places=2, help_text='Please give proper number')
 
     subject_gradepoint=models.DecimalField('Grade Point', max_digits=3, decimal_places=1, blank=True, null=True, help_text="Please keep blank")
     subject_gpa = models.CharField('Subject GPA', max_length=5, blank=True, null=True, help_text="Please keep blank")
@@ -101,10 +121,6 @@ class Marks(StdCommon):
             self.subject_gradepoint = grade_point
             self.subject_gpa = gpa
 
-        
-
-        
-
         super().save(*args, **kwargs)
 
 
@@ -115,23 +131,3 @@ class Marks(StdCommon):
 
 
 
-class Person(models.Model):
-    name=models.CharField(max_length=120)
-
-    def __str__(self):
-        return self.name
-
-
-class Group(models.Model):
-    name=models.CharField(max_length=120)
-    members=models.ManyToManyField(Person, through='Membership')
-
-    def __str__(self):
-        return self.name
-
-
-class Membership(models.Model):
-    person=models.ForeignKey(Person, on_delete=models.CASCADE)
-    group=models.ForeignKey(Group, on_delete=models.CASCADE)
-    date_joined=models.DateField()
-    invite_reason=models.CharField(max_length=64)

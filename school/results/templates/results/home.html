@@ -1,48 +1,51 @@
 {% extends "results/base.html" %}
-
+{% load crispy_forms_tags %}
 {% block main_content %}
 
+
+
+
+
+
+
 <div class="col-md-3 offset-md-4  centered">
-    <p>Online Result Syestem</p>
+<button type="button" class="btn btn-info col-md-8 offset-md-2  centered">
+    <h4>Result</h4>
+</button>
     <form action="" method="POST">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="std_class">Class:</label>
-            <input type="number" class="form-control" id="std_class" name="std_class">
-        </div>
-        <div class="form-group">
-            <label for="std_roll">Roll Number:</label>
-            <input type="number" class="form-control" id="std_roll" name="std_roll">
-        </div>
        
-        <button type="submit" class="btn btn-primary">Search Your Result</button>
+         {{form | crispy}}
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 
-<h2>{{tuck}}</h2>
+<hr>
+
+<div class="col-md-5 offset-md-3  centered">
+    <div class="card">
+        <div class="card-body">
+        {% if std_search %} 
+        <a style="" href="{% url 'std_details' std_search.id %}">
+        <h4 style="text-align:center;font-size:15px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-success text-white card-title">Student Name: {{std_search.std_name}}</h4>
+        </a>
+            <p style="text-align:center;font-size:10px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-success text-white
+            card-text" >Class {{std_search.get_std_class_display}} | Roll {{std_search.std_roll}}</p>
+            <a href="#" class="card-link">Result Print</a>
+            
+             {% else %}
+            <h4 style="text-align:center;font-size:15px;padding:10px" class="card bg-danger text-white card-title">Result Not Found</h4>
+        {% endif %}
+
+        </div>
+    </div>
+</div>
 
 
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Name</th>
-            <th>Class</th>
-            <th>Roll</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for i in obj %} 
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.std_name}} </td>
-            <td>{{i.std_class}} </td>
-            <td>{{i.std_roll}} </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+
+
 
 
 

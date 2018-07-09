@@ -2,7 +2,7 @@ from django.contrib import admin
 from results.models import StudentInfo, StdSubject, Marks
 
 
-
+'''
 
 @admin.register(StudentInfo)
 class StudentAdmin(admin.ModelAdmin):
@@ -24,10 +24,27 @@ class StudentAdmin(admin.ModelAdmin):
                 
             ),
         }),
+
+        ('Subject Marks', {
+            'fields': (
+                'std_name__subject_name',
+
+            ),
+        }),
     )
 
+'''
+class BooksInstanceInline(admin.TabularInline):
+    model = Marks
+    fk_name = 'std_name'
+    extra = 8
+
+
+@admin.register(StudentInfo)
+class BookAdmin(admin.ModelAdmin):
+    
+    inlines = [BooksInstanceInline]
 
 
 
-admin.site.register(Marks)
 admin.site.register(StdSubject)
