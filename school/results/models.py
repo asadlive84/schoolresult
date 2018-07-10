@@ -2,6 +2,41 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .grade_sheet import SubjectGrade, SubjectGradePoint
 from django.utils import timezone
+
+
+STD_CLASS = (
+    ('6', 'Six'),
+    ('7', 'Seven'),
+    ('8', 'Eight'),
+    ('9', 'Nine'),
+    ('10', 'Ten'),
+)
+
+
+STD_GENDER = (
+    ('MALE', 'Male'),
+    ('FEMALE', 'Female'),
+)
+
+STD_GROUP = (
+        ('S', 'Science'),
+        ('B', 'Business Studies'),
+        ('H', 'Humatics'),
+        ('G', 'General')
+)
+
+
+REGULAR = 'R'
+OPTIONAL = 'O'
+
+SUBJECT_TYPE_CHOICE = (
+        (REGULAR, 'REGULAR'),
+        (OPTIONAL, 'OPTIONAL')
+)
+
+
+
+
 class CustomUser(AbstractUser):
     name=models.CharField('Full Name',max_length=100)
 
@@ -15,16 +50,12 @@ class StdCommon(models.Model):
 
 
 class StdSubject(StdCommon):
-    REGULAR='R'
-    OPTIONAL='O'
-
-    SUBJECT_TYPE_CHOICE=(
-        (REGULAR, 'REGULAR'),
-        (OPTIONAL, 'OPTIONAL')
-    )
-
+    
 
     subject_name = models.CharField('Subject Name', max_length=100)
+    subject_code=models.CharField('Subject Code', max_length=10)
+    subjet_class = models.CharField(
+        'Subject Class', max_length=2, choices=STD_CLASS, default='6')
     subject_type = models.CharField(
         'Subject Type', max_length=1, default=REGULAR, choices=SUBJECT_TYPE_CHOICE)
     subject_full_marks = models.DecimalField(
@@ -34,29 +65,13 @@ class StdSubject(StdCommon):
     
 
     def __str__(self):
-        return self.subject_name
+        return 'Code: '+self.subject_code+' - '+self.subject_name+' | class: '+self.subjet_class
 
 
 class StudentInfo(StdCommon):
-    STD_CLASS=(
-        ('6','Six'),
-        ('7','Seven'),
-        ('8','Eight'),
-        ('9','Nine'),
-        ('10','Ten'),
-    )
+    
 
-    STD_GENDER=(
-        ('MALE','Male'),
-        ('FEMALE','Female'),
-    )
-
-    STD_GROUP=(
-        ('S', 'Science'),
-        ('B', 'Business Studies'),
-        ('H', 'Humatics'),
-        ('G', 'General')
-    )
+    
 
     std_name = models.CharField('Student Name',max_length=100, help_text='Type only student Full Name like as Nazmul Islam or Nazrul Islam')
     std_class = models.CharField('Student Class',max_length=2, choices=STD_CLASS, default=6, help_text='Select a class')
@@ -65,11 +80,16 @@ class StudentInfo(StdCommon):
     std_gender=models.CharField('Gender', max_length=10, choices=STD_GENDER, default='MALE')
     std_subjects = models.ManyToManyField(StdSubject)
 
+
+    std_total_marks = models.FloatField('Total Marks', default=0)
+    std_gpa = models.CharField('GPA', max_length=10,default='F')
+
+    
     def __str__(self):
         return self.std_name
 
 
-
+    
 
 
 class Marks(StdCommon):
@@ -124,10 +144,19 @@ class Marks(StdCommon):
         super().save(*args, **kwargs)
 
 
+class ShortStudentDetails(StdCommon):
+    std_id=models.CharField(max_length=400)
+
+    std_name = models.CharField('Student Name', max_length=100,
+                                help_text='Type only student Full Name like as Nazmul Islam or Nazrul Islam')
+    std_class = models.CharField('Student Class', max_length=50,)
+    std_roll = models.IntegerField('Roll Number', help_text='Type Student Roll Number (Only Number)')
+    std_group = models.CharField('Group',  max_length=50)
+    std_gender = models.CharField(
+        'Gender', max_length=50 )
     
+    std_total_marks=models.FloatField('Total Marks', default=0)
+    std_gpa=models.CharField('GPA', max_length=10)
 
-
-
-
-
-
+    def __str__(self):
+        return self.std_name

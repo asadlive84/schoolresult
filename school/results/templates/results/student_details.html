@@ -1,8 +1,25 @@
 {% extends "results/base.html" %} {% block main_content %}
 
 
+<div class="col-md-7 offset-md-4  centered">
+    <div>
+        <h1 class="title_custom">
+            Fulhata High School Result
+        </h1>
+        <h2>
+            Exam Name: 
+        </h2>
+        
+    </div>
+</div>
+
+
+<hr>
 
 <div class="col-md-4 offset-md-4  centered">
+<h1 class="title_custom" style="font-size:18px;padding:17px">
+    <i class=" fas fa-chevron-circle-down"></i> Student Result Details
+</h1>
     <div>
 <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-info text-white card-title">Student Name - {{object.std_name}}
 
@@ -66,6 +83,7 @@
     <thead>
         <tr>
             <th>No</th>
+            <th>Subject Code</th>
             <th>Subject Name</th>
             <th>Full Marks</th>
             <th>Marks</th>
@@ -77,10 +95,11 @@
         {% for i in object.marks_set.all %}
         <tr>
             <td>{{forloop.counter}}</td>
+            <td>{{i.subject_name.subject_code}}</td>
             {% if i.subject_gpa == "F" %}
-            <td style="color:red">{{i.subject_name}}</td>
+            <td style="color:red">{{i.subject_name.subject_name}}</td>
             {% else %}
-            <td>{{i.subject_name}}</td>
+            <td>{{i.subject_name.subject_name}}</td>
             {% endif %}
            
             <td>{{i.subject_name.subject_full_marks|floatformat}}</td>

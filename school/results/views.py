@@ -9,6 +9,8 @@ from .forms import ProfileSearchForm, AddStudentInfo, StudentUpdateForm, Student
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
+from .models import ShortStudentDetails
+
 class Homepage(TemplateView,FormMixin):
     template_name='results/home.html'
    
@@ -89,9 +91,8 @@ class StudentDetails(DetailView):
                 context['toatal_grade_point'] = subject_grade/9
                 context['total_marks'] = total_marks
 
-
-
-        
+        x = ShortStudentDetails.objects.create(std_id=std_gpa.id, std_name=std_gpa.std_name, std_class=std_gpa.std_class, std_roll=std_gpa.std_roll,std_group=std_gpa.std_group, std_gender=std_gpa.std_gender, std_total_marks=total_marks, std_gpa=(subject_grade/9))
+        x.save()
 
 
         context['fail'] = failed
