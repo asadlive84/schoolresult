@@ -69,6 +69,9 @@ class StdSubject(StdCommon):
     def __str__(self):
         return 'Code: '+self.subject_code+' - '+self.subject_name+' | class: '+self.subjet_class
 
+    class Meta:
+        verbose_name = ("Subject")
+        verbose_name_plural = ("Subject")
 
 class StudentInfo(StdCommon):
     
@@ -98,6 +101,11 @@ class StudentInfo(StdCommon):
     def __str__(self):
         return self.std_name
 
+    class Meta:
+            verbose_name = ("Student Detail")
+            verbose_name_plural = ("Student Detail's")
+            ordering = ['std_roll']
+
 
     def total_marks_sum(self):
         std_id = self.id
@@ -120,7 +128,7 @@ class StudentInfo(StdCommon):
 
         self.std_total_marks = total_number
 
-        self.std_grade_point_total_sum=subject_grade
+        self.std_grade_point_total_sum = subject_grade
 
         subject_grade_f = Marks.objects.filter(std_name=std_id, subject_name__subject_type__startswith='R')
 
@@ -157,10 +165,9 @@ class StudentInfo(StdCommon):
        
         super(StudentInfo, self).save(*args, **kwargs) # Call the real save() method
 
+        
 
-   
-
-    
+        
 
 
 
@@ -175,7 +182,7 @@ class Marks(StdCommon):
 
     subject_gradepoint=models.DecimalField('Grade Point', max_digits=3, decimal_places=1, blank=True, null=True, help_text="Please keep blank")
     subject_gpa = models.CharField('Subject GPA', max_length=5, blank=True, null=True, help_text="Please keep blank")
-    std_result=models.FloatField(blank=True, null=True)
+    
    
 
 

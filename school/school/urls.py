@@ -23,3 +23,12 @@ urlpatterns = [
     path('results/', include('results.urls')),
     path('login/', auth_views.login, name='login'),
 ]
+
+
+school_name = 'Fulhata Secondary School'
+
+# default: "Django Administration"
+admin.site.site_header = school_name+' Admin Panel'
+# default: "Site administration"
+admin.site.index_title = school_name+' Administration '
+admin.site.site_title = school_name+' adminsitration'
