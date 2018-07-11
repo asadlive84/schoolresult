@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from .grade_sheet import SubjectGrade, SubjectGradePoint
 from django.utils import timezone
 
+from django.db.models import Avg, Count, Min, Sum
+
 
 STD_CLASS = (
     ('6', 'Six'),
@@ -81,12 +83,85 @@ class StudentInfo(StdCommon):
     std_subjects = models.ManyToManyField(StdSubject)
 
 
-    std_total_marks = models.FloatField('Total Marks', default=0)
-    std_gpa = models.CharField('GPA', max_length=10,default='F')
+    std_total_marks = models.FloatField('Total Marks', default=0, blank=True, null=True)
+
+    std_gpa = models.CharField('GPA', max_length=50,default='F', blank=True, null=True)
+
+    std_grade_point_total_sum=models.FloatField('Total Avg Number per Subject', blank=True, null=True) # toal grade point sum
+
+    std_grade_point_total_subject_avg = models.FloatField(
+        'Total GPA', blank=True, null=True) #avg gradepoint
+
+    std_fail_subject=models.IntegerField('Fail Subject', blank=True, null=True)
 
     
     def __str__(self):
         return self.std_name
+
+
+    def total_marks_sum(self):
+        std_id = self.id
+        x = Marks.objects.filter(std_name=std_id).aggregate(
+            total_number=Sum('subject_marks')).get('total_number', 0)
+
+        return x
+
+
+    def save(self, *args, **kwargs):
+        
+        std_id = self.id
+        fail_sub = 0
+        std_result='Pass'
+
+        total_number = Marks.objects.filter(std_name=std_id).aggregate(
+            total_number=Sum('subject_marks')).get('total_number', 0)
+
+        subject_grade = ((Marks.objects.filter(std_name=std_id, subject_gradepoint__gte=1).aggregate(sp=Sum('subject_gradepoint')).get('sp', 0)))
+
+        self.std_total_marks = total_number
+
+        self.std_grade_point_total_sum=subject_grade
+
+        subject_grade_f = Marks.objects.filter(std_name=std_id, subject_name__subject_type__startswith='R')
+
+
+        
+            
+
+
+        
+        for i in subject_grade_f:
+            
+            if 'F' in i.subject_gpa:
+                fail_sub = fail_sub+1
+                
+            std_result = 'Fail ' +str(fail_sub)+' Subject'
+
+        self.std_gpa = std_result
+
+        self.std_fail_subject=fail_sub
+
+        if fail_sub >=1:
+            self.std_grade_point_total_subject_avg=0
+            
+        else:
+            if self.std_class == '6' or self.std_class == '7':
+                self.std_grade_point_total_subject_avg = (subject_grade/7)
+            elif self.std_class == '8':
+                self.std_grade_point_total_subject_avg = (subject_grade/7)
+
+            elif self.std_class == '9' or self.std_class == '10':
+                self.std_grade_point_total_subject_avg = (subject_grade/7)
+        
+
+       
+        super(StudentInfo, self).save(*args, **kwargs) # Call the real save() method
+
+
+   
+
+    
+
 
 
     

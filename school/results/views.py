@@ -9,7 +9,14 @@ from .forms import ProfileSearchForm, AddStudentInfo, StudentUpdateForm, Student
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
+
+from django.db.models import Avg, Max, Min
+
 from .models import ShortStudentDetails
+
+
+
+
 
 class Homepage(TemplateView,FormMixin):
     template_name='results/home.html'
@@ -30,6 +37,7 @@ class Homepage(TemplateView,FormMixin):
                print(self.object_search)
            
         context['std_search']=self.object_search
+        #self.object_search.marks
            
 
         return super(Homepage, self).render_to_response(context)
@@ -64,6 +72,13 @@ class StudentDetails(DetailView):
                 if i.subject_gpa == 'F':
                     failed = failed+1
 
+        
+        context['subject_max_number'] = std_gpa.marks_set.all().aggregate(
+            sp=Max('subject_marks')).get('sp', '0')
+        context['sub_avg_number'] = std_gpa.marks_set.all().aggregate(
+            sp=Avg('subject_marks')).get('sp', '0')
+        context['subject_min_number'] = std_gpa.marks_set.all().aggregate(
+            sp=Min('subject_marks')).get('sp', '0')
 
         
         subject_grade= ((std_gpa.marks_set.filter(

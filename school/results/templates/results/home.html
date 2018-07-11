@@ -21,17 +21,40 @@
 </div>
 
 <hr>
-<h1>Test{{std_short}}</h1>
+
 <div class="col-md-5 offset-md-3  centered">
     <div class="card">
+
         <div class="card-body">
         {% if std_search %} 
         <a style="" href="{% url 'std_details' std_search.id %}">
-        <h4 style="text-align:center;font-size:15px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-success text-white card-title">Student Name: {{std_search.std_name}}</h4>
+        <h4 style="text-align:center;font-size:15px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-success text-white card-title">Student Name:  {{std_search.std_name}}</h4>
         </a>
-            <p style="text-align:center;font-size:10px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-success text-white
+<p style="text-align:center;font-size:10px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-primary text-white
             card-text" >Class {{std_search.get_std_class_display}} | Roll {{std_search.std_roll}}</p>
-            <a href="#" class="card-link">Result Print</a>
+
+            {% if std_search.std_fail_subject < 1 %}
+<p style="text-align:center;font-size:10px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-info text-white card-text">
+                <b>Result GPA: {{std_search.std_grade_point_total_subject_avg | floatformat:2}}</b>
+                
+                <i>(Out of 5) </i> Total Marks {{std_search.std_total_marks|floatformat}}
+            </p>
+
+            {% else %}
+
+            <p style="text-align:center;font-size:10px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-danger text-white card-text">
+            <b>Result: {{std_search.std_gpa}}</b>
+            </p>
+
+               
+              
+            {% endif %}
+
+            <div class="col-md-5 offset-md-4  centered ">
+                <a href="" class="card-link">
+                    <i class="fas fa-book-open"></i> Result Print
+                </a>
+            </div>
             
              {% else %}
             <h4 style="text-align:center;font-size:15px;padding:10px" class="card bg-danger text-white card-title">Result Not Found</h4>
