@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin  # new
-from .models import StudentInfo, StdSubject, Marks
+from .models import StudentInfo, StdSubject, Marks,Rank
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView,FormView
 from django.db.models import Max,Avg,Sum
 from django.views.generic.edit import FormMixin
@@ -12,7 +12,7 @@ from django.http import HttpResponseRedirect
 
 from django.db.models import Avg, Max, Min
 
-from .models import ShortStudentDetails
+
 
 
 
@@ -37,6 +37,7 @@ class Homepage(TemplateView,FormMixin):
                print(self.object_search)
            
         context['std_search']=self.object_search
+        context['ranks'] = Rank.objects.get(std=self.object_search)
         #self.object_search.marks
            
 
@@ -79,6 +80,11 @@ class StudentDetails(DetailView):
             sp=Avg('subject_marks')).get('sp', '0')
         context['subject_min_number'] = std_gpa.marks_set.all().aggregate(
             sp=Min('subject_marks')).get('sp', '0')
+
+
+        context['ranks']=Rank.objects.get(std=std_gpa)
+
+        
 
         
         subject_grade= ((std_gpa.marks_set.filter(

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from results.models import StudentInfo, StdSubject, Marks
+from results.models import StudentInfo, StdSubject, Marks,Rank
 
 
 '''
@@ -35,18 +35,27 @@ class StudentAdmin(admin.ModelAdmin):
     )
 
 '''
-class BooksInstanceInline(admin.TabularInline):
+
+
+class RankInstanceInline(admin.TabularInline):
+    model=Rank
+    fk_name='std'
+    extra=0
+
+
+class SubjectInstanceInline(admin.TabularInline):
     model = Marks
     fk_name = 'std_name'
     extra = 8
 
 
 @admin.register(StudentInfo)
-class BookAdmin(admin.ModelAdmin):
+class StudentAdmin(admin.ModelAdmin):
     list_filter = ('std_class', 'std_gender', 'std_group')
     list_display=('std_name','std_class','std_roll','std_group','std_gender')
+    inlines = [RankInstanceInline, SubjectInstanceInline]
+
     
-    inlines = [BooksInstanceInline]
     search_fields = ('std_name','std_roll','std_group')
     
 
@@ -68,3 +77,8 @@ class SubjectModelAdmin(admin.ModelAdmin):
 
 
 
+
+@admin.register(Rank)
+class RankAdminModel(admin.ModelAdmin):
+    list_display = ('std','class_rank', 'school_rank',
+                    'total_gpa', 'total_marks')

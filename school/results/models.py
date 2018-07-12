@@ -97,6 +97,10 @@ class StudentInfo(StdCommon):
 
     std_fail_subject=models.IntegerField('Fail Subject', blank=True, null=True)
 
+
+    rank=models.IntegerField('Student Rank in School',default=0)
+    
+
     
     def __str__(self):
         return self.std_name
@@ -126,7 +130,13 @@ class StudentInfo(StdCommon):
 
         subject_grade = ((Marks.objects.filter(std_name=std_id, subject_gradepoint__gte=1).aggregate(sp=Sum('subject_gradepoint')).get('sp', 0)))
 
+        
+
         self.std_total_marks = total_number
+
+        if subject_grade is None:
+            subject_grade=0
+        
 
         self.std_grade_point_total_sum = subject_grade
 
@@ -161,7 +171,7 @@ class StudentInfo(StdCommon):
             elif self.std_class == '9' or self.std_class == '10':
                 self.std_grade_point_total_subject_avg = (subject_grade/7)
         
-
+        
        
         super(StudentInfo, self).save(*args, **kwargs) # Call the real save() method
 
@@ -189,7 +199,10 @@ class Marks(StdCommon):
     def __str__(self):
         return self.std_name.std_name+' Class: '+str(self.std_name.std_class)+' Roll: '+str(self.std_name.std_roll) +' ' + self.subject_name.subject_name +' '+str(self.subject_marks)
 
-
+    class Meta:
+        verbose_name = ("Mark Details")
+        verbose_name_plural = ("Result Sheet Details")
+        ordering = ['subject_name']
 
     def subject_grade(self):
         grade = SubjectGrade(self.subject_marks,self.subject_name.subject_full_marks).subgrade()
@@ -226,19 +239,24 @@ class Marks(StdCommon):
         super().save(*args, **kwargs)
 
 
-class ShortStudentDetails(StdCommon):
-    std_id=models.CharField(max_length=400)
 
-    std_name = models.CharField('Student Name', max_length=100,
-                                help_text='Type only student Full Name like as Nazmul Islam or Nazrul Islam')
-    std_class = models.CharField('Student Class', max_length=50,)
-    std_roll = models.IntegerField('Roll Number', help_text='Type Student Roll Number (Only Number)')
-    std_group = models.CharField('Group',  max_length=50)
-    std_gender = models.CharField(
-        'Gender', max_length=50 )
+
+class Rank(models.Model):
+    std = models.ForeignKey(StudentInfo, related_name='std', on_delete=models.CASCADE)
     
-    std_total_marks=models.FloatField('Total Marks', default=0)
-    std_gpa=models.CharField('GPA', max_length=10)
+    total_marks = models.DecimalField(
+        max_digits=5, decimal_places=2, help_text='Please give proper number', default=0)
+    total_gpa = models.DecimalField(
+        max_digits=5, decimal_places=2, help_text='Please give proper number', default=0)
+    class_rank = models.IntegerField(default=0)
+    school_rank=models.IntegerField('All School Rank', default=0)
+
+
 
     def __str__(self):
-        return self.std_name
+        return 'Name: %s |  Marks: %s | Class Rank %s | School Rank %s' % (self.std, self.total_marks, self.class_rank, self.school_rank)
+
+    class Meta:
+            verbose_name = ("Rank")
+            verbose_name_plural = ("Rank")
+            ordering = ['class_rank']
