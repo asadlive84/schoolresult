@@ -67,7 +67,7 @@ class StdSubject(StdCommon):
     
 
     def __str__(self):
-        return 'Code: '+self.subject_code+' - '+self.subject_name+' | class: '+self.subjet_class
+        return self.subject_type+' Code: '+self.subject_code+' - '+self.subject_name+' | class: '+self.subjet_class
 
     class Meta:
         verbose_name = ("Subject")
@@ -169,7 +169,7 @@ class StudentInfo(StdCommon):
                 self.std_grade_point_total_subject_avg = (subject_grade/7)
 
             elif self.std_class == '9' or self.std_class == '10':
-                self.std_grade_point_total_subject_avg = (subject_grade/7)
+                self.std_grade_point_total_subject_avg = (subject_grade/9)
         
         
        

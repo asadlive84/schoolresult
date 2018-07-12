@@ -37,7 +37,16 @@ class Homepage(TemplateView,FormMixin):
                print(self.object_search)
            
         context['std_search']=self.object_search
-        context['ranks'] = Rank.objects.get(std=self.object_search)
+
+        try:
+            context['ranks'] = Rank.objects.get(std=self.object_search)
+        except:
+            context['ranks']='Fail'
+
+
+
+
+        #context['ranks'] = Rank.objects.get(std=self.object_search)
         #self.object_search.marks
            
 

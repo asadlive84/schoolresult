@@ -30,16 +30,16 @@
         <a style="" href="{% url 'std_details' std_search.id %}">
         <h4 style="text-align:center;font-size:15px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-success text-white card-title">Student Name:  {{std_search.std_name}}</h4>
         </a>
-<p style="text-align:center;font-size:10px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-primary text-white
+<p style="text-align:center;font-size:16px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-primary text-white
             card-text" >Class {{std_search.get_std_class_display}} | Roll {{std_search.std_roll}}</p>
 
             {% if std_search.std_fail_subject < 1 %}
-                <p style="text-align:center;font-size:10px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-info text-white card-text">
-                    <b>Result GPA: {{std_search.std_grade_point_total_subject_avg | floatformat:2}}</b>
+                <p style="text-align:center;font-size:16px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-info text-white card-text">
+                    <b>GPA {{std_search.std_grade_point_total_subject_avg | floatformat:2}}</b>
                 
                 <i>(Out of 5) </i> Total Marks {{std_search.std_total_marks|floatformat}}
 
-<button style="text-align:center;font-size:15px;color:white;padding:10px" type="button" class="btn btn-info centered">Class Rank: {{ranks.class_rank}} in {{std_search.get_std_class_display}}'th class <br> School Rank: {{ranks.school_rank}} </button>
+<button style="text-align:center;font-size:15px;color:white;padding:10px" type="button" class="btn btn-info centered active">Class Rank: {{ranks.class_rank}} in {{std_search.get_std_class_display}}'th class <br> School Rank: {{ranks.school_rank}} </button>
 
 
             </p>

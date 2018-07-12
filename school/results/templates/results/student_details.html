@@ -111,11 +111,11 @@
 
     
     {% if fail >= 1 %}
-<button style="text-align:center;font-size:17px;padding:10px; margin-bottom:10px" " type="button " class="btn
+<button style="text-align:center;font-size:17px;padding:10px; margin-bottom:10px;width:90%"  type="button " class="btn
     btn-danger centered ">Result: Fail {{fail}} Subject</button>
 
     {% else %}
-    <button style="text-align:center;font-size:17px;color:white;padding:10px; margin-bottom:10px" type="button" class="btn btn-success centered">Result: {% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total
+    <button style="width:90%;text-align:center;font-size:17px;color:white;padding:10px; margin-bottom:10px" type="button" class="btn btn-success centered">Result: {% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total
         Marks- {{ total_marks|floatformat}} {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5)| Total Marks-
         {{ total_marks|floatformat}} {% endif %}
     </button>
@@ -124,6 +124,33 @@
 <table class="table">
 
     <tbody>
+
+            {% if fail >= 1 %}
+            <tr class="table-danger">
+                <td>Result</td>
+                <td>Fail {{fail}} Subject</td>
+        
+            </tr>
+
+                
+            
+                {% else %}
+                <tr class="table-success">
+                        <td>Result</td>
+                        <td>{% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total
+                                Marks- {{ total_marks|floatformat}} {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5)</td>
+            
+                </tr>
+
+                <tr class="table-success">
+                        <td>Total Marks</td>
+                        <td>
+                                {{ total_marks|floatformat}} {% endif %}</td>
+            
+                    </tr>
+                 
+                
+                {% endif %}
 
 
         <tr class="table-success">
@@ -151,57 +178,63 @@
 
 <hr>
 
-{% if object.marks_set.all %}
-<p style="font-size:18px;padding:5px;text-align:center">
-    <i class=" fas fa-chevron-circle-down"></i> Result Details
-</p>
-  
-<table class="table table-hover table-bordered">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Subject Code</th>
-            <th>Subject Name</th>
-            <th>Full Marks</th>
-            <th>Marks</th>
-            <th>Grade Point</th>
-            <th>Grade</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for i in object.marks_set.all %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.subject_name.subject_code}}</td>
-            {% if i.subject_gpa == "F" %}
-            <td style="color:red">{{i.subject_name.subject_name}}</td>
+
+<div class="row">
+    <div class="mx-auto  centered">
+            {% if object.marks_set.all %}
+            <p style="font-size:18px;padding:5px;text-align:center">
+                <i class=" fas fa-chevron-circle-down"></i> Result Details
+            </p>
+              
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Subject Code</th>
+                        <th>Subject Name</th>
+                        <th>Full Marks</th>
+                        <th>Marks</th>
+                        <th>Grade Point</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in object.marks_set.all %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{i.subject_name.subject_code}}</td>
+                        {% if i.subject_gpa == "F" %}
+                        <td style="color:red">{{i.subject_name.subject_name}}</td>
+                        {% else %}
+                        <td>{{i.subject_name.subject_name}}</td>
+                        {% endif %}
+                       
+                        <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
+                        <td>{{i.subject_marks|floatformat}}</td>
+                        <td>{{i.subject_gradepoint|floatformat}}</td>
+                        {% if i.subject_gpa == "F" %}
+                        <td style="color:red">{{i.subject_gpa}}</td>
+                        {% else %}
+                        <td>{{i.subject_gpa}}</td>
+                        {% endif %}
+            
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
             {% else %}
-            <td>{{i.subject_name.subject_name}}</td>
+            <p>no update</p>
             {% endif %}
-           
-            <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
-            <td>{{i.subject_marks|floatformat}}</td>
-            <td>{{i.subject_gradepoint|floatformat}}</td>
-            {% if i.subject_gpa == "F" %}
-            <td style="color:red">{{i.subject_gpa}}</td>
-            {% else %}
-            <td>{{i.subject_gpa}}</td>
-            {% endif %}
-
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-{% else %}
-<p>no update</p>
-{% endif %}
-
-
-<hr>
-<p style="font-size:8px">
-<i>updated: {{object.update_date}} published: {{object.pub_date}}</i>
-</p>
+            
+            
+            <hr>
+            <p style="font-size:8px">
+            <i>updated: {{object.update_date}} published: {{object.pub_date}}</i>
+            </p>
+            
+    </div>
+</div>
 
 
 

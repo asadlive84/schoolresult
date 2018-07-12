@@ -63,14 +63,22 @@
         </div>
     </nav>
 
-    <!-- Header - set the background image for the header in the line below -->
+    <!-- Header - set the background image for the header in the line below
     <header class="py-5 bg-image-full" style="background-image: url('https://unsplash.it/1900/1080?image=997');">
-        <img class="img-fluid d-block mx-auto" style="height:12em" src="{% static 'results/logo.jpg' %}" alt="">
+        
     </header>
+     -->
 
     <!-- Content section -->
     <section class="py-5">
+        
+
         <div class="container">
+            <div class="row">
+                <div class="mx-auto" style="width:150px;margin-bottom:10px">
+                        <img class="img-fluid d-block mx-auto" style="height:5em" src="{% static 'results/logo.jpg' %}" alt="">
+                </div>
+            </div>
             {% block main_content %}
               
             {% endblock main_content %}
