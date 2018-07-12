@@ -128,3 +128,8 @@ AUTH_USER_MODEL="results.CustomUser"
 CRISPY_TEMPLATE_PACK = 'uni_form'
 # msg_project/settings.py
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# msg_project/settings.py
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'

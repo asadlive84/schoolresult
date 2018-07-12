@@ -1,9 +1,11 @@
+
+{% load crispy_forms_tags %}
 {% extends "results/base.html" %}
 
 
 {% block main_content %}
 
-{% load crispy_forms_tags %} 
+
 
 
 
@@ -11,7 +13,7 @@
 <div class="row justify-content-md-center mt-4 mb-4">
     <div class="col-md-4">
         <h4>Welcome to Admin Panel Page</h4>
-        <form action="" method="">
+        <form method="POST">
             {% csrf_token %} 
             {{ form|crispy }}
 

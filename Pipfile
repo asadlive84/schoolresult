@@ -6,8 +6,12 @@ name = "pypi"
 [packages]
 django = "*"
 django-crispy-forms = "*"
+"xhtml2pdf" = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true
