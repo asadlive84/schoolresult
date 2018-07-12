@@ -223,14 +223,75 @@ class ResultUpdate(LoginRequiredMixin, UpdateView):
 class Pdf(DetailView):
     model=StudentInfo
 
+    failed = 0
+    same_subject = []
+
     def get(self, request, pk):
+        failed = 0
+        same_subject = []
         std = StudentInfo.objects.get(pk=pk)
-        rank = Rank.objects.get(std=std)
+        ranks = Rank.objects.get(std=std)
         today = timezone.now()
+
+        std_gpa = std
+
+        for i in std_gpa.marks_set.filter(subject_name__subject_type__startswith='R').order_by('-pub_date'):
+
+            if i.subject_name not in same_subject:
+                same_subject.append(i.subject_name)
+                if i.subject_gpa == 'F':
+                    failed = failed+1
+
+        subject_max_number = std_gpa.marks_set.all().aggregate(
+            sp=Max('subject_marks')).get('sp', '0')
+        sub_avg_number = std_gpa.marks_set.all().aggregate(
+            sp=Avg('subject_marks')).get('sp', '0')
+        subject_min_number = std_gpa.marks_set.all().aggregate(
+            sp=Min('subject_marks')).get('sp', '0')
+
+        ranks = Rank.objects.get(std=std_gpa)
+
+        subject_grade = ((std_gpa.marks_set.filter(
+            subject_gradepoint__gte=1).aggregate(sp=Sum('subject_gradepoint')).get('sp', 0)))
+
+        total_marks = ((std_gpa.marks_set.all().aggregate(
+            sp=Sum('subject_marks')).get('sp', 0)))
+
+        if subject_grade == None or total_marks == None:
+            toatal_grade_point = 0
+            total_marks = 0
+        else:
+            if int(std_gpa.std_class) == 6 or int(std_gpa.std_class) == 7:
+
+                toatal_grade_point = subject_grade/7
+                total_marks = total_marks
+
+            elif int(std_gpa.std_class) == 8:
+                toatal_grade_point = subject_grade/7
+                total_marks = total_marks
+
+            elif int(std_gpa.std_class) == 9 or int(std_gpa.std_class) == 10:
+                toatal_grade_point = subject_grade/9
+                total_marks = total_marks
+
+        fail = failed
+
+
+
+
+
+
         params = {
             'today': today,
             'object': std,
             'request': request,
-            'rank':rank,
+            'ranks':ranks,
+            'subject_min_number': subject_min_number,
+            'sub_avg_number': sub_avg_number,
+            'subject_max_number': subject_max_number,
+            'total_marks': total_marks,
+            'fail':fail,
+            'toatal_grade_point': toatal_grade_point,
+            
         }
         return Render.render('results/pdf.html', params)

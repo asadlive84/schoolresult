@@ -19,11 +19,12 @@ from results.views import Homepage
 #from django.contrib.auth import views as auth_views
 
 from django.contrib.auth import authenticate, login as LoginView
+from django.contrib.auth import authenticate, login
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', Homepage.as_view(), name=''),
     path('results/', include('results.urls')),
-    path('login/', LoginView, name='login'),
+    path('login/', login, name='login'),
     
 ]
 

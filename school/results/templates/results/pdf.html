@@ -1,30 +1,42 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="bn">
 
 <head>
-    <meta charset="utf-8">
-    <title>Sales Report</title>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
-    crossorigin="anonymous">
-<link href='https://fonts.googleapis.com/css?family=Actor' rel='stylesheet'>
-<link href='https://fonts.googleapis.com/css?family=Almendra' rel='stylesheet'>
-<link href='https://fonts.googleapis.com/css?family=Amita' rel='stylesheet'>
-<link href="'/results/vendor/bootstrap/css/bootstrap.min.css'" rel="stylesheet">
-<!-- Bootstrap core CSS -->
-<link href='https://fonts.googleapis.com/css?family=Amiko' rel='stylesheet'>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{object.std_name}} Exam Result Report</title>
+
+
     <style type="text/css">
         @page {
             size: A4;
             margin: 1cm;
         }
+        body { 
+            font-family: 'Actor';font-size: 19px; 
+        } 
+        p,button,h1,h2,h3,h4,h5{ 
+            font-family: 'Amiko';font-size: 17px;
+        } 
+        .title_custom{
+            font-family: 'Amita';font-size: 32px;font-weight: 35px; 
+        } 
+        .title_custom_two{ 
+            font-family: 'Almendra';font-size: 22px; 
+        }
+        th{
+            font-size: 10px;
+        }
+        td{
+            font-size: 13px;
+        }
 
+       
+        table{
+            border-spacing: 5px;
+        }
         
-
- body { font-family: 'Actor';font-size: 19px; } p,td,tr,button,h1,h2,h3,h4,h5{ font-family: 'Amiko';font-size: 17px; } .title_custom{
-font-family: 'Amita';font-size: 32px;font-weight: 35px; } .title_custom_two{ font-family: 'Almendra';font-size: 22px; }
-
     </style>
 </head>
 
@@ -37,49 +49,45 @@ font-family: 'Amita';font-size: 32px;font-weight: 35px; } .title_custom_two{ fon
 
 
 
-<div class="col-md-6 offset-md-3  centered">
-    <div>
-        <h1 style="text-align:center" class="title_custom">
-            Fulhata Secondary School
-        </h1>
-        <h2 style="text-align:center" class="title_custom_two">
-            Eiin No: 115030, Founded: 1946
-            <br> Contact: fulhatahs@gmail.com, 01725666116 Fulhata Secondary School Morrelganj, Bagerhat.
+        <div class="">
+            <div>
+                <h1 style="text-align:center;font-size:20px" class="title_custom">
+                    Fulhata Secondary School
+                </h1>
+                <p style="text-align:center;font-size:12px" class="">
+                    Eiin No: 115030, Founded: 1946
+                    <br> Contact: fulhatahs@gmail.com, Morrelganj, Bagerhat.
 
-        </h2>
-       
+                </p>
+            
 
-    </div>
-</div>
+            </div>
+        </div>
+
+<p style="text-align:center;font-size:15px">Exam Name Result Card</p>
 
 
-<div class="row">
+<hr>
+
+
+
+<div class="row " style="width:250px!important">
     <div class="col-md-6 centered">
 
 
-        <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-info text-white card-title">Student Name - {{object.std_name}}
-
-
-            <!-- <a href="{% url 'std_update' object.id %}">
-                <span class="badge badge-warning">Update</span>
-            </a>
-            <a href="{% url 'stdAdd_marks' object.id %}">
-                <span class="badge badge-warning">Add Marks</span>
-            </a>
-            <a href="{% url 'stdmarks_update' object.pk %}">
-                <span class="badge badge-warning">Added Update</span>
-            </a>-->
-
-
-        </p>
 
 
 
         <div>
 
-            <table class="table">
+            <table border="0" style="padding:1px" class="table" style="width:20px">
 
                 <tbody>
+                    <tr class="table-primary">
+                        <td>Name</td>
+                        <td>{{object.std_name}}</td>
+
+                    </tr>
                     <tr class="table-primary">
                         <td>Gender</td>
                         <td>{{object.get_std_gender_display}}</td>
@@ -145,53 +153,49 @@ font-family: 'Amita';font-size: 32px;font-weight: 35px; } .title_custom_two{ fon
         </div>
     </div>
 
-    <div class="col-md-6 centered">
+    <div>
+
+
 
 
         {% if fail >= 1 %}
-        <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-danger text-white card-title">Result: Fail {{fail}} Subject</p>
+        <p style="width:2em;border:2px solid black;text-align:center;font-size:15px; padding:5px;" class=" card bg-danger text-white card-title">Result Fail {{fail}} Subject</p>
 
 
 
         {% else %}
-        <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-success text-white card-title">Result: {% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total
-            Marks- {{ total_marks|floatformat}} {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5) | Total
-            Marks- {{ total_marks|floatformat}} {% endif %}
+        <p style="width:2em;border:2px solid black;text-align:center;font-size:15px; padding:5px;">Result 
+            {% if toatal_grade_point > 5 %} 
+            <b>
+
+            GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total
+            Marks- {{ total_marks|floatformat}} 
+            </b>
+            {% else %} 
+
+            GPA- {{toatal_grade_point | floatformat:2}} (out of 5) | Total
+            Marks- {{ total_marks|floatformat}} 
+
+            {% endif %}
+
         </p>
 
         {% endif %}
 
-        <table class="table">
+    <table border="0" style="border-spacing: 5px;padding:2px">
 
             <tbody>
 
-                {% if fail >= 1 %}
-                <tr class="table-danger">
-                    <td>Result</td>
-                    <td>Fail {{fail}} Subject</td>
-
-                </tr>
-
-
-
-                {% else %}
-                <tr class="table-success">
-                    <td>Result</td>
-                    <td>{% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+
-                        | Total Marks- {{ total_marks|floatformat}} {% else %} GPA- {{toatal_grade_point | floatformat:2}}
-                        (out of 5)</td>
-
-                </tr>
 
                 <tr class="table-success">
                     <td>Total Marks</td>
                     <td>
-                        {{ total_marks|floatformat}} {% endif %}</td>
+                        {{ total_marks|floatformat}} </td>
 
                 </tr>
 
 
-                {% endif %}
+               
 
 
                 <tr class="table-success">
@@ -217,7 +221,7 @@ font-family: 'Amita';font-size: 32px;font-weight: 35px; } .title_custom_two{ fon
 </div>
 
 
-<hr>
+
 
 
 <div class="row">
@@ -227,7 +231,7 @@ font-family: 'Amita';font-size: 32px;font-weight: 35px; } .title_custom_two{ fon
             <i class=" fas fa-chevron-circle-down"></i> Result Details
         </p>
 
-        <table class="table table-hover table-bordered">
+            <table style="padding:4px" border="1" class="table table-hover table-bordered">
             <thead>
                 <tr>
                     <th>No</th>
@@ -243,16 +247,43 @@ font-family: 'Amita';font-size: 32px;font-weight: 35px; } .title_custom_two{ fon
                 {% for i in object.marks_set.all %}
                 <tr>
                     <td>{{forloop.counter}}</td>
+
                     <td>{{i.subject_name.subject_code}}</td>
+
                     {% if i.subject_gpa == "F" %}
-                    <td style="color:red">{{i.subject_name.subject_name}}</td>
+                    <td style="color:red">
+                        {% if i.subject_name.subject_type == 'O' %}
+                        {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
+                        
+                        {% else %}
+                        {{i.subject_name.subject_name}}
+                        {% endif %}
+                        
+                    </td>
+
+
                     {% else %}
-                    <td>{{i.subject_name.subject_name}}</td>
+                    <td>
+                        {% if i.subject_name.subject_type == 'O' %} 
+
+                        {{i.subject_name.subject_name}} 
+                        ({{i.subject_name.get_subject_type_display}})
+
+                        {% else %} 
+                        {{i.subject_name.subject_name}} 
+                        {% endif %}
+                       
+                       
+                    </td>
                     {% endif %}
 
+
                     <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
+
                     <td>{{i.subject_marks|floatformat}}</td>
+
                     <td>{{i.subject_gradepoint|floatformat}}</td>
+
                     {% if i.subject_gpa == "F" %}
                     <td style="color:red">{{i.subject_gpa}}</td>
                     {% else %}
@@ -269,7 +300,7 @@ font-family: 'Amita';font-size: 32px;font-weight: 35px; } .title_custom_two{ fon
         {% endif %}
 
 
-        <hr>
+        
         <p style="font-size:8px">
             <i>updated: {{object.update_date}} published: {{object.pub_date}}</i>
         </p>

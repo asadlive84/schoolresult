@@ -7,7 +7,7 @@
  Fulhata Secondary School
         </h1>
 <h2 style="text-align:center" class="title_custom_two">
-        Eiin No: 115030, Founded: 1946 <br> Contact: fulhatahs@gmail.com, 01725666116 Fulhata Secondary School Morrelganj, Bagerhat.
+        Eiin No: 115030, Founded: 1946 <br> Contact: fulhatahs@gmail.com, 01725666116 Morrelganj, Bagerhat.
             
         </h2>
         <hr>
@@ -205,10 +205,23 @@
                     <tr>
                         <td>{{forloop.counter}}</td>
                         <td>{{i.subject_name.subject_code}}</td>
+
                         {% if i.subject_gpa == "F" %}
-                        <td style="color:red">{{i.subject_name.subject_name}}</td>
+                        <td style="color:red">
+                        {% if i.subject_name.subject_type == 'O' %} 
+                        {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
+                        {% else %} 
+                        {{i.subject_name.subject_name}} 
+                        {% endif %}
+                        </td>
                         {% else %}
-                        <td>{{i.subject_name.subject_name}}</td>
+                        <td>
+                        {% if i.subject_name.subject_type == 'O' %} 
+                        {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
+                        {% else %} 
+                        {{i.subject_name.subject_name}} 
+                        {% endif %}
+                        </td>
                         {% endif %}
                        
                         <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
