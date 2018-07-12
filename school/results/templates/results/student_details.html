@@ -107,18 +107,20 @@
     </div>
 </div>
 
-<div class="col-md-6">
+<div class="col-md-6 centered">
 
     
     {% if fail >= 1 %}
-<button style="text-align:center;font-size:17px;padding:10px; margin-bottom:10px;width:90%"  type="button " class="btn
-    btn-danger centered ">Result: Fail {{fail}} Subject</button>
+<p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-danger text-white card-title">Result: Fail {{fail}} Subject</p>
+
+
 
     {% else %}
-    <button style="width:90%;text-align:center;font-size:17px;color:white;padding:10px; margin-bottom:10px" type="button" class="btn btn-success centered">Result: {% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total
-        Marks- {{ total_marks|floatformat}} {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5)| Total Marks-
-        {{ total_marks|floatformat}} {% endif %}
-    </button>
+<p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-success text-white card-title">Result: {% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total Marks-
+    {{ total_marks|floatformat}} {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5) | Total Marks- {{ total_marks|floatformat}}
+    {% endif %}
+</p>
+    
     {% endif %}
 
 <table class="table">
@@ -237,5 +239,14 @@
 </div>
 
 
+<div>
+    <div>
+        <a href="{% url 'pdf' object.id%}">
+            <button type="button" class="btn btn-success">
+            <i class="fas fa-book-open"></i> Print Result Card
+            </button>
+        </a>
+    </div>
+</div>
 
 {% endblock main_content %}

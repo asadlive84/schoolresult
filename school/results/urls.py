@@ -1,6 +1,6 @@
 from .views import Homepage
 from django.urls import path,re_path
-from .views import StudentDetails, StudentAdd, ResultUpdate, StudentUpdateView, StudentAddmarks, student_add_marks
+from .views import StudentDetails, StudentAdd, ResultUpdate, StudentUpdateView, StudentAddmarks, student_add_marks, Pdf
 urlpatterns = [
     path('', Homepage.as_view(), name='home'),
     re_path(r'^(?P<pk>\d+)/$', StudentDetails.as_view(), name='std_details'),
@@ -14,6 +14,9 @@ urlpatterns = [
     re_path(r"std_add_marks_func/(?P<pk>\d+)/$", student_add_marks, name='stdAdd_marks'),
 
     re_path(r"std_marks_update/(?P<pk>\d+)/$",ResultUpdate.as_view(), name='stdmarks_update'),
+
+    re_path(r'^(?P<pk>\d+)/pdf/',Pdf.as_view(), name='pdf'),
+    
 
     
 ]

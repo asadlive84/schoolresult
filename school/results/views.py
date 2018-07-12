@@ -12,9 +12,9 @@ from django.http import HttpResponseRedirect
 
 from django.db.models import Avg, Max, Min
 
+from django.utils import timezone
 
-
-
+from .render import *
 
 
 
@@ -219,3 +219,18 @@ class ResultUpdate(LoginRequiredMixin, UpdateView):
         #context['']=
         return context
     
+
+class Pdf(DetailView):
+    model=StudentInfo
+
+    def get(self, request, pk):
+        std = StudentInfo.objects.get(pk=pk)
+        rank = Rank.objects.get(std=std)
+        today = timezone.now()
+        params = {
+            'today': today,
+            'object': std,
+            'request': request,
+            'rank':rank,
+        }
+        return Render.render('results/pdf.html', params)
