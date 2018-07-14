@@ -403,10 +403,66 @@ class AllRankViewSearch(TemplateView,FormMixin):
         if form.is_valid():
 
             try:
+                self.std_class = form.cleaned_data['student_class']
                 self.object_search = StudentInfo.objects.filter(
                     std_class=form.cleaned_data['student_class'])
                 context['class_name']=form.cleaned_data['student_class']
                 context['std_search_count'] = self.object_search.count()
+                context['std_search_avg_gradepoint'] = StudentInfo.objects.filter().aggregate(
+                    sp=Avg('std_grade_point_total_subject_avg')).get('sp',0)
+
+                context['pass_std_count']=StudentInfo.objects.filter(std_class=self.std_class, std_grade_point_total_subject_avg__gte=1).count()
+
+
+                #male female result collect
+                context['pass_std_count_male'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_gender='MALE', std_grade_point_total_subject_avg__gte=1).count()
+
+                context['pass_std_count_female'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_gender='FEMALE', std_grade_point_total_subject_avg__gte=1).count()
+
+                context['total_male_list'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_gender='MALE').count()
+
+                context['total_female_list'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_gender='FEMALE').count()
+
+                context['male_std_fail'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_gender='MALE', std_grade_point_total_subject_avg__lt=1).count()
+                context['female_std_fail'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_gender='FEMALE', std_grade_point_total_subject_avg__lt=1).count()
+
+
+
+
+
+                context['fail_std_count'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_grade_point_total_subject_avg__lt=1).count()
+
+
+                #gpa count per class
+
+                context['std_gpa_aplus'] = StudentInfo.objects.filter(std_class=self.std_class, std_grade_point_total_subject_avg__gte=5).count()
+
+                context['std_gpa_a'] = StudentInfo.objects.filter(std_class=self.std_class, std_grade_point_total_subject_avg__gte=4,std_grade_point_total_subject_avg__lt=5).count()
+                
+                context['std_gpa_a_minus'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_grade_point_total_subject_avg__gte=3.5, std_grade_point_total_subject_avg__lt=4).count()
+
+                context['std_gpa_b'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_grade_point_total_subject_avg__gte=3, std_grade_point_total_subject_avg__lt=3.5).count()
+
+                context['std_gpa_c'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_grade_point_total_subject_avg__gte=2, std_grade_point_total_subject_avg__lt=3).count()
+
+                context['std_gpa_d'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_grade_point_total_subject_avg__gte=1, std_grade_point_total_subject_avg__lt=2).count()
+                context['std_gpa_fail'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_grade_point_total_subject_avg__gte=0, std_grade_point_total_subject_avg__lt=1).count()
+
+                
+
+               
 
                 
                 

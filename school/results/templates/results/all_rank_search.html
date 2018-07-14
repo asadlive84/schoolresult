@@ -25,11 +25,134 @@
         <div class="card-body">
             {% if std_search %}
             
-
+<h2 class="mx-auto" style="width:550px;font-size:25px">Class {{class_name}} Rank List and analysis</h2>
+<hr>
 <div class="div">
     <div class="row">
+        
         <div class="col-md-6">
-            <p>Name {{fsf}}</p>
+            <table class="table mx-auto" style="width:400px">
+
+
+            <tr class="table-danger">
+                <td>Class: </td>
+                <td>{{class_name}}</td>
+
+            </tr>
+
+
+
+
+
+            <tr class="table-primary">
+                <td>Total Examinee | class {{class_name}}</td>
+                <td>{{std_search_count}}  </td>
+
+            </tr>
+
+            <tr class="table-success">
+                <td>Total Male</td>
+                <td>{{total_male_list}}</td>
+
+            </tr>
+
+
+            <tr class="table-success">
+                <td>Total Female</td>
+<td>{{total_female_list}}</td>
+
+            </tr>
+
+            <tr class="table-danger">
+                <td>Fail</td>
+                <td>{{fail_std_count}}</td>
+
+            </tr>
+
+            <tr class="table-danger">
+                <td>Male pass</td>
+            <td>{{pass_std_count_male}}</td>
+
+            <tr class="table-danger">
+                <td>Female pass</td>
+                <td>{{pass_std_count_female}}</td>
+            </tr>
+
+            <tr class="table-danger">
+                <td>Male Fail</td>
+                <td>{{male_std_fail}}</td>
+            </tr>
+           
+
+            <tr class="table-danger">
+                <td>Female Fail</td>
+                <td>{{female_std_fail}}</td>
+            </tr>
+
+            
+
+        </table>
+    </div>
+
+
+
+<div class="col-md-6">
+    <table class="table mx-auto" style="width:400px">
+
+
+
+
+        
+        <tr class="table-success">
+            <td>A+</td>
+            <td>{{std_gpa_aplus}}</td>
+
+        </tr>
+        <tr class="table-info">
+            <td>A</td>
+            <td>{{std_gpa_a}}</td>
+
+        </tr>
+        <tr class="table-warning">
+            <td>A-</td>
+            <td>{{std_gpa_a_minus}}</td>
+
+        </tr>
+        <tr class="table-danger">
+            <td>B</td>
+            <td>{{std_gpa_b}}</td>
+
+        </tr>
+
+        <tr class="table-info">
+            <td>C</td>
+            <td>{{std_gpa_c|floatformat}}</td>
+
+        </tr>
+
+        <tr class="table-info">
+            <td>D</td>
+            <td>{{std_gpa_d|floatformat}}</td>
+
+        </tr>
+
+        <tr class="table-warning">
+            <td>Average Gradepoint (GPA)</td>
+            <td>{{std_search_avg_gradepoint|floatformat:'2'}}</td>
+
+        </tr>
+
+    </table>
+</div>
+
+
+
+
+
+
+
+       
+
         </div>
     </div>
 </div>
@@ -40,11 +163,11 @@
     <div class="col-md-12 col-sm-12 col-xs-12 mx-auto ">
 
         <div class="div">
-<p>Total Student: {{std_search_count}} ( {{class_name}} Class)
+
                 
-            </p>
-<h2 class="mx-auto" style="width:250px;font-size:25px">Class {{class_name}} Rank List</h2>
-            <hr>
+           
+
+            
             <table class="table table-hover table-bordered">
                 <thead>
                     <tr>
