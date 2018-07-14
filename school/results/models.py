@@ -48,6 +48,11 @@ class StdCommon(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
+
+
+class SubjectTecher(StdCommon):
+    teacher_name=models.CharField('Teacher Name', max_length=100)
+    teach_phone_number=models.IntegerField('Mobile Number')
     
 
 
@@ -55,6 +60,7 @@ class StdSubject(StdCommon):
     
 
     subject_name = models.CharField('Subject Name', max_length=100)
+    teacher=models.ForeignKey(SubjectTecher, on_delete=models.CASCADE, related_name='teacher')
     subject_code=models.CharField('Subject Code', max_length=10)
     subjet_class = models.CharField(
         'Subject Class', max_length=2, choices=STD_CLASS, default='6')
