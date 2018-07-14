@@ -8,8 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    
 
-    <title>Fulhata Secondary School Online Result Syestem</title>
+    <title>{% block title %}Home {% endblock  %}Fulhata Secondary School Online Result Syestem</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
         crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Actor' rel='stylesheet'>
@@ -52,7 +53,7 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top ">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home_app' %}">Fulhata Secondary School</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
@@ -61,9 +62,19 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                 
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">Search Result</a>
+                    </li>
+                                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'subject_search' %}">Subject Search</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'rank' %}">School Rank</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'all_rank_search' %}">Class Rank</a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{% url 'admin:index' %}">Log in</a>
@@ -87,10 +98,11 @@
 
         <div class="container">
             <div class="row">
-                <div class="mx-auto" style="width:150px;margin-bottom:10px">
+                <div class="mx-auto col-md-8 offset-md-2  centered" style="margin-bottom:10px">
                         <img class="img-fluid d-block mx-auto" style="height:5em" src="{% static 'results/logo.jpg' %}" alt="">
                 </div>
             </div>
+            <hr>
             {% block main_content %}
               
             {% endblock main_content %}

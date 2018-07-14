@@ -1,4 +1,5 @@
-{% extends "results/base.html" %} {% block main_content %}
+{% extends "results/base.html" %} 
+{% block main_content %}
 
 
 <div class="col-md-6 offset-md-3  centered">
@@ -254,7 +255,7 @@
 
 <div>
     <div>
-        <a href="{% url 'pdf' object.id%}">
+<a href="{% url 'pdf' object.id%}" target="_blank">
             <button type="button" class="btn btn-success">
             <i class="fas fa-book-open"></i> Print Result Card
             </button>

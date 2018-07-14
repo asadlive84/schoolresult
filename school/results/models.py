@@ -63,11 +63,23 @@ class StdSubject(StdCommon):
     subject_full_marks = models.DecimalField(
         'Full Marks', max_digits=5, decimal_places=2, default=100)
     subject_pass_marks = models.DecimalField(
-        'Pass Marks', max_digits=5, decimal_places=2)
+        'Pass Marks', max_digits=5, decimal_places=2, default=33)
+
+
+    subject_form_searh_name=models.CharField('Subject Search Form name', max_length=500, blank=True, null=True)
+    
+    
+    def __str__(self):
+        return 'Code: '+self.subject_code+' Type: '+self.subject_type+' - '+self.subject_name+' | class: '+self.subjet_class
+
     
 
-    def __str__(self):
-        return self.subject_type+' Code: '+self.subject_code+' - '+self.subject_name+' | class: '+self.subjet_class
+    def save(self, *args, **kwargs):
+        subject_form_searh_name='Code: '+self.subject_code+' Type: '+self.subject_type+' - '+self.subject_name+' | class: '+self.subjet_class
+
+        self.subject_form_searh_name=subject_form_searh_name
+    
+        super(StdSubject, self).save(*args, **kwargs) # Call the real save() method
 
     class Meta:
         verbose_name = ("Subject")
@@ -98,7 +110,9 @@ class StudentInfo(StdCommon):
     std_fail_subject=models.IntegerField('Fail Subject', blank=True, null=True)
 
 
-    rank=models.IntegerField('Student Rank in School',default=0)
+    school_rank=models.IntegerField('Student Rank in School',default=0, blank=True, null=True)
+    class_rank = models.IntegerField(
+        'Student Rank in Class', default=0, blank=True, null=True)
     
 
     
@@ -145,7 +159,13 @@ class StudentInfo(StdCommon):
 
         
             
-
+        try:
+            class_rank_new = Rank.objects.get(std=self.id)
+            self.class_rank = class_rank_new.class_rank
+            self.school_rank = class_rank_new.school_rank
+        except :
+            self.class_rank = 0
+            self.school_rank = 0
 
         
         for i in subject_grade_f:

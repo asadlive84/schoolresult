@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
+{% load static %}
 
 <head>
     <meta charset="UTF-8">
@@ -54,6 +55,10 @@
                 <h1 style="text-align:center;font-size:20px" class="title_custom">
                     Fulhata Secondary School
                 </h1>
+
+                <img src="{%static 'results/logo.jpg' %}" alt="">
+
+
                 <p style="text-align:center;font-size:12px" class="">
                     Eiin No: 115030, Founded: 1946
                     <br> Contact: fulhatahs@gmail.com, Morrelganj, Bagerhat.
@@ -301,8 +306,7 @@
 
 
         
-        <p style="font-size:8px">
-            <i>updated: {{object.update_date}} published: {{object.pub_date}}</i>
+        <p style="font-size:8px">Print Time: {{time}} <i> updated: {{object.update_date}} prepared: {{object.pub_date}}</i>
         </p>
 
     </div>

@@ -7,6 +7,8 @@ name = "pypi"
 django = "*"
 django-crispy-forms = "*"
 "xhtml2pdf" = "*"
+weasyprint = "*"
+djangorestframework = "*"
 
 [dev-packages]
 

@@ -1,5 +1,5 @@
 from django import forms
-from .models import StudentInfo,Marks,StdSubject
+from .models import StudentInfo, Marks, StdSubject
 from django.forms import inlineformset_factory
 
 class ProfileSearchForm(forms.Form):
@@ -71,3 +71,26 @@ class ResultSearchForm(forms.Form):
 
 
 
+
+class SubjectSearchForm(forms.Form):
+    STD_CLASS = (
+        ('6', 'Six'),
+        ('7', 'Seven'),
+        ('8', 'Eight'),
+        ('9', 'Nine'),
+        ('10', 'Ten'),
+    )
+    subject_name=forms.ModelChoiceField(queryset=StdSubject.objects.all(), label='Select Subject Name', empty_label=None)
+    subject_class = forms.ChoiceField(choices=STD_CLASS, label="Select Class")
+
+
+class ClassSearchForm(forms.Form):
+    STD_CLASS = (
+        ('6', 'Six'),
+        ('7', 'Seven'),
+        ('8', 'Eight'),
+        ('9', 'Nine'),
+        ('10', 'Ten'),
+    )
+
+    student_class = forms.ChoiceField(choices=STD_CLASS, label="Select Class")

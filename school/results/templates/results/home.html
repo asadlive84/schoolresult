@@ -8,10 +8,9 @@
 
 
 
+
 <div class="col-md-3 offset-md-4  centered">
-<button type="button" class="btn btn-info col-md-8 offset-md-2  centered">
-    <h4>Result</h4>
-</button>
+    <h1>Search Result</h1>
     <form action="" method="POST">
         {% csrf_token %}
        
@@ -55,11 +54,17 @@
             {% endif %}
 
             <div class="col-md-5 offset-md-4  centered ">
-                <a href="{% url 'pdf' std_search.id%}" class="card-link">
+                <a href="{% url 'pdf' std_search.id%}" class="card-link" target="_blank">
                     <i class="fas fa-book-open"></i> Result Print
                 </a>
             </div>
-            
+
+
+            {% elif std_search == None %}
+
+<h4 style="text-align:center;font-size:15px;padding:10px" class="card bg-dark text-white card-title">Fulhata Secondary School Result Application</h4>
+
+
              {% else %}
             <h4 style="text-align:center;font-size:15px;padding:10px" class="card bg-danger text-white card-title">Result Not Found</h4>
         {% endif %}

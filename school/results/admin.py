@@ -77,8 +77,9 @@ class SubjectModelAdmin(admin.ModelAdmin):
 
 
 
-
+'''
 @admin.register(Rank)
 class RankAdminModel(admin.ModelAdmin):
     list_display = ('std','class_rank', 'school_rank',
                     'total_gpa', 'total_marks')
+'''

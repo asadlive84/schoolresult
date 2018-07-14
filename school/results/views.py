@@ -5,7 +5,7 @@ from .models import StudentInfo, StdSubject, Marks,Rank
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView,FormView
 from django.db.models import Max,Avg,Sum
 from django.views.generic.edit import FormMixin
-from .forms import ProfileSearchForm, AddStudentInfo, StudentUpdateForm, StudentSubjectGPAForm, StudentSubjectGPAFormAdd, Addmarks, ResultSearchForm
+from .forms import ProfileSearchForm, AddStudentInfo, StudentUpdateForm, StudentSubjectGPAForm, StudentSubjectGPAFormAdd, Addmarks, ResultSearchForm, SubjectSearchForm, ClassSearchForm
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 
@@ -276,6 +276,7 @@ class Pdf(DetailView):
                     total_marks = total_marks
 
             fail = failed
+            time=timezone.now()
 
             params = {
                 'today': today,
@@ -288,6 +289,7 @@ class Pdf(DetailView):
                 'total_marks': total_marks,
                 'fail': fail,
                 'toatal_grade_point': toatal_grade_point,
+                'time':time,
 
             }
         
@@ -296,3 +298,127 @@ class Pdf(DetailView):
                 'object': 'Problem',
             }
         return Render.render('results/pdf.html', params)
+
+
+class RankListView(ListView):
+    model=Rank
+    template_name="results/rank_list.html"
+
+
+    
+    def get_context_data(self, **kwargs):
+        
+        context = super(RankListView, self).get_context_data(**kwargs)
+        context['object_list'] = Rank.objects.all().order_by('school_rank')
+        context['rank_count'] = Rank.objects.all().count()
+        return context
+    
+
+class SubjectSeaechView(TemplateView, FormMixin):
+    template_name = 'results/subject_seach.html'
+
+    form_class = SubjectSearchForm
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+
+        form = self.form_class(request.POST)
+        if form.is_valid():
+
+            try:
+                self.object_search = StdSubject.objects.get(
+                    subject_form_searh_name=form.cleaned_data['subject_name'], subjet_class=form.cleaned_data['subject_class'])
+                context['std_search_count'] = self.object_search.marks_set.all().count()
+            except:
+                self.object_search = False
+                context['std_search_count'] =False
+                
+           
+            
+
+            
+           
+        context['std_search'] = self.object_search
+        
+
+        
+
+        #context['ranks'] = Rank.objects.get(std=self.object_search)
+        #self.object_search.marks
+
+        return super(SubjectSeaechView, self).render_to_response(context)
+
+
+
+
+class SubjectDetailView(DetailView):
+    model=StdSubject
+    template_name = 'results/subject_details.html'
+
+
+
+    
+    def get_context_data(self, **kwargs):
+        context = super(SubjectDetailView, self).get_context_data(**kwargs)
+        subject_id = self.kwargs['pk']
+        sub_object=StdSubject.objects.get(pk=subject_id)
+        context['sub_std'] = sub_object.marks_set.all().order_by(
+            '-subject_gradepoint')
+        context['sub_std_count'] = sub_object.marks_set.all().order_by(
+            '-subject_gradepoint').count()
+        context['sub_std_pass'] = sub_object.marks_set.filter(
+            subject_gradepoint__gte=1).order_by('-subject_gradepoint').count()
+        context['sub_std_fail'] = sub_object.marks_set.filter(subject_gradepoint__lte=0).order_by('-subject_gradepoint').count()
+
+        context['sub_std_aplus'] = sub_object.marks_set.filter(
+            subject_gradepoint__gte=5).order_by('-subject_gradepoint').count()
+        context['sub_std_a'] = sub_object.marks_set.filter(
+            subject_gradepoint__gte=4, subject_gradepoint__lt=5).order_by('-subject_gradepoint').count()
+
+        context['sub_std_aminus'] = sub_object.marks_set.filter(
+            subject_gradepoint__gte=3.5, subject_gradepoint__lt=4).order_by('-subject_gradepoint').count()
+        context['sub_std_b'] = sub_object.marks_set.filter(
+            subject_gradepoint__gte=3, subject_gradepoint__lt=3.5).order_by('-subject_gradepoint').count()
+
+        context['sub_std_c'] = sub_object.marks_set.filter(
+            subject_gradepoint__gte=2, subject_gradepoint__lt=3).order_by('-subject_gradepoint').count()
+        context['sub_std_d'] = sub_object.marks_set.filter(
+            subject_gradepoint__gte=1, subject_gradepoint__lt=2).order_by('-subject_gradepoint').count()
+
+        context['sub_avg_marks'] = sub_object.marks_set.all().aggregate(
+            sp=Avg('subject_marks')).get('sp', '0')
+        context['sub_avg_gradepoint'] = sub_object.marks_set.all().aggregate(
+            sp=Avg('subject_gradepoint')).get('sp', '0')
+        return context
+    
+
+class AllRankViewSearch(TemplateView,FormMixin):
+
+    form_class = ClassSearchForm
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+
+        form = self.form_class(request.POST)
+        if form.is_valid():
+
+            try:
+                self.object_search = StudentInfo.objects.filter(
+                    std_class=form.cleaned_data['student_class'])
+                context['class_name']=form.cleaned_data['student_class']
+                context['std_search_count'] = self.object_search.count()
+
+                
+                
+            except:
+                self.object_search = False
+                context['std_search_count'] = False
+
+        context['std_search'] = self.object_search.order_by('-std_grade_point_total_subject_avg')
+
+        #context['ranks'] = Rank.objects.get(std=self.object_search)
+        #self.object_search.marks
+
+        return super(AllRankViewSearch, self).render_to_response(context)
+
+
