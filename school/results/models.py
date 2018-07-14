@@ -53,6 +53,10 @@ class StdCommon(models.Model):
 class SubjectTecher(StdCommon):
     teacher_name=models.CharField('Teacher Name', max_length=100)
     teach_phone_number=models.IntegerField('Mobile Number')
+
+
+    def __str__(self):
+        return self.teacher_name
     
 
 
@@ -61,6 +65,9 @@ class StdSubject(StdCommon):
 
     subject_name = models.CharField('Subject Name', max_length=100)
     teacher=models.ForeignKey(SubjectTecher, on_delete=models.CASCADE, related_name='teacher')
+    subject_group = models.CharField(
+        'Subject Group', choices=STD_GROUP, default='G', max_length=10)
+
     subject_code=models.CharField('Subject Code', max_length=10)
     subjet_class = models.CharField(
         'Subject Class', max_length=2, choices=STD_CLASS, default='6')
@@ -90,6 +97,7 @@ class StdSubject(StdCommon):
     class Meta:
         verbose_name = ("Subject")
         verbose_name_plural = ("Subject")
+        ordering = ['subject_code']
 
 class StudentInfo(StdCommon):
     

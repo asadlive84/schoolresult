@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin  # new
-from .models import StudentInfo, StdSubject, Marks,Rank
+from .models import StudentInfo, StdSubject, Marks, Rank, SubjectTecher 
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView,FormView
 from django.db.models import Max,Avg,Sum
 from django.views.generic.edit import FormMixin
@@ -364,6 +364,12 @@ class SubjectDetailView(DetailView):
         sub_object=StdSubject.objects.get(pk=subject_id)
         context['sub_std'] = sub_object.marks_set.all().order_by(
             '-subject_gradepoint')
+
+        context['sub_teacher'] = sub_object.marks_set.all().order_by(
+            '-subject_gradepoint')
+
+
+
         context['sub_std_count'] = sub_object.marks_set.all().order_by(
             '-subject_gradepoint').count()
         context['sub_std_pass'] = sub_object.marks_set.filter(

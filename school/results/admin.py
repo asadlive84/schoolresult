@@ -18,6 +18,8 @@ class SubjectInstanceInline(admin.TabularInline):
 
     exclude = ['subject_gradepoint', 'subject_gpa']
 
+    
+
 
 class SubjectInstance(admin.TabularInline):
     model = StdSubject
@@ -39,6 +41,7 @@ class StudentAdmin(admin.ModelAdmin):
     exclude = ['std_total_marks', 'std_gpa',
                'std_grade_point_total_sum', 'std_grade_point_total_subject_avg', 'std_fail_subject', 'school_rank','class_rank']
 
+    
     
 
 
@@ -70,5 +73,7 @@ class SubjectTecherModel(admin.ModelAdmin):
     search_fields = ('teacher_name', 'teach_phone_number')
     
     inlines = [SubjectInstance]
+
+
 
 
