@@ -83,12 +83,11 @@ class StdSubject(StdCommon):
     
     
     def __str__(self):
-        return 'Code: '+self.subject_code+' Type: '+self.subject_type+' - '+self.subject_name+' | class: '+self.subjet_class
-
+        return self.subject_name+' Class '+self.subjet_class+' '+' '+self.subject_type+' Code '+self.subject_code
     
 
     def save(self, *args, **kwargs):
-        subject_form_searh_name='Code: '+self.subject_code+' Type: '+self.subject_type+' - '+self.subject_name+' | class: '+self.subjet_class
+        subject_form_searh_name=self.subject_name+' Class '+self.subjet_class+' '+' '+self.subject_type+' Code '+self.subject_code
 
         self.subject_form_searh_name=subject_form_searh_name
     

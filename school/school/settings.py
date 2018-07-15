@@ -134,3 +134,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # msg_project/settings.py
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  # 'data' is my media folder
+MEDIA_URL = '/media/'

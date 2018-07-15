@@ -8,7 +8,9 @@ from django.views.generic.edit import FormMixin
 from .forms import ProfileSearchForm, AddStudentInfo, StudentUpdateForm, StudentSubjectGPAForm, StudentSubjectGPAFormAdd, Addmarks, ResultSearchForm, SubjectSearchForm, ClassSearchForm
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
-
+from weasyprint import HTML, CSS
+from django.template.loader import render_to_string
+from weasyprint.fonts import FontConfiguration
 
 from django.db.models import Avg, Max, Min
 
@@ -16,6 +18,8 @@ from django.utils import timezone
 
 from .render import *
 
+
+exam_name = 'Half Yearly Examination 2018'
 
 
 class Homepage(TemplateView,FormMixin):
@@ -27,6 +31,7 @@ class Homepage(TemplateView,FormMixin):
     
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
+        context['exam_name'] = exam_name
     
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -43,8 +48,7 @@ class Homepage(TemplateView,FormMixin):
         except:
             context['ranks']='Fail'
 
-
-
+        
 
         #context['ranks'] = Rank.objects.get(std=self.object_search)
         #self.object_search.marks
@@ -297,8 +301,16 @@ class Pdf(DetailView):
             params={
                 'object': 'Problem',
             }
-        return Render.render('results/pdf.html', params)
+        html_string = render_to_string(
+            'results/pdf.html', params).encode(encoding="utf-8")
+        response = HttpResponse(content_type='application/pdf')
 
+        response['Content-Disposition'] = 'inline; filename='+str(std.std_class)+' Roll '+str(std.std_roll)+' Name ' +str(std.std_name) +'.pdf'
+
+        HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(response, stylesheets=[
+            CSS(string='body,p,tr,td { font-family: Amiko !important },new_css{font-family:Allura!important} ,h1,h2{font-family: Amita!important}')])
+        
+        return response
 
 class RankListView(ListView):
     model=Rank

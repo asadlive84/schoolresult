@@ -11,12 +11,30 @@ class RankInstanceInline(admin.TabularInline):
     extra=0
 
 
-class SubjectInstanceInline(admin.TabularInline):
+STD_CLASS = (
+    ('6', 'Six'),
+    ('7', 'Seven'),
+    ('8', 'Eight'),
+    ('9', 'Nine'),
+    ('10', 'Ten'),
+)
+
+
+class SubjectInstanceInline(admin.StackedInline):
     model = Marks
     fk_name = 'std_name'
     extra = 8
 
     exclude = ['subject_gradepoint', 'subject_gpa']
+
+    #filter_horizontal = ('Six','Ten')
+
+    #raw_id_fields = ("subject_name",)
+
+    
+
+
+  
 
     
 
@@ -33,7 +51,7 @@ class SubjectInstance(admin.TabularInline):
 class StudentAdmin(admin.ModelAdmin):
     list_filter = ('std_class', 'std_gender', 'std_group')
     list_display=('std_name','std_class','std_roll','std_group','std_gender')
-    inlines = [RankInstanceInline, SubjectInstanceInline]
+    inlines = [SubjectInstanceInline]
 
     
     search_fields = ('std_name','std_roll','std_group')
@@ -42,8 +60,11 @@ class StudentAdmin(admin.ModelAdmin):
                'std_grade_point_total_sum', 'std_grade_point_total_subject_avg', 'std_fail_subject', 'school_rank','class_rank']
 
     
-    
-
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(StudentAdmin, self).get_form(request, obj, **kwargs)
+        form.base_fields['std_name'].queryset = Marks.objects.filter(
+            subject_name__subjet_class='10')
+        return form
 
 
 

@@ -20,7 +20,8 @@ from results.api.views import UserViewSet
 from django.contrib.auth import views as auth_views
 
 from rest_framework import routers
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 #router = routers.DefaultRouter()
 #router.register(r'users', UserViewSet)
@@ -45,7 +46,9 @@ urlpatterns = [
     
 ]
 
-
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
 school_name = 'Fulhata Secondary School'
 
 # default: "Django Administration"
