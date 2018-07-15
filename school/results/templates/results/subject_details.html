@@ -1,12 +1,14 @@
 {% extends "results/base.html" %} 
 {% load crispy_forms_tags %} 
-
+{% load humanize %}
 
 {% block main_content %}
 <div class="mx-auto  centered">
 <h1>Half Yearly Examination 2018 Subject
 <b>{{object.subject_name}}</b> Analysis || Class: {{object.get_subjet_class_display}}</h1>
-    <hr>
+<p style="font-size:12px"><i>updated: {{object.update_date}} {{object.update_date|naturaltime}} | published: {{object.pub_date}} {{object.pub_date | naturaltime}}</i></p>    
+<hr>
+
 </div>
 
 

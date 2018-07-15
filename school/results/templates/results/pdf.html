@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% load humanize %}
 
 <head>
     <meta charset="UTF-8">
@@ -11,6 +12,7 @@
     <link href='https://fonts.googleapis.com/css?family=Actor' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Amita' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Allura' rel='stylesheet'>
+
 
     <style type="text/css">
         @page {
@@ -40,39 +42,60 @@
         }
 
        
-        tabl, th,td{
-            border-spacing: 5px;
-			border: 1px solid black;
-			
-        }
-		
-		table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-}
-th, td {
-    padding: 5px;
-}
-th {
-    text-align: left;
-}
+ table, th,td{ border-spacing: 5px; border: 1px solid black; } table, th, td { border: 1px solid black; border-collapse: collapse;
+} th, td { padding: 5px; } th { text-align: left; }
 		
 		
     
 	
 }
- .watermark { width: 900px; height: 900px; display: block; position: relative; }
+ .watermark { width: 100px; height: 100px; display: block; position: relative; }
 .watermark::after { content: ""; background:url({%static 'results/img/logo.jpg' %}); opacity: 0.10; top: 0;
 left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; }
         
+#background{ position:absolute; z-index:0; background; display:block; min-height:10%; min-width:10%; color:yellow;
+} #content{ position:absolute; z-index:1; } 
+#bg-text {margin-top: 200px;
+     color:lightgrey; font-size:15px; margin-left:250px;
+}
+
+table#mytable, table#mytable td { border: none !important; font-size: 14px; line-height: 22px}
+
     </style>
 </head>
 
 <body>
+
+
+      
+    
 	<div class="" style="width:90%;margin:0 auto">
+        <div id="background">
+<p id="bg-text">{{object.std_name}} {{object.std_roll}} {{object.get_std_group_display}} {{object.get_std_class_display}}</p>
+
+ {% if fail >= 1 %}
+<p id="bg-text">Result Fail {{fail}} Subject</p>
+
+
+
+{% else %}
+<p id="bg-text">Result {% if toatal_grade_point > 5 %}
+    <b>
+
+        GPA- {{toatal_grade_point | floatformat:0}} | Total Marks- {{ total_marks|floatformat}}
+    </b>
+    {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5) | Total Marks- {{ total_marks|floatformat}} {% endif %}
+
+</p>
+
+{% endif %}
+           
+        </div>
+       
         <div class="watermark">
             
         </div>
+        
 	
 		<div class="">
             <div>
@@ -106,69 +129,70 @@ left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; }
 
 <div class="left_sideback" style="width:300px;float: left;overflow:hidden;display:block">
 
-<table style="border: 0px solid black;">
+<table id="mytable">
 
                 <tbody>
-                    <tr class="table-primary">
-                        <td>Name</td>
+                    <tr>
+                        <td>Full Name</td>
                         <td>{{object.std_name}}</td>
 
                     </tr>
-                    <tr class="table-primary">
+                    <tr>
                         <td>Gender</td>
                         <td>{{object.get_std_gender_display}}</td>
 
                     </tr>
 
-                    <tr class="table-success">
+                    <tr >
                         <td>Class Roll</td>
                         <td>{{object.std_roll}}</td>
 
                     </tr>
-                    <tr class="table-warning">
+                    <tr >
                         <td>Class</td>
                         <td>{{object.get_std_class_display}}</td>
 
                     </tr>
 
-                    <tr class="table-info">
+                    <tr >
                         <td>Group</td>
                         <td>{{object.get_std_group_display}}</td>
 
                     </tr>
 
                     {% if ranks.class_rank < object.std_roll %} 
-                        <tr class="table-primary">
+                        <tr >
                         <td>Class Rank- {{object.get_std_class_display}}</td>
-                        <td style="color:royalblue"> {{ranks.class_rank}} - Rank Up
-                            <i style="color:royalblue;font-size:25px" class="fas fa-angle-up"></i>
+<td style="color:royalblue"> {{ranks.class_rank|ordinal}}
+    <i>Rank Up</i>
+                            
                         </td>
                         </tr>
 
                         {% elif ranks.class_rank == object.std_roll %}
-                        <tr class="table-light">
+                        <tr >
                             <td>Class Rank- {{object.get_std_class_display}}</td>
 
-                            <td style="color:blue">{{ranks.class_rank}} - Rank Label
-                                <i class="fas fa-arrows-alt-v"></i>
+<td style="color:blue">{{ranks.class_rank|ordinal}} Rank Label
+                                
                             </td>
                         </tr>
 
 
                         {% elif ranks.class_rank > object.std_roll %}
-                        <tr class="table-danger">
+                        <tr >
                             <td>Class Rank- {{object.get_std_class_display}}</td>
-                            <td style="color:red"> {{ranks.class_rank}} - Rank Down
-                                <i style="color:red" class="fas fa-angle-down"></i>
+<td style="color:red"> {{ranks.class_rank|ordinal}} Rank Down
+                                
                             </td>
                         {% endif %}
                         </tr>
 
 
 
-                        <tr class="table-success">
+                        <tr >
                             <td>School Rank</td>
-                            <td>{{ranks.school_rank}}</td>
+<td>{{ranks.school_rank|ordinal}}</td>
 
                         </tr>
 
@@ -352,7 +376,8 @@ left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; }
 
 
         
-        <p style="font-size:8px">Print Time: {{time}} <i> updated: {{object.update_date}} prepared: {{object.pub_date}}</i>
+<p style="font-size:8px">Print Time: {{time}}
+<i> updated: {{object.update_date|naturaltime}} prepared: {{object.pub_date|naturaltime}}</i>
         </p>
 
     </div>
@@ -372,7 +397,7 @@ left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; }
     
         
 
-           
+
 
 
 

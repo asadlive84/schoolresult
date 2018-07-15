@@ -1,14 +1,14 @@
 {% extends "results/base.html" %} 
 
 {% block main_content %}
-
+{% load humanize %}
 
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12 mx-auto ">
 
         <div class="div">
             <p>Total Student: {{rank_count}} <i>(all class)</i></p>
-<h2 class="mx-auto" style="width:250px;font-size:25px">Half Yearly Examination 2018 School Rank List</h2>
+<h2 class="mx-auto" style="width:70%;font-size:25px">Half Yearly Examination 2018 School Rank List</h2>
             <hr>
             <table class="table table-hover table-bordered">
                 <thead>
@@ -28,7 +28,7 @@
                         <tr>
                             <td>{{forloop.counter}}</td>
                            
-                            <td>{{rank.class_rank}}</td>
+                            <td>{{rank.school_rank |ordinal}}</td>
 
                             {% if rank.std.std_fail_subject >= 1 %}
                             <td >
@@ -46,18 +46,20 @@
                            
 
                             {% if  rank.std.std_roll < rank.class_rank %}
-                            <td style="color:red"> {{rank.class_rank}} <i class="fas fa-arrow-down"></i> class rank down </td>
+                            <td style="color:red"> {{rank.class_rank|ordinal}}
+                                <i class="fas fa-arrow-down"></i> class rank down </td>
 
                             {% elif rank.std.std_roll > rank.class_rank %}
                             
                             <td style="color:seagreen"> 
-                                {{rank.class_rank}}
+                                {{rank.class_rank|ordinal}}
                                 <i class="fas fa-arrow-up"></i> class rank up 
                             </td>
 
                             {% elif rank.std.std_roll == rank.class_rank %}
                             <td style="color:#3498db">
-                                {{rank.class_rank}} <i class="fas fa-arrows-alt-v"></i> class rank labeled 
+                            {{rank.class_rank |ordinal}}
+                            <i class="fas fa-arrows-alt-v"></i> class rank labeled
                             </td>
 
                            
@@ -95,7 +97,31 @@
 
 
 
+{% block pagination %} {% if is_paginated %}
+<div class="pagination">
+<ul class="pagination mx-auto">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+        </li>
+        {% endif %}
 
+        <li class="page-item active">
+<a class="page-link" href="#"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a>
+</li>
+           
+        </li>
+            
+       
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+        <a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+        </li>
+        {% endif %}
+    </li>
+</ul>
+{% endif %} {% endblock %}
 
 
 

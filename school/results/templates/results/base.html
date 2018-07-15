@@ -46,6 +46,10 @@
     } 
 }
 
+.navbar-nav li a{
+    font-size: 16px;
+    font-weight: normal;
+}
 </style>
 
 </head>
@@ -77,6 +81,9 @@
                         <a class="nav-link" href="{% url 'all_rank_search' %}">Class Rank</a>
                     </li>
                     <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'teacher_list' %}">Teacher List</a>
+                    </li>
+                    <li class="nav-item active">
                         <a class="nav-link" href="{% url 'admin:index' %}">Log in</a>
                     </li>
                    
@@ -99,7 +106,7 @@
         <div class="container">
             <div class="row">
                 <div class="mx-auto col-md-8 offset-md-2  centered" style="margin-bottom:10px">
-                        <img class="img-fluid d-block mx-auto" style="height:5em" src="{% static 'results/logo.jpg' %}" alt="">
+                    <img class="img-fluid d-block mx-auto" style="height:5em" src="{% static 'results/img/logo.jpg' %}" alt="">
                 </div>
             </div>
             <hr>

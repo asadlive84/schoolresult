@@ -197,12 +197,12 @@ class StudentInfo(StdCommon):
             
         else:
             if self.std_class == '6' or self.std_class == '7':
-                self.std_grade_point_total_subject_avg = (subject_grade/7)
+                self.std_grade_point_total_subject_avg ='%2f' % (subject_grade/7)
             elif self.std_class == '8':
-                self.std_grade_point_total_subject_avg = (subject_grade/7)
+                self.std_grade_point_total_subject_avg ='%2f' % (subject_grade/7)
 
             elif self.std_class == '9' or self.std_class == '10':
-                self.std_grade_point_total_subject_avg = (subject_grade/9)
+                self.std_grade_point_total_subject_avg = '%2f' % (subject_grade/9)
         
         
        

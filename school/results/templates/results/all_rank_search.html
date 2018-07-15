@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %} 
 {% block main_content %}
 
-
+{% load humanize %}
 
 
 
@@ -211,12 +211,12 @@
                                                 
                         {% endif %}
 
-                        <td>{{std.class_rank}}</td>
+                        <td>{{std.class_rank|ordinal}}</td>
                         
                        
                         
 
-                        <td>{{std.school_rank}}</td>
+                        <td>{{std.school_rank|ordinal}}</td>
 
                         <td>{{std.get_std_class_display}}</td>
                         
@@ -236,7 +236,31 @@
 
 
 
+{% block pagination %} {% if is_paginated %}
+<div class="pagination">
+    <ul class="pagination mx-auto">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+        </li>
+        {% endif %}
 
+        <li class="page-item active">
+            <a class="page-link" href="#"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a>
+        </li>
+
+        </li>
+
+
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+        </li>
+        {% endif %}
+        </li>
+    </ul>
+    {% endif %} {% endblock %}
 
 
 

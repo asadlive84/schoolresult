@@ -42,7 +42,7 @@ urlpatterns = [
     #re_path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
 
-    path('rank/',RankListView.as_view() , name='rank'),
+    path('all-school-rank.php/',RankListView.as_view() , name='rank'),
     
 ]
 

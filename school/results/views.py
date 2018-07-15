@@ -8,6 +8,7 @@ from django.views.generic.edit import FormMixin
 from .forms import ProfileSearchForm, AddStudentInfo, StudentUpdateForm, StudentSubjectGPAForm, StudentSubjectGPAFormAdd, Addmarks, ResultSearchForm, SubjectSearchForm, ClassSearchForm
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from weasyprint import HTML, CSS
 from django.template.loader import render_to_string
 from weasyprint.fonts import FontConfiguration
@@ -301,27 +302,46 @@ class Pdf(DetailView):
             params={
                 'object': 'Problem',
             }
-        html_string = render_to_string(
-            'results/pdf.html', params).encode(encoding="utf-8")
-        response = HttpResponse(content_type='application/pdf')
+        
 
-        response['Content-Disposition'] = 'inline; filename='+str(std.std_class)+' Roll '+str(std.std_roll)+' Name ' +str(std.std_name) +'.pdf'
+        try:
+            html_string = render_to_string(
+                'results/pdf.html', params).encode(encoding="utf-8")
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'inline; filename='+str(
+                std.std_class)+' Roll '+str(std.std_roll)+' Name ' + str(std.std_name) + '.pdf'
 
-        HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(response, stylesheets=[
-            CSS(string='body,p,tr,td { font-family: Amiko !important },new_css{font-family:Allura!important} ,h1,h2{font-family: Amita!important}')])
+            HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(response, stylesheets=[
+                CSS(string='body,p,tr,td { font-family: Amiko !important },new_css{font-family:Allura!important} ,h1,h2{font-family: Amita!important}')])
+        except:
+            pass
+            
+
+        
         
         return response
 
 class RankListView(ListView):
     model=Rank
     template_name="results/rank_list.html"
+    paginate_by = 20
+
+    ordering = ['school_rank']
 
 
     
     def get_context_data(self, **kwargs):
         
         context = super(RankListView, self).get_context_data(**kwargs)
-        context['object_list'] = Rank.objects.all().order_by('school_rank')
+        
+        #ranks_all= Rank.objects.all().order_by('school_rank')
+
+       
+       
+
+
+
+
         context['rank_count'] = Rank.objects.all().count()
         return context
     
@@ -330,6 +350,8 @@ class SubjectSeaechView(TemplateView, FormMixin):
     template_name = 'results/subject_seach.html'
 
     form_class = SubjectSearchForm
+
+    
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
@@ -411,8 +433,10 @@ class SubjectDetailView(DetailView):
     
 
 class AllRankViewSearch(TemplateView,FormMixin):
+    model=StudentInfo
 
     form_class = ClassSearchForm
+    
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
@@ -496,3 +520,16 @@ class AllRankViewSearch(TemplateView,FormMixin):
         return super(AllRankViewSearch, self).render_to_response(context)
 
 
+class TeacherAllView(ListView):
+    model = SubjectTecher
+    template_name='results/teacher_list.html'
+
+
+    
+    def get_context_data(self, **kwargs):
+        #teacher_id=self.kwargs[pk]
+        context = super(TeacherAllView, self).get_context_data(**kwargs)
+        #context['score']=t.teacher.all().aggregate(Avg('marks'))
+
+        return context
+    

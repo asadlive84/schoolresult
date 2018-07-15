@@ -1,17 +1,17 @@
 from .views import Homepage
 from django.urls import path,re_path
-from .views import StudentDetails, StudentAdd, ResultUpdate, StudentUpdateView, StudentAddmarks, student_add_marks, Pdf, SubjectSeaechView, SubjectDetailView, AllRankViewSearch
+from .views import StudentDetails, StudentAdd, ResultUpdate, StudentUpdateView, StudentAddmarks, student_add_marks, Pdf, SubjectSeaechView, SubjectDetailView, AllRankViewSearch, TeacherAllView
 urlpatterns = [
     path('', Homepage.as_view(), name='home'),
 
-    path('subject-search/', SubjectSeaechView.as_view(), name='subject_search'),
+    path('subject-search.js/', SubjectSeaechView.as_view(), name='subject_search'),
 
-    path('all_rank_search/', AllRankViewSearch.as_view(
+    path('all_rank_search.asp/', AllRankViewSearch.as_view(
         template_name='results/all_rank_search.html'), name='all_rank_search'),
 
-    re_path(r'^(?P<pk>\d+)/subject_detail/$', SubjectDetailView.as_view(), name='subject_details'),
+    re_path(r'^(?P<pk>\d+)/subject-detail.php/$', SubjectDetailView.as_view(), name='subject_details'),
 
-    re_path(r'^(?P<pk>\d+)/std-detail/$', StudentDetails.as_view(), name='std_details'),
+    re_path(r'^(?P<pk>\d+)/student-result-details.asp/$', StudentDetails.as_view(), name='std_details'),
 
     path('student_add/', StudentAdd.as_view(), name='std_add'),
     re_path(r'student_update/(?P<pk>\d+)/$', StudentUpdateView.as_view(), name='std_update'),
@@ -23,7 +23,9 @@ urlpatterns = [
 
     re_path(r"std_marks_update/(?P<pk>\d+)/$",ResultUpdate.as_view(), name='stdmarks_update'),
 
-    re_path(r'^(?P<pk>\d+)/pdf/',Pdf.as_view(), name='pdf'),
+    re_path(r'^(?P<pk>\d+)/get-print-result-sheet/',Pdf.as_view(), name='pdf'),
+
+    path('teacher_list/', TeacherAllView.as_view(), name='teacher_list'),
     
 
     
