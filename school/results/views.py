@@ -87,9 +87,12 @@ class StudentDetails(DetailView):
                 if i.subject_gpa == 'F':
                     failed = failed+1
 
+        '''
+        context['subject_max_number'] = std_gpa.marks_set.all(
+        ).aggregate(Max('subject_marks'))
+        '''
+        context['subject_max_number'] = std_gpa.marks_set.aggregate(sp=Max('subject_marks')).get('sp',0)
         
-        context['subject_max_number'] = std_gpa.marks_set.all().aggregate(
-            sp=Max('subject_marks')).get('sp', '0')
         context['sub_avg_number'] = std_gpa.marks_set.all().aggregate(
             sp=Avg('subject_marks')).get('sp', '0')
         context['subject_min_number'] = std_gpa.marks_set.all().aggregate(
@@ -481,6 +484,9 @@ class AllRankViewSearch(TemplateView,FormMixin):
                 context['fail_std_count'] = StudentInfo.objects.filter(
                     std_class=self.std_class, std_grade_point_total_subject_avg__lt=1).count()
 
+                context['total_pass_std_count'] = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_grade_point_total_subject_avg__gte=1).count()
+
 
                 #gpa count per class
 
@@ -524,12 +530,21 @@ class TeacherAllView(ListView):
     model = SubjectTecher
     template_name='results/teacher_list.html'
 
+    ordering='pub_date'
+
 
     
     def get_context_data(self, **kwargs):
         #teacher_id=self.kwargs[pk]
         context = super(TeacherAllView, self).get_context_data(**kwargs)
-        #context['score']=t.teacher.all().aggregate(Avg('marks'))
+        context['teacher_count']=SubjectTecher.objects.all().count()
+        
+        
 
         return context
     
+
+
+class TeacherDetailView(DetailView):
+    model=SubjectTecher
+    template_name='results/teacher_details.html'

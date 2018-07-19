@@ -39,6 +39,8 @@ SUBJECT_TYPE_CHOICE = (
 
 
 
+
+
 class CustomUser(AbstractUser):
     name=models.CharField('Full Name',max_length=100)
 
@@ -53,6 +55,7 @@ class StdCommon(models.Model):
 class SubjectTecher(StdCommon):
     teacher_name=models.CharField('Teacher Name', max_length=100)
     teach_phone_number=models.IntegerField('Mobile Number')
+    teach_major_subject=models.CharField('Subject Name: ', max_length=100)
 
 
     def __str__(self):

@@ -1,6 +1,6 @@
 from .views import Homepage
 from django.urls import path,re_path
-from .views import StudentDetails, StudentAdd, ResultUpdate, StudentUpdateView, StudentAddmarks, student_add_marks, Pdf, SubjectSeaechView, SubjectDetailView, AllRankViewSearch, TeacherAllView
+from .views import StudentDetails, StudentAdd, ResultUpdate, StudentUpdateView, StudentAddmarks, student_add_marks, Pdf, SubjectSeaechView, SubjectDetailView, AllRankViewSearch, TeacherAllView, TeacherDetailView
 urlpatterns = [
     path('', Homepage.as_view(), name='home'),
 
@@ -26,6 +26,8 @@ urlpatterns = [
     re_path(r'^(?P<pk>\d+)/get-print-result-sheet/',Pdf.as_view(), name='pdf'),
 
     path('teacher_list/', TeacherAllView.as_view(), name='teacher_list'),
+
+    re_path(r'^(?P<pk>\d+)/teacher-profile.java/', TeacherDetailView.as_view(), name='teacher_detail'),
     
 
     
