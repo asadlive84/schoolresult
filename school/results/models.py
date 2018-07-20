@@ -285,11 +285,11 @@ class Rank(models.Model):
     std = models.ForeignKey(StudentInfo, related_name='std', on_delete=models.CASCADE)
     
     total_marks = models.DecimalField(
-        max_digits=5, decimal_places=2, help_text='Please give proper number', default=0)
+        max_digits=5, decimal_places=2, help_text='Please give proper number', default=0, blank=True, null=True)
     total_gpa = models.DecimalField(
-        max_digits=5, decimal_places=2, help_text='Please give proper number', default=0)
-    class_rank = models.IntegerField(default=0)
-    school_rank=models.IntegerField('All School Rank', default=0)
+        max_digits=5, decimal_places=2, help_text='Please give proper number', default=0, blank=True, null=True)
+    class_rank = models.IntegerField(default=0, blank=True, null=True)
+    school_rank=models.IntegerField('All School Rank', default=0, blank=True, null=True)
 
 
 

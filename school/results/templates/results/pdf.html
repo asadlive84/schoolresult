@@ -50,8 +50,10 @@
 	
 }
  .watermark { width: 100px; height: 100px; display: block; position: relative; }
-.watermark::after { content: ""; background:url({%static 'results/img/logo.jpg' %}); opacity: 0.10; top: 0;
-left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; }
+.watermark::after { content: ""; background:url({%static 'results/img/logo.jpg' %});background-repeat:no-repeat; opacity:
+0.10; top: 0;
+left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-attachment: fixed; background-position: center;
+}
         
 #background{ position:absolute; z-index:0; background; display:block; min-height:10%; min-width:10%; color:yellow;
 } #content{ position:absolute; z-index:1; } 
@@ -73,22 +75,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
         <div id="background">
 <p id="bg-text">{{object.std_name}} {{object.std_roll}} {{object.get_std_group_display}} {{object.get_std_class_display}}</p>
 
- {% if fail >= 1 %}
-<p id="bg-text">Result Fail {{fail}} Subject</p>
 
-
-
-{% else %}
-<p id="bg-text">Result {% if toatal_grade_point > 5 %}
-    <b>
-
-        GPA- {{toatal_grade_point | floatformat:0}} | Total Marks- {{ total_marks|floatformat}}
-    </b>
-    {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5) | Total Marks- {{ total_marks|floatformat}} {% endif %}
-
-</p>
-
-{% endif %}
            
         </div>
        
@@ -103,11 +90,12 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                 <h1 style="text-align:center;font-size:20px;margin-top:-17%" class="title_custom">
                     Fulhata Secondary School
                 </h1>
+                <p style="text-align:center;font-size:12px; margin-top:-15px">Morrelganj, Bagerhat</p>
 
                 
 
 
-                <p style="text-align:center;font-size:12px" class="">
+                <p style="text-align:center;font-size:12px; margin-top:-15px" class="">
                     Eiin No: 115030, Founded: 1946
                     <br> Contact: fulhatahs@gmail.com, Morrelganj, Bagerhat
 
@@ -134,37 +122,37 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                 <tbody>
                     <tr>
                         <td>Full Name</td>
-                        <td>{{object.std_name}}</td>
+                        <td>: {{object.std_name}}</td>
 
                     </tr>
                     <tr>
                         <td>Gender</td>
-                        <td>{{object.get_std_gender_display}}</td>
+                        <td>: {{object.get_std_gender_display}}</td>
 
                     </tr>
 
                     <tr >
                         <td>Class Roll</td>
-                        <td>{{object.std_roll}}</td>
+                        <td>: {{object.std_roll}}</td>
 
                     </tr>
                     <tr >
                         <td>Class</td>
-                        <td>{{object.get_std_class_display}}</td>
+                        <td>: {{object.get_std_class_display}}</td>
 
                     </tr>
 
                     <tr >
                         <td>Group</td>
-                        <td>{{object.get_std_group_display}}</td>
+                        <td>: {{object.get_std_group_display}}</td>
 
                     </tr>
 
                     {% if ranks.class_rank < object.std_roll %} 
                         <tr >
                         <td>Class Rank- {{object.get_std_class_display}}</td>
-<td style="color:royalblue"> {{ranks.class_rank|ordinal}}
-    <i>Rank Up</i>
+                        <td style="color:royalblue">: {{ranks.class_rank|ordinal}}
+                        <i>Rank Up</i>
                             
                         </td>
                         </tr>
@@ -173,7 +161,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                         <tr >
                             <td>Class Rank- {{object.get_std_class_display}}</td>
 
-<td style="color:blue">{{ranks.class_rank|ordinal}} Rank Label
+                            <td style="color:blue">: {{ranks.class_rank|ordinal}} Rank Label
                                 
                             </td>
                         </tr>
@@ -182,7 +170,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                         {% elif ranks.class_rank > object.std_roll %}
                         <tr >
                             <td>Class Rank- {{object.get_std_class_display}}</td>
-<td style="color:red"> {{ranks.class_rank|ordinal}} Rank Down
+                            <td style="color:red">: {{ranks.class_rank|ordinal}} Rank Down
                                 
                             </td>
                         {% endif %}
@@ -192,7 +180,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
                         <tr >
                             <td>School Rank</td>
-<td>{{ranks.school_rank|ordinal}}</td>
+<td>: {{ranks.school_rank|ordinal}}</td>
 
                         </tr>
 
@@ -265,7 +253,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
 
  
- <div class="" style="width:500px;margin-top:240px;text-align:center;border:1px solid black">
+ <div class="" style="width:100%;margin-top:240px;text-align:center;border:1px solid black">
  
  
         {% if fail >= 1 %}
@@ -306,7 +294,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 		
        
 
-            <table style="width:90%" style="padding:14px;border-spacing: 15px;"  class="table_sheet">
+            <table style="width:100%" style="padding:14px;border-spacing: 15px;"  class="table_sheet">
             <thead>
                 <tr>
                     <th>No</th>
@@ -375,7 +363,20 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
         {% endif %}
 
 
-        
+    
+    
+    <div style="width:800px;overflow:hidden;display:inline-block">
+        <hr style="width:81.25%; margin-left:-30px">
+        <div style="width:330px;float:left">
+            <p style="font-size:12px">Result checked by</p>
+        </div>
+        <div style="width:300px; float:right ">
+           
+            <p style="font-size:12px">Head of the institute</p>
+        </div>
+    </div>
+       
+
 <p style="font-size:8px">Print Time: {{time}}
 <i> updated: {{object.update_date|naturaltime}} prepared: {{object.pub_date|naturaltime}}</i>
         </p>
@@ -383,6 +384,8 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 <p style="font-size:8px" class="m-0 text-center text-white">App Developed & Maintained by
     <a style="color:black;text-decoration:none" href="https://web.facebook.com/asadlive.sohel1">Asaduzzaman Sohel</a>
 </p>
+
+
 
     </div>
 </div>
