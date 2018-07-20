@@ -27,7 +27,7 @@
         <div class="card-body">
         {% if std_search %} 
         <a style="" href="{% url 'std_details' std_search.id %}">
-        <h4 style="text-align:center;font-size:15px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-success text-white card-title">Student Name:  {{std_search.std_name}}</h4>
+        <h4 style="text-align:center;font-size:15px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-success text-white card-title">{{std_search.std_name}}</h4>
         </a>
 <p style="text-align:center;font-size:16px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-primary text-white
             card-text" >Class {{std_search.get_std_class_display}} | Roll {{std_search.std_roll}}</p>
@@ -38,7 +38,7 @@
                 
                 <i>(Out of 5) </i> Total Marks {{std_search.std_total_marks|floatformat}}
 
-<button style="text-align:center;font-size:15px;color:white;padding:10px" type="button" class="btn btn-info centered active">Class Rank: {{ranks.class_rank}} in {{std_search.get_std_class_display}}'th class <br> School Rank: {{ranks.school_rank}} </button>
+<button style="text-align:center;font-size:15px;color:white;padding:10px" type="button" class="btn btn-info centered active">Class Rank: {{ranks.class_rank}} ( Class: {{std_search.get_std_class_display}}) <br> School Rank: {{ranks.school_rank}} </button>
 
 
             </p>

@@ -13,6 +13,7 @@
 <table class="table table-borderless">
     <thead>
         <tr>
+            <th>SL</th>
             <th>Subject Name</th>
             <th>Class</th>
             <th>Type</th>
@@ -21,8 +22,9 @@
     <tbody>
         {% for sub in object.teacher.all %}
         <tr>
+            <td>{{forloop.counter}}</td>
             <td>
-                <a href="{% url 'subject_details' sub.id %}">{{sub.subject_name}} {{sub.get_subject_type_display}}</a>
+                <a href="{% url 'subject_details' sub.id %}">{{sub.subject_name}} </a>
             </td>
             <td>{{sub.get_subjet_class_display}}</td>
             <td>{{sub.get_subject_type_display}}</td>
