@@ -231,9 +231,13 @@ class Marks(StdCommon):
     
    
 
-
+    '''
     def __str__(self):
         return self.std_name.std_name+' Class: '+str(self.std_name.std_class)+' Roll: '+str(self.std_name.std_roll) +' ' + self.subject_name.subject_name +' '+str(self.subject_marks)
+    '''
+    def __str__(self):
+        x ='%.f' % self.subject_marks
+        return x+' - '+self.subject_name.subject_name
 
     class Meta:
         verbose_name = ("Mark Details")

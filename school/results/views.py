@@ -21,8 +21,9 @@ from .render import *
 
 
 exam_name = 'Half Yearly Examination 2018'
+credit = 'Developed & Maintained by Asaduzzaman Sohel'
 
-
+# this is homepage (mainpage) view
 class Homepage(TemplateView,FormMixin):
     template_name='results/home.html'
    
@@ -66,6 +67,12 @@ class Homepage(TemplateView,FormMixin):
     
     
 
+
+'''
+    All Single Student Details view
+
+'''
+
 class StudentDetails(DetailView):
     template_name = 'results/student_details.html'
     model=StudentInfo
@@ -91,12 +98,15 @@ class StudentDetails(DetailView):
         context['subject_max_number'] = std_gpa.marks_set.all(
         ).aggregate(Max('subject_marks'))
         '''
-        context['subject_max_number'] = std_gpa.marks_set.aggregate(sp=Max('subject_marks')).get('sp',0)
+        context['subject_max_number'] = std_gpa.marks_set.annotate(Max('subject_marks'))[0]
         
         context['sub_avg_number'] = std_gpa.marks_set.all().aggregate(
             sp=Avg('subject_marks')).get('sp', '0')
-        context['subject_min_number'] = std_gpa.marks_set.all().aggregate(
-            sp=Min('subject_marks')).get('sp', '0')
+
+        context['subject_min_number'] = std_gpa.marks_set.annotate(
+            Min('subject_marks')).order_by('subject_marks')[0]
+
+        
 
 
         context['ranks']=Rank.objects.get(std=std_gpa)
@@ -251,12 +261,14 @@ class Pdf(DetailView):
                     if i.subject_gpa == 'F':
                         failed = failed+1
 
-            subject_max_number = std_gpa.marks_set.all().aggregate(
-                sp=Max('subject_marks')).get('sp', '0')
-            sub_avg_number = std_gpa.marks_set.all().aggregate(
-                sp=Avg('subject_marks')).get('sp', '0')
-            subject_min_number = std_gpa.marks_set.all().aggregate(
-                sp=Min('subject_marks')).get('sp', '0')
+            subject_max_number= std_gpa.marks_set.annotate(Max('subject_marks'))[
+                0]
+
+            sub_avg_number= std_gpa.marks_set.all().aggregate(
+            sp=Avg('subject_marks')).get('sp', '0')
+
+            subject_min_number= std_gpa.marks_set.annotate(
+            Min('subject_marks')).order_by('subject_marks')[0]
 
             ranks = Rank.objects.get(std=std_gpa)
 
@@ -366,8 +378,10 @@ class SubjectSeaechView(TemplateView, FormMixin):
                 self.object_search = StdSubject.objects.get(
                     subject_form_searh_name=form.cleaned_data['subject_name'], subjet_class=form.cleaned_data['subject_class'])
                 context['std_search_count'] = self.object_search.marks_set.all().count()
+
+                context['std_search'] = self.object_search
             except:
-                self.object_search = False
+                self.object_search = None
                 context['std_search_count'] =False
                 
            
@@ -375,13 +389,12 @@ class SubjectSeaechView(TemplateView, FormMixin):
 
             
            
-        context['std_search'] = self.object_search
+       
         
 
         
 
-        #context['ranks'] = Rank.objects.get(std=self.object_search)
-        #self.object_search.marks
+       
 
         return super(SubjectSeaechView, self).render_to_response(context)
 
@@ -515,7 +528,7 @@ class AllRankViewSearch(TemplateView,FormMixin):
                 
                 
             except:
-                self.object_search = False
+                self.object_search = None
                 context['std_search_count'] = False
 
         context['std_search'] = self.object_search.order_by('-std_grade_point_total_subject_avg')

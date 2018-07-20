@@ -14,12 +14,15 @@
 
 
 <div class="row">
-    <div class="col-md-6">
-        <table class="table mx-auto" style="width:400px">
+    <div class="col-md-8">
+        <table class="table " style="width:">
             
             <tr class="table-success">
                 <td>Subject Teacher Name</td>
-                <td>{{object.teacher.teacher_name}}</td>
+                <td>
+                    <a href="{% url 'teacher_detail' object.teacher.id%}">{{object.teacher.teacher_name}}</a>
+                    <i>{{object.teacher.teach_major_subject}}</i>
+                </td>
             </tr>
 
             <tr class="table-success">
@@ -80,7 +83,7 @@
 
         </table>
     </div>
-<div class="col-md-6">
+<div class="col-md-4">
     <table class="table mx-auto" style="width:400px">
 
         <tr class="table-primary">

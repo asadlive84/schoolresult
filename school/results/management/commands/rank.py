@@ -14,19 +14,19 @@ class Command(BaseCommand):
             std_count = StudentInfo.objects.filter(std_class=poll_id).count()
             std_count_all_class = StudentInfo.objects.all().count()
 
-            for std_order in StudentInfo.objects.filter(std_class=poll_id).order_by('std_grade_point_total_subject_avg'):
+            for std_order in StudentInfo.objects.filter(std_class=poll_id).order_by('std_grade_point_total_subject_avg', 'std_total_marks'):
                 try:
                     rank = Rank.objects.get(std=std_order)
                 except Rank.DoesNotExist:
                     rank = Rank(std=std_order)
-                rank.total_maks = std_order.std_total_marks
+                rank.total_marks = std_order.std_total_marks
                 rank.total_gpa = std_order.std_grade_point_total_subject_avg
                 rank.class_rank = std_count
 
                 rank.save()
                 std_count = std_count-1
 
-            for std_order in StudentInfo.objects.all().order_by('std_grade_point_total_subject_avg'):
+            for std_order in StudentInfo.objects.order_by('std_grade_point_total_subject_avg', 'std_total_marks'):
                 try:
                     rank = Rank.objects.get(std=std_order)
                 except Rank.DoesNotExist:
@@ -37,10 +37,5 @@ class Command(BaseCommand):
                 rank.save()
                 std_count_all_class = std_count_all_class-1
 
-            
-
-                self.stdout.write(self.style.SUCCESS(
+            self.stdout.write(self.style.SUCCESS(
                     'Successfully closed ranks "%s"' % poll_id))
-        
-        
-        
