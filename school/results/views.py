@@ -21,10 +21,16 @@ from .render import *
 
 
 exam_name = 'Half Yearly Examination 2018'
-credit = 'Developed & Maintained by Asaduzzaman Sohel'
+credit='Developed & Maintained by Asaduzzaman Sohel'
+
+
+
 
 # this is homepage (mainpage) view
-class Homepage(TemplateView,FormMixin):
+
+
+class Homepage(TemplateView, FormMixin):
+    
     template_name='results/home.html'
    
     form_class = ResultSearchForm
@@ -44,6 +50,8 @@ class Homepage(TemplateView,FormMixin):
                print(self.object_search)
            
         context['std_search']=self.object_search
+        context['credit'] = credit
+       
 
         try:
             context['ranks'] = Rank.objects.get(std=self.object_search)
@@ -144,7 +152,7 @@ class StudentDetails(DetailView):
 
         context['fail'] = failed
         
-        
+        context['credit'] = credit
 
         return context
 
@@ -310,6 +318,7 @@ class Pdf(DetailView):
                 'fail': fail,
                 'toatal_grade_point': toatal_grade_point,
                 'time':time,
+                'credit':credit,
 
             }
         
@@ -352,10 +361,7 @@ class RankListView(ListView):
         #ranks_all= Rank.objects.all().order_by('school_rank')
 
        
-       
-
-
-
+        context['credit'] = credit
 
         context['rank_count'] = Rank.objects.all().count()
         return context
@@ -380,6 +386,7 @@ class SubjectSeaechView(TemplateView, FormMixin):
                 context['std_search_count'] = self.object_search.marks_set.all().count()
 
                 context['std_search'] = self.object_search
+                context['credit'] = credit
             except:
                 self.object_search = None
                 context['std_search_count'] =False
@@ -445,6 +452,8 @@ class SubjectDetailView(DetailView):
             sp=Avg('subject_marks')).get('sp', '0')
         context['sub_avg_gradepoint'] = sub_object.marks_set.all().aggregate(
             sp=Avg('subject_gradepoint')).get('sp', '0')
+
+        context['credit'] = credit
         return context
     
 
@@ -522,16 +531,15 @@ class AllRankViewSearch(TemplateView,FormMixin):
                     std_class=self.std_class, std_grade_point_total_subject_avg__gte=0, std_grade_point_total_subject_avg__lt=1).count()
 
                 
-
-               
-
+                #context['credit'] = credit
                 
-                
+
             except:
                 self.object_search = None
                 context['std_search_count'] = False
 
         context['std_search'] = self.object_search.order_by('-std_grade_point_total_subject_avg')
+        context['credit'] = credit
 
         #context['ranks'] = Rank.objects.get(std=self.object_search)
         #self.object_search.marks
@@ -552,7 +560,7 @@ class TeacherAllView(ListView):
         context = super(TeacherAllView, self).get_context_data(**kwargs)
         context['teacher_count']=SubjectTecher.objects.all().count()
         
-        
+        context['credit'] = credit
 
         return context
     
@@ -561,3 +569,11 @@ class TeacherAllView(ListView):
 class TeacherDetailView(DetailView):
     model=SubjectTecher
     template_name='results/teacher_details.html'
+
+
+    
+    def get_context_data(self, **kwargs):
+        context = super(TeacherDetailView, self).get_context_data(**kwargs)
+        context['credit'] = credit
+        return context
+    
