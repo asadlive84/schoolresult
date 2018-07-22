@@ -133,10 +133,11 @@
                     <thead>
                         <tr>
                             <th>SL</th>
+                            <th>Roll</th>
                             <th>Name</th>
                             <th>GPA</th>
                             <th>Marks</th>
-                            <th>Roll</th>
+                            
                             <th>Class</th>
                         </tr>
                     </thead>
@@ -145,6 +146,8 @@
                         
                          <tr>
                             <td>{{forloop.counter}}</td>
+
+                            <td>{{sub.std_name.std_roll}}</td>
 
                             {% if sub.subject_gradepoint >= 1 %}
                             <td>
@@ -172,7 +175,7 @@
 
                             <td>{{sub.subject_marks|floatformat}}</td>
 
-                            <td>{{sub.std_name.std_roll}}</td>
+                            
                             <td>{{sub.std_name.std_class}}</td>
                         </tr>
 

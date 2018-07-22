@@ -350,7 +350,7 @@ class RankListView(ListView):
     template_name="results/rank_list.html"
     paginate_by = 20
 
-    ordering = ['school_rank']
+    ordering = ['school_rank','class_rank','-std__std_roll']
 
 
     
@@ -420,7 +420,7 @@ class SubjectDetailView(DetailView):
         subject_id = self.kwargs['pk']
         sub_object=StdSubject.objects.get(pk=subject_id)
         context['sub_std'] = sub_object.marks_set.all().order_by(
-            '-subject_gradepoint')
+            '-subject_gradepoint', '-subject_marks')
 
         context['sub_teacher'] = sub_object.marks_set.all().order_by(
             '-subject_gradepoint')
@@ -471,10 +471,14 @@ class AllRankViewSearch(TemplateView,FormMixin):
 
             try:
                 self.std_class = form.cleaned_data['student_class']
+
                 self.object_search = StudentInfo.objects.filter(
                     std_class=form.cleaned_data['student_class'])
+
                 context['class_name']=form.cleaned_data['student_class']
+
                 context['std_search_count'] = self.object_search.count()
+                
                 context['std_search_avg_gradepoint'] = StudentInfo.objects.filter().aggregate(
                     sp=Avg('std_grade_point_total_subject_avg')).get('sp',0)
 
@@ -538,7 +542,8 @@ class AllRankViewSearch(TemplateView,FormMixin):
                 self.object_search = None
                 context['std_search_count'] = False
 
-        context['std_search'] = self.object_search.order_by('-std_grade_point_total_subject_avg')
+        context['std_search'] = self.object_search.order_by(
+            '-std_grade_point_total_subject_avg', 'class_rank')
         context['credit'] = credit
 
         #context['ranks'] = Rank.objects.get(std=self.object_search)

@@ -7,9 +7,11 @@
     <h1>Teacher Name: {{ object.teacher_name }}</h1>
     <p>Phone Number: {{ object.teach_phone_number }}</p>
     <p class="card-text">{{object.teach_major_subject}}</p>
-    <p>Published: {{ object.pub_date|naturaltime}}</p>
+    <p style="font-size:5px">Published: {{ object.pub_date|naturaltime}}</p>
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#demo">Subject</button>
 
+<div id="demo" class="collapse">
 <table class="table table-borderless">
     <thead>
         <tr>
@@ -32,13 +34,14 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
+
+
+
 
     
 
-        <p>
-
-        </p>
-        <p> </p>
+        
         
       
     

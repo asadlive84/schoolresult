@@ -14,7 +14,7 @@ class Command(BaseCommand):
             std_count = StudentInfo.objects.filter(std_class=poll_id).count()
             std_count_all_class = StudentInfo.objects.all().count()
 
-            for std_order in StudentInfo.objects.filter(std_class=poll_id).order_by('std_grade_point_total_subject_avg', 'std_total_marks'):
+            for std_order in StudentInfo.objects.filter(std_class=poll_id).order_by('std_grade_point_total_subject_avg', 'std_total_marks','-std_roll'):
                 try:
                     rank = Rank.objects.get(std=std_order)
                 except Rank.DoesNotExist:
@@ -26,7 +26,7 @@ class Command(BaseCommand):
                 rank.save()
                 std_count = std_count-1
 
-            for std_order in StudentInfo.objects.order_by('std_grade_point_total_subject_avg', 'std_total_marks'):
+            for std_order in StudentInfo.objects.order_by('std_grade_point_total_subject_avg', 'std_total_marks','-std_roll'):
                 try:
                     rank = Rank.objects.get(std=std_order)
                 except Rank.DoesNotExist:

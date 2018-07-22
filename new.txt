@@ -1,0 +1,45 @@
+from openpyxl import load_workbook
+>>> book=load_workbook('ict9.xlsx')
+>>> 
+>>> book
+<openpyxl.workbook.workbook.Workbook object at 0x7f6189bbcb38>
+>>> sheet=book['Sheet1']
+>>> 
+>>> sheet
+<Worksheet "Sheet1">
+>>> for i in sheet.rows:
+...     i[3].value
+from openpyxl import load_workbook
+>>> book=load_workbook('ict9.xlsx')
+>>> 
+>>> book
+<openpyxl.workbook.workbook.Workbook object at 0x7f6189bbcb38>
+>>> sheet=book['Sheet1']
+>>> 
+>>> sheet
+<Worksheet "Sheet1">
+>>> for i in sheet.rows:
+...     i[3].value
+
+
+from openpyxl import load_workbook
+>>> book=load_workbook('ict9.xlsx')
+>>> 
+>>> book
+<openpyxl.workbook.workbook.Workbook object at 0x7f6189bbcb38>
+>>> sheet=book['Sheet1']
+>>> 
+>>> sheet
+<Worksheet "Sheet1">
+>>> for i in sheet.rows:
+...     i[3].value
+
+
+
+
+>>> x=0
+>>> if x<=85:
+...     for i in sheet.rows:
+...             if(i[3].value is not None):
+...                     StudentInfo.objects.create(std_name=('%s' % i[3].value), std_roll=x).save()
+...                     x+=1

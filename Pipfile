@@ -9,6 +9,7 @@ django-crispy-forms = "*"
 "xhtml2pdf" = "*"
 weasyprint = "*"
 djangorestframework = "*"
+openpyxl = "*"
 
 [dev-packages]
 

@@ -106,12 +106,12 @@ class StudentInfo(StdCommon):
 
     
 
-    std_name = models.CharField('Student Name',max_length=100, help_text='Type only student Full Name like as Nazmul Islam or Nazrul Islam')
+    std_name = models.CharField('Student Name',max_length=100, help_text='Type only student Full Name like as Nazmul Islam or Nazrul Islam', blank=True, null=True)
     std_class = models.CharField('Student Class',max_length=2, choices=STD_CLASS, default=6, help_text='Select a class')
     std_roll = models.IntegerField('Roll Number',help_text='Type Student Roll Number (Only Number)')
     std_group=models.CharField('Group', choices=STD_GROUP, max_length=1, default='G')
     std_gender=models.CharField('Gender', max_length=10, choices=STD_GENDER, default='MALE')
-    std_subjects = models.ManyToManyField(StdSubject)
+    #std_subjects = models.ManyToManyField(StdSubject)
 
 
     std_total_marks = models.FloatField('Total Marks', default=0, blank=True, null=True)
@@ -186,7 +186,7 @@ class StudentInfo(StdCommon):
         
         for i in subject_grade_f:
             
-            if 'F' in i.subject_gpa:
+            if 'F' == i.subject_gpa:
                 fail_sub = fail_sub+1
                 
             std_result = 'Fail ' +str(fail_sub)+' Subject'

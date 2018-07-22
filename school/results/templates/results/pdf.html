@@ -115,7 +115,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
 <div class="" style="width:800px;display:block">
 
-<div class="left_sideback" style="width:370px;float: left;overflow:hidden;display:block">
+<div class="left_sideback" style="width:335px;float: left;overflow:hidden;display:block">
 
 <table id="mytable">
 
@@ -180,7 +180,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
                         <tr >
                             <td>School Rank</td>
-<td>: {{ranks.school_rank|ordinal}}</td>
+                            <td>: {{ranks.school_rank|ordinal}}</td>
 
                         </tr>
 
@@ -204,13 +204,13 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
    
 
-<div style="width:380px;float:right;overflow:hidden;display:inline-block">
+<div style="width:400px;float:right;overflow:hidden;display:inline-block">
 
 
 
 
     
-    <table border="0">
+    <table border="0" style="width:55%!important">
 
             <tbody>
 
@@ -220,7 +220,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                     <td>
                         {{ total_marks|floatformat}} </td>
 
-                </tr>
+                    </tr>
 
 
                
@@ -228,7 +228,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
                 <tr class="table-success">
                     <td>Maximum Number</td>
-                    <td>{{subject_max_number}}</td>
+                    <td style="font-size:10px">{{subject_max_number}}</td>
 
                 </tr>
                 <tr class="table-warning">
@@ -238,7 +238,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                 </tr>
                 <tr class="table-danger">
                     <td>Lowest Number</td>
-                    <td>{{subject_min_number}}</td>
+                    <td style="font-size:10px">{{subject_min_number}}</td>
 
                 </tr>
 
@@ -294,7 +294,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 		
        
 
-            <table style="width:100%" style="padding:14px;border-spacing: 15px;"  class="table_sheet">
+            <table style="width:100%" style="font-size:12px;padding:14px;border-spacing: 15px;"  class="table_sheet">
             <thead>
                 <tr>
                     <th>No</th>
@@ -314,7 +314,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                     <td>{{i.subject_name.subject_code}}</td>
 
                     {% if i.subject_gpa == "F" %}
-                    <td style="color:red">
+                    <td style="color:red;font-size:12px">
                         {% if i.subject_name.subject_type == 'O' %}
                         {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
                         
@@ -326,7 +326,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
 
                     {% else %}
-                    <td>
+                    <td style="font-size:12px">
                         {% if i.subject_name.subject_type == 'O' %} 
 
                         {{i.subject_name.subject_name}} 

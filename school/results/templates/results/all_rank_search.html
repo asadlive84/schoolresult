@@ -183,10 +183,11 @@
                 <thead>
                     <tr>
                         <th>SL</th>
+                        <th>Class Rank</th>
                         <th>Student Name</th>
                         <th>Roll</th>
                         <th>Rank Status</th>
-                        <th>Class Rank</th>
+                        
                     
                         <th>School Rank</th>
                         <th>Class</th>
@@ -199,6 +200,7 @@
                     {% for std in std_search%}
                     <tr>
                         <td>{{forloop.counter}}</td>
+                        <td>{{std.class_rank|ordinal}}</td>
                         <td>
                             <a href="{% url 'std_details' std.id%}">{{std.std_name}}</a>
                         </td>
@@ -222,7 +224,7 @@
                                                 
                         {% endif %}
 
-                        <td>{{std.class_rank|ordinal}}</td>
+                        
                         
                        
                         
