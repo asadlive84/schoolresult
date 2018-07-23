@@ -77,9 +77,14 @@ class StdSubject(StdCommon):
     subject_type = models.CharField(
         'Subject Type', max_length=1, default=REGULAR, choices=SUBJECT_TYPE_CHOICE)
     subject_full_marks = models.DecimalField(
-        'Full Marks', max_digits=5, decimal_places=2, default=100)
-    subject_pass_marks = models.DecimalField(
-        'Pass Marks', max_digits=5, decimal_places=2, default=33)
+        'Full Marks', max_digits=5, decimal_places=2, default=100,blank=True, null=True)
+   
+
+
+    subject_theory_full_marks = models.FloatField('Theory Marks', blank=True, null=True)
+    subject_mcq_full_marks = models.FloatField('MCQ', blank=True, null=True)
+    subject_practical_marks = models.FloatField('Practical', blank=True, null=True)
+    subject_total_marks = models.FloatField('Total Marks', blank=True, null=True, default=100, help_text='Plz dont input any number')
 
 
     subject_form_searh_name=models.CharField('Subject Search Form name', max_length=500, blank=True, null=True)
@@ -93,6 +98,23 @@ class StdSubject(StdCommon):
         subject_form_searh_name=self.subject_name+' Class '+self.subjet_class+' '+' '+self.subject_type+' Code '+self.subject_code
 
         self.subject_form_searh_name=subject_form_searh_name
+
+
+        try:
+            self.subject_full_marks = self.subject_theory_full_marks + self.subject_mcq_full_marks
+        except:
+            self.subject_full_marks = self.subject_theory_full_marks
+
+        try:
+            self.subject_full_marks = self.subject_full_marks + self.subject_practical_marks
+        except:
+            self.subject_full_marks = self.subject_full_marks
+
+        self.subject_total_marks = self.subject_full_marks
+
+
+        
+        
     
         super(StdSubject, self).save(*args, **kwargs) # Call the real save() method
 
@@ -224,9 +246,21 @@ class Marks(StdCommon):
     std_name = models.ForeignKey(
         StudentInfo, on_delete=models.CASCADE)
     subject_name = models.ForeignKey(StdSubject, on_delete=models.CASCADE)
-    subject_marks=models.DecimalField(max_digits=5, decimal_places=2, help_text='Please give proper number')
 
-    subject_gradepoint=models.DecimalField('Grade Point', max_digits=3, decimal_places=1, blank=True, null=True, help_text="Please keep blank")
+
+    subject_theory=models.FloatField('Theory', blank=True, null=True,default=0)
+    subject_mcq = models.FloatField('MCQ', blank=True, null=True)
+    subject_practical=models.FloatField('Practical', blank=True, null=True)
+
+    subject_total_marks = models.FloatField('Total Marks', blank=True, null=True)
+    subject_gpa_sub = models.CharField('Subject GPA Sub', max_length=5, blank=True, null=True, help_text="Please keep blank")
+
+
+    subject_marks = models.DecimalField(
+        max_digits=5, decimal_places=2, help_text='Please give proper number', blank=True, null=True)
+
+    subject_gradepoint = models.DecimalField(
+        'Grade Point', max_digits=3, decimal_places=1, blank=True, null=True, help_text="Please keep blank")
     subject_gpa = models.CharField('Subject GPA', max_length=5, blank=True, null=True, help_text="Please keep blank")
     
    
@@ -254,10 +288,100 @@ class Marks(StdCommon):
 
 
     def save(self, *args, **kwargs):
-        grade_point = SubjectGradePoint(self.subject_marks, self.subject_name.subject_full_marks).subgrade()
-        gpa = SubjectGrade(self.subject_marks,self.subject_name.subject_full_marks).subgrade()
+        
 
-        if self.subject_name.subject_type =='O':
+
+        '''
+            Practical and MCQ number and grade point automatic add
+
+
+        '''
+        #subject_theory, subject_mcq, subject_practical,subject_total_marks
+        #subject_name,subject_theory_full_marks,subject_mcq_full_marks, subject_practical_marks
+        mcq=0
+        practical=0
+        fail_sub_sub=['Pass']
+
+        
+       
+
+        if self.subject_name.subject_mcq_full_marks != None:
+            mcq = self.subject_mcq
+        else:
+            self.subject_mcq=None
+
+        
+        if self.subject_name.subject_practical_marks != None:
+            practical = self.subject_practical
+        else:
+            self.subject_practical=None
+            
+        self.subject_total_marks = mcq+practical+self.subject_theory
+
+        #self.subject_gpa_sub='Pass'
+
+
+        theory_pass_marks = (self.subject_name.subject_theory_full_marks/100)*33
+
+        if self.subject_theory >= round(theory_pass_marks+.1):
+            fail_sub_sub.append('Pass')
+        elif self.subject_theory < theory_pass_marks or self.subject_theory == 0:
+            fail_sub_sub.append('F')
+
+
+        try:
+            mcq_pass_marks = (self.subject_name.subject_mcq_full_marks/100)*33
+
+            if self.subject_mcq >= round(mcq_pass_marks+.1):
+                fail_sub_sub.append('Pass')
+            elif self.subject_mcq < mcq_pass_marks or self.subject_mcq == 0:
+                fail_sub_sub.append('F')
+        except:
+            self.subject_mcq= None
+            
+
+        
+        try:
+            practical_pass_marks = (self.subject_name.subject_practical_marks/100)*33
+            if self.subject_practical >= round(practical_pass_marks+.1):
+                fail_sub_sub.append('Pass')
+            elif self.subject_practical >= practical_pass_marks or self.subject_practical == 0:
+                fail_sub_sub.append('F')
+        except:
+            self.subject_mcq = None
+
+
+
+
+
+
+
+
+        self.subject_gpa_sub = 'Pass'
+        for fail in fail_sub_sub:
+            if fail == 'F':
+                self.subject_gpa_sub = 'F'
+                break
+
+
+
+        #input number from subject total number
+        if self.subject_gpa_sub == 'F':
+            self.subject_marks = 0
+        else:
+
+            self.subject_marks = self.subject_total_marks
+
+        '''
+
+
+        '''
+        grade_point = SubjectGradePoint(
+            self.subject_marks, self.subject_name.subject_full_marks).subgrade()
+        gpa = SubjectGrade(self.subject_marks,
+                           self.subject_name.subject_full_marks).subgrade()
+
+        if self.subject_name.subject_type == 'O':
 
             if self.subject_marks >= ((self.subject_name.subject_full_marks/100)*50) and self.subject_marks <= self.subject_name.subject_full_marks:
                 subject_opt_grade_point = grade_point-2
@@ -267,16 +391,24 @@ class Marks(StdCommon):
 
             elif self.subject_marks >= ((self.subject_name.subject_full_marks/100)*33) and self.subject_marks < ((self.subject_name.subject_full_marks/100)*50):
                 self.subject_gradepoint = 0
-                self.subject_gpa=gpa
+                self.subject_gpa = gpa
 
             elif self.subject_marks < ((self.subject_name.subject_full_marks/100)*33):
                 self.subject_gradepoint = 0
                 self.subject_gpa = gpa
 
-                
         elif self.subject_name.subject_type == 'R':
             self.subject_gradepoint = grade_point
             self.subject_gpa = gpa
+
+        
+
+
+        
+
+
+        
+
 
         super().save(*args, **kwargs)
 

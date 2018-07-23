@@ -22,7 +22,8 @@
 <div class="col-md-6 centered">
 
 
-    <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-info text-white card-title">Student Name - {{object.std_name}}
+<p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-info text-white card-title">
+    <i class="fas fa-user-graduate"> {{object.std_name}}</i>
 
 
         <!-- <a href="{% url 'std_update' object.id %}">
@@ -189,18 +190,32 @@
                 <i class=" fas fa-chevron-circle-down"></i> Result Details
             </p>
               
-            <table class="table table-hover table-bordered">
-                <thead>
+            <table class="table table-hover table-bordered" style="text-align:center;font-size:10px">
+              
+
+                <thead class="btn-success">
                     <tr>
-                        <th>No</th>
-                        <th>Subject Code</th>
-                        <th>Subject Name</th>
-                        <th>Full Marks</th>
-                        <th>Marks</th>
-                        <th>Grade Point</th>
-                        <th>Grade</th>
+                        <th rowspan="2">No</th>
+                        <th rowspan="2">Subject Code</th>
+                        <th rowspan="2">Subject Name</th>
+                        <th rowspan="2">Full Marks</th>
+                        <th colspan="4">Marks</th>
+                        <th rowspan="2">Marks</th>
+                        <th rowspan="4">Grade Point</th>
+                        <th rowspan="4">Grade</th>
+                    </tr>
+                    <tr>
+                        <th>Theory</th>
+                        
+                        <th>MCQ</th>
+                        <th>Practical</th>
+                        <th>Total</th>
+                       
                     </tr>
                 </thead>
+
+
+
                 <tbody>
                     {% for i in object.marks_set.all %}
                     <tr>
@@ -208,15 +223,18 @@
                         <td>{{i.subject_name.subject_code}}</td>
 
                         {% if i.subject_gpa == "F" %}
-                        <td style="color:red">
+                        <td  style="color:red; text-align:left">
+
                         {% if i.subject_name.subject_type == 'O' %} 
                         {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
+                        
                         {% else %} 
                         {{i.subject_name.subject_name}} 
                         {% endif %}
                         </td>
+
                         {% else %}
-                        <td>
+                        <td style="text-align:left">
                         {% if i.subject_name.subject_type == 'O' %} 
                         {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
                         {% else %} 
@@ -224,14 +242,26 @@
                         {% endif %}
                         </td>
                         {% endif %}
+
+
                        
                         <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
-                        <td>{{i.subject_marks|floatformat}}</td>
+
+                       <td style="text-align:right">{{i.subject_theory|floatformat}}</td>
+                       <td style="text-align:right">{{i.subject_mcq|floatformat}}</td>
+                       <td style="text-align:right">{{i.subject_practical|floatformat}}</td>
+                       <td style="text-align:right">{{i.subject_total_marks|floatformat}}</td>
+
+                        <td style="text-align:right">{{i.subject_marks|floatformat}}</td>
+
+
                         <td>{{i.subject_gradepoint|floatformat}}</td>
+                        
                         {% if i.subject_gpa == "F" %}
                         <td style="color:red">{{i.subject_gpa}}</td>
                         {% else %}
                         <td>{{i.subject_gpa}}</td>
+
                         {% endif %}
             
                     </tr>

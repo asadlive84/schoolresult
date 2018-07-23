@@ -20,37 +20,31 @@ STD_CLASS = (
 )
 
 
-class SubjectInstanceInline(admin.TabularInline):
+class SubjectInstanceInline(admin.StackedInline):
     model = Marks
     fk_name = 'std_name'
     extra = 8
 
-    exclude = ['subject_gradepoint', 'subject_gpa']
+    exclude = ['subject_gradepoint', 'subject_gpa',
+               'subject_gpa_sub', 'subject_marks', 'subject_total_marks']
 
     #filter_horizontal = ('Six','Ten')
 
     #raw_id_fields = ("subject_name",)
 
     
-
-
-  
-
-    
-
-
-class SubjectInstance(admin.TabularInline):
+class SubjectInstance(admin.StackedInline):
     model = StdSubject
     fk_name = 'teacher'
     extra = 8
-    #exclude = ['subject_form_searh_name']
+    exclude = ['subject_form_searh_name', 'subject_full_marks']
 
 
 
 @admin.register(StudentInfo)
 class StudentAdmin(admin.ModelAdmin):
     list_filter = ('std_class', 'std_gender', 'std_group')
-    list_display=('std_name','std_class','std_roll','std_group','std_gender')
+    list_display = ('std_name', 'std_class', 'std_group', 'std_gender', 'std_roll')
     inlines = [SubjectInstanceInline]
 
     
