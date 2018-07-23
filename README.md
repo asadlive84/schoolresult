@@ -1,7 +1,7 @@
 # School Result Django Application
 **Django School Basic Result Application
 
-*You can input your subject result and get you result sheet **pdf format** individually.
+*You can input your subject result and get you result sheet **pdf format** individually.*
 # main featurs
 * Institute wise result and ranked
 * Class wise and ranked
