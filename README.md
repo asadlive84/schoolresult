@@ -8,7 +8,7 @@
 * Subject Analysis
 * Individually Result Print
 
-**search result in your institute**
+**Search result in your institute**
 
 ![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2011-55-26.png)
 
@@ -21,7 +21,8 @@
 ![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2012-19-13.png)
 
 
-**class analysis**
+
+**Class analysis**
 
 ![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2012-19-35.png)
 
