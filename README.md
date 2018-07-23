@@ -3,12 +3,19 @@
 
 *You can input your subject result and get you result sheet individually.
 
-![GitHub Logo](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2011-55-26.png)
-Format: ![Alt Text](url)
+![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2011-55-26.png)
+
+![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2012-18-59.png)
 
 
+![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2012-19-13.png)
+
+![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2012-19-35.png)
+
+![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2012-20-16.png)
 
 * Institute wise result and ranked
+
 
 
 
