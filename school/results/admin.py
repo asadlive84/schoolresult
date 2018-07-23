@@ -25,7 +25,7 @@ class SubjectInstanceInline(admin.StackedInline):
     fk_name = 'std_name'
     extra = 8
 
-    exclude = ['subject_gradepoint', 'subject_gpa']
+    #exclude = ['subject_gradepoint', 'subject_gpa']
 
     #filter_horizontal = ('Six','Ten')
 
@@ -43,7 +43,7 @@ class SubjectInstance(admin.TabularInline):
     model = StdSubject
     fk_name = 'teacher'
     extra = 8
-    exclude = ['subject_form_searh_name']
+    #exclude = ['subject_form_searh_name']
 
 
 
@@ -56,9 +56,10 @@ class StudentAdmin(admin.ModelAdmin):
     
     search_fields = ('std_name','std_roll','std_group')
 
+    '''
     exclude = ['std_total_marks', 'std_gpa',
                'std_grade_point_total_sum', 'std_grade_point_total_subject_avg', 'std_fail_subject', 'school_rank','class_rank']
-
+    '''
     
     def get_form(self, request, obj=None, **kwargs):
         form = super(StudentAdmin, self).get_form(request, obj, **kwargs)

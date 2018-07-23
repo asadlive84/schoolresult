@@ -14,6 +14,24 @@
 
 
 <div class="row">
+    <div class="col-md-12">
+        <div class="div">
+            <div class="progress" style="height:50px; margin-bottom:20px">
+                <div class="progress-bar  progress-bar-striped progress-bar-animated  bg-success" style="width:{{pass_percent|floatformat:'0'}}%">
+                    <b style="font-size:14px">Passed {{pass_percent|floatformat:'2'}}%</b>
+                </div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width:{{fail_percent|floatformat:'0'}}%">
+                    <b style="font-size:14px">Failed {{fail_percent|floatformat:'2'}}%</b>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
     <div class="col-md-8">
         <table class="table " style="width:">
             
@@ -59,13 +77,17 @@
 
             </tr>
             <tr class="table-warning">
-                <td>Total Pass</td>
-                <td>{{sub_std_pass}}</td>
+                <td>Total Passed</td>
+                <td>{{sub_std_pass}}
+                    <span class="badge badge-success">{{pass_percent|floatformat:'2'}}%</span>
+                </td>
 
             </tr>
             <tr class="table-danger">
-                <td>Total Fail</td>
-                <td>{{sub_std_fail}}</td>
+                <td>Total Failed</td>
+                <td>{{sub_std_fail}}
+<span class="badge badge-danger">{{fail_percent|floatformat:'2'}}%</span>
+                </td>
 
             </tr>
 
@@ -124,6 +146,10 @@
 
 
 
+
+
+
+
 <div>
     <div class="row">
         <div class="col-md-12">
@@ -136,6 +162,7 @@
                             <th>Roll</th>
                             <th>Name</th>
                             <th>GPA</th>
+                            <th>Grade</th>
                             <th>Marks</th>
                             
                             <th>Class</th>
@@ -166,23 +193,73 @@
                             
                             
                             {% if sub.subject_gradepoint >= 1 %}
-                            <td>{{sub.subject_gradepoint}}</td>
+
+                            <td>{{sub.subject_gradepoint}}
+                                
+                            </td>
+                            
 
                             {% else %}
                             <td style="color:red">Fail</td>
 
                             {% endif %}
 
+
+                            <td>
+                                {% if sub.subject_gradepoint >= 5 %}
+                                 A+ 
+                                {% elif sub.subject_gradepoint >= 4 and sub.subject_gradepoint <= 4 %} A 
+                                {% elif sub.subject_gradepoint >= 3.5 and sub.subject_gradepoint <= 3.5 %} A- 
+                                {% elif sub.subject_gradepoint >= 3 and sub.subject_gradepoint <= 3 %} B 
+                                {% elif sub.subject_gradepoint >= 2 and sub.subject_gradepoint <= 2 %} C 
+                                {% elif sub.subject_gradepoint >= 1 and sub.subject_gradepoint <= 1 %} D 
+                                {% elif sub.subject_gradepoint < 1 %} F 
+                                {% endif %}
+                            </td>
+
                             <td>{{sub.subject_marks|floatformat}}</td>
 
                             
                             <td>{{sub.std_name.std_class}}</td>
                         </tr>
+                        
 
                         {% endfor %}
+
+
                        
                     </tbody>
                 </table>
+
+
+
+
+ {% block pagination %} {% if is_paginated %}
+<div class="pagination">
+    <ul class="pagination mx-auto">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active">
+            <a class="page-link" href="#"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a>
+        </li>
+
+        </li>
+
+
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+        </li>
+        {% endif %}
+        </li>
+    </ul>
+    {% endif %} {% endblock %}
+                
             </div>
         </div>
     </div>

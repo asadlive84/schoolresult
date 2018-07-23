@@ -15,9 +15,25 @@ from weasyprint.fonts import FontConfiguration
 
 from django.db.models import Avg, Max, Min
 
-from django.utils import timezone
 
-from .render import *
+class PassFailStudnet:
+
+    def __init___(self, total_std_count, total_std_pass):
+        self.total_std_count = total_std_count
+        self.total_std_pass = total_std_pass
+
+    def total_pass(self):
+        return self.total_std_pass/self.total_std_count
+
+    def total_fail(self):
+        return ((self.total_std_count-self.total_std_pass)/self.total_std_count)*100
+
+
+
+
+
+
+
 
 
 exam_name = 'Half Yearly Examination 2018'
@@ -348,7 +364,7 @@ class Pdf(DetailView):
 class RankListView(ListView):
     model=Rank
     template_name="results/rank_list.html"
-    paginate_by = 20
+    paginate_by = 30
 
     ordering = ['school_rank','class_rank','-std__std_roll']
 
@@ -412,6 +428,8 @@ class SubjectDetailView(DetailView):
     model=StdSubject
     template_name = 'results/subject_details.html'
 
+    paginate_by = 10
+
 
 
     
@@ -429,8 +447,27 @@ class SubjectDetailView(DetailView):
 
         context['sub_std_count'] = sub_object.marks_set.all().order_by(
             '-subject_gradepoint').count()
+
+
         context['sub_std_pass'] = sub_object.marks_set.filter(
             subject_gradepoint__gte=1).order_by('-subject_gradepoint').count()
+
+        #percentige math calculation
+        sub_std_count = sub_object.marks_set.all().order_by(
+            '-subject_gradepoint').count()
+
+        sub_std_pass = (sub_object.marks_set.filter(
+            subject_gradepoint__gte=1).order_by('-subject_gradepoint').count())
+
+        
+        context['pass_percent']=(sub_std_pass/sub_std_count)*100
+        context['fail_percent'] = ((sub_std_count-sub_std_pass)/sub_std_count)*100
+
+
+
+
+
+
         context['sub_std_fail'] = sub_object.marks_set.filter(subject_gradepoint__lte=0).order_by('-subject_gradepoint').count()
 
         context['sub_std_aplus'] = sub_object.marks_set.filter(
@@ -483,6 +520,17 @@ class AllRankViewSearch(TemplateView,FormMixin):
                     sp=Avg('std_grade_point_total_subject_avg')).get('sp',0)
 
                 context['pass_std_count']=StudentInfo.objects.filter(std_class=self.std_class, std_grade_point_total_subject_avg__gte=1).count()
+
+
+                #percentige math calculation
+                sub_std_count = self.object_search.count()
+
+                sub_std_pass = StudentInfo.objects.filter(
+                    std_class=self.std_class, std_grade_point_total_subject_avg__gte=1).count()
+
+                context['pass_percent'] = (sub_std_pass/sub_std_count)*100
+                context['fail_percent'] = (
+                    (sub_std_count-sub_std_pass)/sub_std_count)*100
 
 
                 #male female result collect
@@ -580,5 +628,203 @@ class TeacherDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(TeacherDetailView, self).get_context_data(**kwargs)
         context['credit'] = credit
+        return context
+    
+
+
+class SummaryView(ListView):
+    model=StudentInfo
+
+    template_name='results/summary_view.html'
+
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["total_std_count"] = StudentInfo.objects.all().count()
+
+
+        total_std_count = StudentInfo.objects.all().count()
+
+        total_std_pass = StudentInfo.objects.filter(
+            std_grade_point_total_subject_avg__gte=1).count()
+        
+        context['total_std_pass_count'] = StudentInfo.objects.filter(
+            std_grade_point_total_subject_avg__gte=1).count()
+        context['total_std_fail_count'] = StudentInfo.objects.filter(
+            std_grade_point_total_subject_avg__lt=1).count()
+
+        context['total_pass'] = (total_std_pass/total_std_count)*100
+        context['total_fail'] = ((total_std_count-total_std_pass)/total_std_count)*100
+
+
+
+        '''
+            male pass and fail count
+
+        '''
+
+        total_std_count_male = StudentInfo.objects.filter(std_gender='MALE').count()
+
+        total_std_pass_male = StudentInfo.objects.filter(std_gender='MALE',
+            std_grade_point_total_subject_avg__gte=1).count()
+
+        context['total_std_count_male'] = StudentInfo.objects.filter(
+                std_gender='MALE').count()
+
+        context['total_std_pass_count_male'] = StudentInfo.objects.filter(std_grade_point_total_subject_avg__gte=1,
+            std_gender='MALE').count()
+
+        context['total_std_fail_count_male'] = StudentInfo.objects.filter(
+            std_grade_point_total_subject_avg__lt=1,std_gender='MALE').count()
+
+        try:
+            context['total_pass_male'] = (
+                total_std_pass_male/total_std_count_male)*100
+            
+        except :
+            context['total_pass_male'] = 0
+            
+            
+
+        try:
+            total_pass_male = (
+                total_std_pass_male/total_std_count_male)*100
+            context['total_fail_male'] = (
+                (total_std_count_male-total_pass_male)/total_std_count_male)*100
+        except:
+            context['total_fail_male']=0
+
+
+        '''
+            class wise male pass and fail count
+
+        '''
+
+        total_std_count_male6 = StudentInfo.objects.filter(
+            std_gender='MALE', std_class=6).count()
+
+        total_std_pass_male6 = StudentInfo.objects.filter(std_gender='MALE',
+                                                          std_grade_point_total_subject_avg__gte=1, std_class=6).count()
+
+        context['total_std_count_male6'] = StudentInfo.objects.filter(
+            std_gender='MALE', std_class=6).count()
+
+        context['total_std_pass_count_male6'] = StudentInfo.objects.filter(std_grade_point_total_subject_avg__gte=1,
+                                                                           std_gender='MALE', std_class=6).count()
+
+        context['total_std_fail_count_male6'] = StudentInfo.objects.filter(
+            std_grade_point_total_subject_avg__lt=1, std_gender='MALE', std_class=6).count()
+
+        try:
+            context['total_pass_male6'] = (
+                total_std_pass_male6/total_std_count_male6)*100
+
+        except:
+            context['total_pass_male6'] = 0
+
+        try:
+            total_pass_male6 = (
+                total_std_pass_male6/total_std_count_male6)*100
+            context['total_fail_male6'] = (
+                (total_std_count_male6-total_pass_male6)/total_std_count_male6)*100
+        except:
+            context['total_fail_male6'] = 0
+
+
+
+        
+
+
+        '''
+            Female pass and fail count
+
+        '''
+
+        total_std_count_female = StudentInfo.objects.filter(
+            std_gender='FEMALE').count()
+
+        total_std_pass_female = StudentInfo.objects.filter(std_gender='FEMALE', std_grade_point_total_subject_avg__gte=1).count()
+
+        context['total_std_count_female'] = StudentInfo.objects.filter(
+            std_gender='FEMALE').count()
+
+        context['total_std_pass_count_female'] = StudentInfo.objects.filter(std_grade_point_total_subject_avg__gte=1,
+                                                                          std_gender='FEMALE').count()
+
+        context['total_std_fail_count_female'] = StudentInfo.objects.filter(
+            std_grade_point_total_subject_avg__lt=1, std_gender='FEMALE').count()
+
+        try:
+            context['total_pass_female'] = (
+                total_std_pass_female/total_std_count_female)*100
+
+        except:
+            context['total_pass_female'] = 0
+
+        try:
+            total_pass_female = (
+                total_std_pass_female/total_std_count_female)*100
+            context['total_fail_female'] = (
+                (total_std_count_female-total_pass_female)/total_std_count_female)*100
+        except:
+            context['total_fail_female'] = 0
+
+        '''
+            class 6 wise Female pass and fail count
+
+        '''
+
+        total_std_count_female6 = StudentInfo.objects.filter(std_class=6,
+            std_gender='FEMALE').count()
+
+        total_std_pass_female6 = StudentInfo.objects.filter(std_class=6,
+            std_gender='FEMALE', std_grade_point_total_subject_avg__gte=1).count()
+
+        context['total_std_count_female6'] = StudentInfo.objects.filter(std_class=6,
+            std_gender='FEMALE').count()
+
+        context['total_std_pass_count_female6'] = StudentInfo.objects.filter(std_class=6, std_grade_point_total_subject_avg__gte=1,
+                                                                            std_gender='FEMALE').count()
+
+        context['total_std_fail_count_female6'] = StudentInfo.objects.filter(std_class=6,
+            std_grade_point_total_subject_avg__lt=1, std_gender='FEMALE').count()
+
+        try:
+            context['total_pass_female6'] = (
+                total_std_pass_female6/total_std_count_female6)*100
+
+        except:
+            context['total_pass_female6'] = 0
+
+        try:
+            total_pass_female6 = (
+                total_std_pass_female/total_std_count_female)*100
+            context['total_fail_female6'] = (
+                (total_std_count_female6-total_pass_female6)/total_std_count_female6)*100
+        except:
+            context['total_fail_female6'] = 0
+
+
+
+
+
+
+
+
+
+        context["total_std_count_six"] = StudentInfo.objects.filter(std_class=6).count()
+
+        context["total_std_count_7"] = StudentInfo.objects.filter(
+            std_class=7).count()
+
+        context["total_std_count_8"] = StudentInfo.objects.filter(
+            std_class=8).count()
+
+        context["total_std_count_9"] = StudentInfo.objects.filter(std_class=9).count()
+
+        context["total_std_count_10"] = StudentInfo.objects.filter(
+            std_class=10).count()
         return context
     

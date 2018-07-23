@@ -19,6 +19,9 @@
 
 <hr>
 
+
+
+
 <div class="col-lg-12 centered">
     <div class="card">
 
@@ -26,7 +29,27 @@
             {% if std_search %}
             
 <h2 class="mx-auto" style="width:550px;font-size:25px">Class {{class_name}} Rank List and analysis</h2>
-<hr>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="div">
+            <div class="progress" style="height:40px; margin-bottom:20px">
+                <div class="progress-bar  progress-bar-striped progress-bar-animated  bg-success" style="width:{{pass_percent|floatformat:'0'}}%">
+                    <b style="font-size:12px">Pass {{pass_percent|floatformat:'2'}}%</b>
+                </div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width:{{fail_percent|floatformat:'0'}}%">
+                    <b style="font-size:12px">Fail {{fail_percent|floatformat:'2'}}%</b>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 <div class="div">
     <div class="row">
         
@@ -52,14 +75,20 @@
 
             <tr class="table-info">
                 <td>Total Passed</td>
-                <td>{{total_pass_std_count}}</td>
+                <td>{{total_pass_std_count}}
+    
+                <span class="badge badge-success">{{pass_percent|floatformat:'2'}}%</span>
+            </td>
 
             </tr>
 
 
             <tr class="table-danger">
                 <td>Total Fail</td>
-                <td>{{fail_std_count}}</td>
+                <td>{{fail_std_count}} 
+                <span class="badge badge-danger">{{fail_percent|floatformat:'2'}}%</span>
+
+                </td>
 
             </tr>
 

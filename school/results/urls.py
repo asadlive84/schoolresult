@@ -1,12 +1,12 @@
 from .views import Homepage
 from django.urls import path,re_path
-from .views import StudentDetails, StudentAdd, ResultUpdate, StudentUpdateView, StudentAddmarks, student_add_marks, Pdf, SubjectSeaechView, SubjectDetailView, AllRankViewSearch, TeacherAllView, TeacherDetailView
+from .views import StudentDetails, StudentAdd, ResultUpdate, StudentUpdateView, StudentAddmarks, student_add_marks, Pdf, SubjectSeaechView, SubjectDetailView, AllRankViewSearch, TeacherAllView, TeacherDetailView,SummaryView
 urlpatterns = [
     path('', Homepage.as_view(), name='home'),
 
     path('subject-search.js/', SubjectSeaechView.as_view(), name='subject_search'),
 
-    path('all_rank_search.asp/', AllRankViewSearch.as_view(
+    path('class_wise_rank_search.asp/', AllRankViewSearch.as_view(
         template_name='results/all_rank_search.html'), name='all_rank_search'),
 
     re_path(r'^(?P<pk>\d+)/subject-detail.php/$', SubjectDetailView.as_view(), name='subject_details'),
@@ -28,6 +28,8 @@ urlpatterns = [
     path('teacher_list/', TeacherAllView.as_view(), name='teacher_list'),
 
     re_path(r'^(?P<pk>\d+)/teacher-profile.java/', TeacherDetailView.as_view(), name='teacher_detail'),
+
+    path('summary/', SummaryView.as_view(), name='summary'),
     
 
     
