@@ -18,22 +18,22 @@ class SubjectGrade:
 
         if self.subject_number >= number_aplus and self.subject_number:
             return 'A+'
-        elif self.subject_number >= number_a and self.subject_number <= (number_aplus-1):
+        elif self.subject_number >= number_a and self.subject_number < (number_aplus):
             return 'A'
 
-        elif self.subject_number >= number_aminus and self.subject_number <= (number_a-1):
+        elif self.subject_number >= number_aminus and self.subject_number <(number_a):
             return 'A-'
 
-        elif self.subject_number >= number_b and self.subject_number <= (number_aminus-1):
+        elif self.subject_number >= number_b and self.subject_number <(number_aminus):
             return 'B'
 
-        elif self.subject_number >= number_c and self.subject_number <= (number_b-1):
+        elif self.subject_number >= number_c and self.subject_number <(number_b):
             return 'C'
 
-        elif self.subject_number >= number_d and self.subject_number <= (number_c-1):
+        elif self.subject_number >= number_d and self.subject_number <(number_c):
             return 'D'
 
-        elif self.subject_number >= number_f and self.subject_number <= (number_d-1):
+        elif self.subject_number >= number_f and self.subject_number <(number_d):
             return 'F'
 
         elif self.subject_number == 0:
@@ -57,22 +57,22 @@ class SubjectGradePoint:
 
         if self.subject_number >= number_aplus and self.subject_number:
             return 5
-        elif self.subject_number >= number_a and self.subject_number<=(number_aplus-1):
+        elif self.subject_number >= number_a and self.subject_number < (number_aplus):
             return 4
 
-        elif self.subject_number >= number_aminus and  self.subject_number <= (number_a-1):
+        elif self.subject_number >= number_aminus and  self.subject_number < (number_a):
             return 3.5
 
-        elif self.subject_number >= number_b and self.subject_number <= (number_aminus-1):
+        elif self.subject_number >= number_b and self.subject_number < (number_aminus):
             return 3
 
-        elif self.subject_number >= number_c and self.subject_number <= (number_b-1):
+        elif self.subject_number >= number_c and self.subject_number < (number_b):
             return 2
 
-        elif self.subject_number >= number_d and self.subject_number <= (number_c-1):
+        elif self.subject_number >= number_d and self.subject_number < (number_c):
             return 1
 
-        elif self.subject_number >= number_f and self.subject_number <= (number_d-1):
+        elif self.subject_number >= number_f and self.subject_number < (number_d):
             return 0
 
         elif self.subject_number==0:
