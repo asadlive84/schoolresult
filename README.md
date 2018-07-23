@@ -8,20 +8,25 @@
 * Subject Analysis
 * Individually Result Print
 
-**search result in your institute
+**search result in your institute**
+
 ![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2011-55-26.png)
 
 
 ![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2012-18-59.png)
 
-**Rank list in you school
+
+**Rank list in you school**
+
 ![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2012-19-13.png)
 
 
-**class analysis
+**class analysis**
+
 ![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2012-19-35.png)
 
-**Subject analysis
+**Subject analysis**
+
 ![image](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2012-20-16.png)
 
 
