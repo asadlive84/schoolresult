@@ -195,7 +195,7 @@ class StudentInfo(StdCommon):
 
         self.std_fail_subject=fail_sub
 
-        if fail_sub >=1:
+        if fail_sub >= 1:
             self.std_grade_point_total_subject_avg=0
             
         else:
@@ -257,12 +257,14 @@ class Marks(StdCommon):
         grade_point = SubjectGradePoint(self.subject_marks, self.subject_name.subject_full_marks).subgrade()
         gpa = SubjectGrade(self.subject_marks,self.subject_name.subject_full_marks).subgrade()
 
-        if self.subject_name.subject_type=='O':
+        if self.subject_name.subject_type =='O':
+
             if self.subject_marks >= ((self.subject_name.subject_full_marks/100)*50) and self.subject_marks <= self.subject_name.subject_full_marks:
                 subject_opt_grade_point = grade_point-2
 
                 self.subject_gradepoint = subject_opt_grade_point
                 self.subject_gpa = gpa
+
             elif self.subject_marks >= ((self.subject_name.subject_full_marks/100)*33) and self.subject_marks < ((self.subject_name.subject_full_marks/100)*50):
                 self.subject_gradepoint = 0
                 self.subject_gpa=gpa
@@ -272,7 +274,7 @@ class Marks(StdCommon):
                 self.subject_gpa = gpa
 
                 
-        elif self.subject_name.subject_type=='R':
+        elif self.subject_name.subject_type == 'R':
             self.subject_gradepoint = grade_point
             self.subject_gpa = gpa
 
