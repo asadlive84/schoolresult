@@ -19,19 +19,19 @@
             size: A4;
             margin: 1cm;
         }
-        body { 
-            font-family: 'Actor';font-size: 19px; 
+        body {
+            font-family: 'Actor';font-size: 19px;
 			border:1px solid #000;
 			padding:10px 5px 10px 5px;
-        } 
-        p,button,h1,h2,h3,h4,h5{ 
+        }
+        p,button,h1,h2,h3,h4,h5{
             font-family: 'Amiko';font-size: 17px;
-        } 
+        }
         .title_custom{
-            font-family: 'Amita';font-size: 32px;font-weight: 35px; 
-        } 
-        .title_custom_two{ 
-            font-family: 'Almendra';font-size: 22px; 
+            font-family: 'Amita';font-size: 32px;font-weight: 35px;
+        }
+        .title_custom_two{
+            font-family: 'Almendra';font-size: 22px;
         }
         th{
             font-size: 10px;
@@ -41,22 +41,22 @@
             font-size: 13px;
         }
 
-       
+
  table, th,td{ border-spacing: 5px; border: 1px solid black; } table, th, td { border: 1px solid black; border-collapse: collapse;
 } th, td { padding: 5px; } th { text-align: left; }
-		
-		
-    
-	
+
+
+
+
 }
  .watermark { width: 100px; height: 100px; display: block; position: relative; }
 .watermark::after { content: ""; background:url({%static 'results/img/logo.jpg' %});background-repeat:no-repeat; opacity:
 0.10; top: 0;
 left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-attachment: fixed; background-position: center;
 }
-        
+
 #background{ position:absolute; z-index:0; background; display:block; min-height:10%; min-width:10%; color:yellow;
-} #content{ position:absolute; z-index:1; } 
+} #content{ position:absolute; z-index:1; }
 #bg-text {margin-top: 200px;
      color:lightgrey; font-size:15px; margin-left:250px;
 }
@@ -69,21 +69,21 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 <body>
 
 
-      
-    
+
+
 	<div class="" style="width:90%;margin:0 auto">
         <div id="background">
 <p id="bg-text">{{object.std_name}} {{object.std_roll}} {{object.get_std_group_display}} {{object.get_std_class_display}}</p>
 
 
-           
+
         </div>
-       
+
         <div class="watermark">
-            
+
         </div>
-        
-	
+
+
 		<div class="">
             <div>
                 <img style="width:100px;height:101px;margin-left:8%;margin-top:1%;" src="{%static 'results/img/logo.jpg' %}" alt="">
@@ -92,7 +92,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                 </h1>
                 <p style="text-align:center;font-size:12px; margin-top:-15px">Morrelganj, Bagerhat</p>
 
-                
+
 
 
                 <p style="text-align:center;font-size:12px; margin-top:-15px" class="">
@@ -100,7 +100,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                     <br> Contact: fulhatahs@gmail.com, Morrelganj, Bagerhat
 
                 </p>
-            
+
 
             </div>
         </div>
@@ -148,12 +148,12 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
                     </tr>
 
-                    {% if ranks.class_rank < object.std_roll %} 
+                    {% if ranks.class_rank < object.std_roll %}
                         <tr >
                         <td>Class Rank- {{object.get_std_class_display}}</td>
                         <td style="color:royalblue">: {{ranks.class_rank|ordinal}}
-                        <i>Rank Up</i>
-                            
+                        Rank Up
+
                         </td>
                         </tr>
 
@@ -162,7 +162,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                             <td>Class Rank- {{object.get_std_class_display}}</td>
 
                             <td style="color:blue">: {{ranks.class_rank|ordinal}} Rank Label
-                                
+
                             </td>
                         </tr>
 
@@ -171,7 +171,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                         <tr >
                             <td>Class Rank- {{object.get_std_class_display}}</td>
                             <td style="color:red">: {{ranks.class_rank|ordinal}} Rank Down
-                                
+
                             </td>
                         {% endif %}
                         </tr>
@@ -202,14 +202,14 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
 
 
-   
+
 
 <div style="width:400px;float:right;overflow:hidden;display:inline-block">
 
 
 
 
-    
+
     <table border="0" style="width:55%!important">
 
             <tbody>
@@ -223,7 +223,7 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                     </tr>
 
 
-               
+
 
 
                 <tr class="table-success">
@@ -252,37 +252,37 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
 
 
- 
+
  <div class="" style="width:100%;margin-top:240px;text-align:center;border:1px solid black">
- 
- 
+
+
         {% if fail >= 1 %}
         <p >Result Fail {{fail}} Subject</p>
 
 
 
         {% else %}
-        <p style="font-size:12px">Result 
-            {% if toatal_grade_point > 5 %} 
+        <p style="font-size:12px">Result
+            {% if toatal_grade_point > 5 %}
             <b>
 
             GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total
-            Marks- {{ total_marks|floatformat}} 
+            Marks- {{ total_marks|floatformat}}
             </b>
-            {% else %} 
+            {% else %}
 
             GPA- {{toatal_grade_point | floatformat:2}} (out of 5) | Total
-            Marks- {{ total_marks|floatformat}} 
+            Marks- {{ total_marks|floatformat}}
 
             {% endif %}
 
         </p>
 
         {% endif %}
- 
+
  </div>
- 
- 
+
+
 
 
 
@@ -290,9 +290,9 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 <div class="row">
     <div style="margin-top:20px">
         {% if object.marks_set.all %}
-		
-		
-       
+
+
+
 
             <table style="width:100%" style="font-size:12px;padding:14px;border-spacing: 15px;"  class="table_sheet">
             <thead>
@@ -317,26 +317,26 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                     <td style="color:red;font-size:12px">
                         {% if i.subject_name.subject_type == 'O' %}
                         {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
-                        
+
                         {% else %}
                         {{i.subject_name.subject_name}}
                         {% endif %}
-                        
+
                     </td>
 
 
                     {% else %}
                     <td style="font-size:12px">
-                        {% if i.subject_name.subject_type == 'O' %} 
+                        {% if i.subject_name.subject_type == 'O' %}
 
-                        {{i.subject_name.subject_name}} 
+                        {{i.subject_name.subject_name}}
                         ({{i.subject_name.get_subject_type_display}})
 
-                        {% else %} 
-                        {{i.subject_name.subject_name}} 
+                        {% else %}
+                        {{i.subject_name.subject_name}}
                         {% endif %}
-                       
-                       
+
+
                     </td>
                     {% endif %}
 
@@ -363,19 +363,19 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
         {% endif %}
 
 
-    
-    
+
+
     <div style="width:800px;overflow:hidden;display:inline-block">
         <hr style="width:81.25%; margin-left:-30px">
         <div style="width:330px;float:left">
             <p style="font-size:12px">Result checked by</p>
         </div>
         <div style="width:300px; float:right ">
-           
+
             <p style="font-size:12px">Head of the institute</p>
         </div>
     </div>
-       
+
 
 <p style="font-size:8px">Print Time: {{time}}
 <i> updated: {{object.update_date|naturaltime}} prepared: {{object.pub_date|naturaltime}}</i>
@@ -394,15 +394,15 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
 
 
-            
+
         </div>
     </div>
 
 
-	
+
 	</div>
-    
-        
+
+
 
 
 

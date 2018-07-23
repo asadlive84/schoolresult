@@ -1,12 +1,17 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin  # new
-from .models import StudentInfo, StdSubject, Marks, Rank, SubjectTecher 
+from .models import StudentInfo, StdSubject, Marks, Rank, SubjectTecher
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView,FormView
+
+import datetime
+
+from django.utils import timezone
 from django.db.models import Max,Avg,Sum
 from django.views.generic.edit import FormMixin
 from .forms import ProfileSearchForm, AddStudentInfo, StudentUpdateForm, StudentSubjectGPAForm, StudentSubjectGPAFormAdd, Addmarks, ResultSearchForm, SubjectSearchForm, ClassSearchForm
 from django.urls import reverse_lazy
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from weasyprint import HTML, CSS
@@ -46,17 +51,17 @@ credit='Developed & Maintained by Asaduzzaman Sohel'
 
 
 class Homepage(TemplateView, FormMixin):
-    
+
     template_name='results/home.html'
-   
+
     form_class = ResultSearchForm
 
-    
-    
+
+
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
         context['exam_name'] = exam_name
-    
+
         form = self.form_class(request.POST)
         if form.is_valid():
            try:
@@ -64,32 +69,32 @@ class Homepage(TemplateView, FormMixin):
            except:
                self.object_search=False
                print(self.object_search)
-           
+
         context['std_search']=self.object_search
         context['credit'] = credit
-       
+
 
         try:
             context['ranks'] = Rank.objects.get(std=self.object_search)
         except:
             context['ranks']='Fail'
 
-        
+
 
         #context['ranks'] = Rank.objects.get(std=self.object_search)
         #self.object_search.marks
-           
+
 
         return super(Homepage, self).render_to_response(context)
 
 
-    
 
-        
-   
-    
-    
-    
+
+
+
+
+
+
 
 
 '''
@@ -102,7 +107,7 @@ class StudentDetails(DetailView):
     model=StudentInfo
     #login_url = 'login'  # new
 
-    
+
 
     def get_context_data(self, **kwargs):
         failed = 0
@@ -123,21 +128,21 @@ class StudentDetails(DetailView):
         ).aggregate(Max('subject_marks'))
         '''
         context['subject_max_number'] = std_gpa.marks_set.annotate(Max('subject_marks'))[0]
-        
+
         context['sub_avg_number'] = std_gpa.marks_set.all().aggregate(
             sp=Avg('subject_marks')).get('sp', '0')
 
         context['subject_min_number'] = std_gpa.marks_set.annotate(
             Min('subject_marks')).order_by('subject_marks')[0]
 
-        
+
 
 
         context['ranks']=Rank.objects.get(std=std_gpa)
 
-        
 
-        
+
+
         subject_grade= ((std_gpa.marks_set.filter(
             subject_gradepoint__gte=1).aggregate(sp=Sum('subject_gradepoint')).get('sp', 0)))
 
@@ -163,11 +168,11 @@ class StudentDetails(DetailView):
                 context['toatal_grade_point'] = subject_grade/9
                 context['total_marks'] = total_marks
 
-        
+
 
 
         context['fail'] = failed
-        
+
         context['credit'] = credit
 
         return context
@@ -185,7 +190,7 @@ class StudentAdd(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(StudentAdd, self).get_context_data(**kwargs)
         context['std_all']=StudentInfo.objects.all().order_by('-pub_date')
-        
+
         return context
 
 
@@ -193,7 +198,7 @@ from django.forms import inlineformset_factory
 
 
 class StudentUpdateView(LoginRequiredMixin, UpdateView, FormMixin):
-    
+
     model=StudentInfo
 
     fields = ("__all__")
@@ -202,7 +207,7 @@ class StudentUpdateView(LoginRequiredMixin, UpdateView, FormMixin):
     success_url = reverse_lazy('std_add')
     login_url = 'login'
 
-    
+
     def get_context_data(self, **kwargs):
         std_pk=self.kwargs['pk']
         std=StudentInfo.objects.get(pk=std_pk)
@@ -210,7 +215,7 @@ class StudentUpdateView(LoginRequiredMixin, UpdateView, FormMixin):
         context['marks']=std.marks_set.all()
         context['newForm'] = StudentSubjectGPAFormAdd()
         return context
-    
+
 
 class StudentAddmarks(TemplateView):
     template_name='results/std_add_marks.html'
@@ -233,7 +238,7 @@ def student_add_marks(request, pk):
     AuthorFormSet = inlineformset_factory(
         StudentInfo, Marks, fields=('subject_name', 'subject_marks',), fk_name='std_name', extra=30)
 
-   
+
 
     if request.method == 'POST':
         formset = AuthorFormSet(request.POST, request.FILES, instance=std)
@@ -242,7 +247,7 @@ def student_add_marks(request, pk):
             # do something.
     else:
         formset = AuthorFormSet()
-            
+
     return render(request, 'results/std_add_marks_func.html', {'form': formset, 'std': std})
 
 
@@ -252,15 +257,15 @@ class ResultUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'results/std_marks_update.html'
     fields = ['std_name']
     login_url = 'login'  # new
-    
 
 
-    
+
+
     def get_context_data(self, **kwargs):
         context = super(ResultUpdate, self).get_context_data(**kwargs)
         #context['']=
         return context
-    
+
 
 class Pdf(DetailView):
     model=StudentInfo
@@ -268,7 +273,11 @@ class Pdf(DetailView):
     failed = 0
     same_subject = []
 
+
     def get(self, request, pk):
+
+        #std='asad'
+
         failed = 0
         same_subject = []
         try:
@@ -280,27 +289,22 @@ class Pdf(DetailView):
 
             for i in std_gpa.marks_set.filter(subject_name__subject_type__startswith='R').order_by('-pub_date'):
 
-                if i.subject_name not in same_subject:
+                if i.subject_name != same_subject:
                     same_subject.append(i.subject_name)
                     if i.subject_gpa == 'F':
                         failed = failed+1
 
-            subject_max_number= std_gpa.marks_set.annotate(Max('subject_marks'))[
-                0]
+            subject_max_number= std_gpa.marks_set.annotate(Max('subject_marks'))[0]
 
-            sub_avg_number= std_gpa.marks_set.all().aggregate(
-            sp=Avg('subject_marks')).get('sp', '0')
+            sub_avg_number= std_gpa.marks_set.all().aggregate(sp=Avg('subject_marks')).get('sp', '0')
 
-            subject_min_number= std_gpa.marks_set.annotate(
-            Min('subject_marks')).order_by('subject_marks')[0]
+            subject_min_number= std_gpa.marks_set.annotate(Min('subject_marks')).order_by('subject_marks')[0]
 
             ranks = Rank.objects.get(std=std_gpa)
 
-            subject_grade = ((std_gpa.marks_set.filter(
-                subject_gradepoint__gte=1).aggregate(sp=Sum('subject_gradepoint')).get('sp', 0)))
+            subject_grade = ((std_gpa.marks_set.filter(subject_gradepoint__gte=1).aggregate(sp=Sum('subject_gradepoint')).get('sp', 0)))
 
-            total_marks = ((std_gpa.marks_set.all().aggregate(
-                sp=Sum('subject_marks')).get('sp', 0)))
+            total_marks = ((std_gpa.marks_set.all().aggregate(sp=Sum('subject_marks')).get('sp', 0)))
 
             if subject_grade == None or total_marks == None:
                 toatal_grade_point = 0
@@ -337,29 +341,34 @@ class Pdf(DetailView):
                 'credit':credit,
 
             }
-        
+
         except:
             params={
                 'object': 'Problem',
+                'std':'non'
             }
-        
+
+
 
         try:
-            html_string = render_to_string(
-                'results/pdf.html', params).encode(encoding="utf-8")
+            html_string = render_to_string('results/pdf.html', params).encode(encoding="utf-8")
+
             response = HttpResponse(content_type='application/pdf')
-            response['Content-Disposition'] = 'inline; filename='+str(
-                std.std_class)+' Roll '+str(std.std_roll)+' Name ' + str(std.std_name) + '.pdf'
+
+            response['Content-Disposition'] = 'inline; filename='+str(std.std_class)+' Roll '+str(std.std_roll)+' Name ' + str(std.std_name) + '.pdf'
 
             HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(response, stylesheets=[
-                CSS(string='body,p,tr,td { font-family: Amiko !important },new_css{font-family:Allura!important} ,h1,h2{font-family: Amita!important}')])
+                    CSS(string='body,p,tr,td { font-family: Amiko !important },new_css{font-family:Allura!important} ,h1,h2{font-family: Amita!important}')])
+
         except:
             pass
-            
 
-        
-        
+
+
         return response
+
+
+
 
 class RankListView(ListView):
     model=Rank
@@ -369,26 +378,26 @@ class RankListView(ListView):
     ordering = ['school_rank','class_rank','-std__std_roll']
 
 
-    
+
     def get_context_data(self, **kwargs):
-        
+
         context = super(RankListView, self).get_context_data(**kwargs)
-        
+
         #ranks_all= Rank.objects.all().order_by('school_rank')
 
-       
+
         context['credit'] = credit
 
         context['rank_count'] = Rank.objects.all().count()
         return context
-    
+
 
 class SubjectSeaechView(TemplateView, FormMixin):
     template_name = 'results/subject_seach.html'
 
     form_class = SubjectSearchForm
 
-    
+
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
@@ -406,18 +415,18 @@ class SubjectSeaechView(TemplateView, FormMixin):
             except:
                 self.object_search = None
                 context['std_search_count'] =False
-                
-           
-            
 
-            
-           
-       
-        
 
-        
 
-       
+
+
+
+
+
+
+
+
+
 
         return super(SubjectSeaechView, self).render_to_response(context)
 
@@ -432,7 +441,7 @@ class SubjectDetailView(DetailView):
 
 
 
-    
+
     def get_context_data(self, **kwargs):
         context = super(SubjectDetailView, self).get_context_data(**kwargs)
         subject_id = self.kwargs['pk']
@@ -459,7 +468,7 @@ class SubjectDetailView(DetailView):
         sub_std_pass = (sub_object.marks_set.filter(
             subject_gradepoint__gte=1).order_by('-subject_gradepoint').count())
 
-        
+
         context['pass_percent']=(sub_std_pass/sub_std_count)*100
         context['fail_percent'] = ((sub_std_count-sub_std_pass)/sub_std_count)*100
 
@@ -492,13 +501,13 @@ class SubjectDetailView(DetailView):
 
         context['credit'] = credit
         return context
-    
+
 
 class AllRankViewSearch(TemplateView,FormMixin):
     model=StudentInfo
 
     form_class = ClassSearchForm
-    
+
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
@@ -515,7 +524,7 @@ class AllRankViewSearch(TemplateView,FormMixin):
                 context['class_name']=form.cleaned_data['student_class']
 
                 context['std_search_count'] = self.object_search.count()
-                
+
                 context['std_search_avg_gradepoint'] = StudentInfo.objects.filter().aggregate(
                     sp=Avg('std_grade_point_total_subject_avg')).get('sp',0)
 
@@ -567,7 +576,7 @@ class AllRankViewSearch(TemplateView,FormMixin):
                 context['std_gpa_aplus'] = StudentInfo.objects.filter(std_class=self.std_class, std_grade_point_total_subject_avg__gte=5).count()
 
                 context['std_gpa_a'] = StudentInfo.objects.filter(std_class=self.std_class, std_grade_point_total_subject_avg__gte=4,std_grade_point_total_subject_avg__lt=5).count()
-                
+
                 context['std_gpa_a_minus'] = StudentInfo.objects.filter(
                     std_class=self.std_class, std_grade_point_total_subject_avg__gte=3.5, std_grade_point_total_subject_avg__lt=4).count()
 
@@ -582,9 +591,9 @@ class AllRankViewSearch(TemplateView,FormMixin):
                 context['std_gpa_fail'] = StudentInfo.objects.filter(
                     std_class=self.std_class, std_grade_point_total_subject_avg__gte=0, std_grade_point_total_subject_avg__lt=1).count()
 
-                
+
                 #context['credit'] = credit
-                
+
 
             except:
                 self.object_search = None
@@ -607,16 +616,16 @@ class TeacherAllView(ListView):
     ordering='pub_date'
 
 
-    
+
     def get_context_data(self, **kwargs):
         #teacher_id=self.kwargs[pk]
         context = super(TeacherAllView, self).get_context_data(**kwargs)
         context['teacher_count']=SubjectTecher.objects.all().count()
-        
+
         context['credit'] = credit
 
         return context
-    
+
 
 
 class TeacherDetailView(DetailView):
@@ -624,12 +633,12 @@ class TeacherDetailView(DetailView):
     template_name='results/teacher_details.html'
 
 
-    
+
     def get_context_data(self, **kwargs):
         context = super(TeacherDetailView, self).get_context_data(**kwargs)
         context['credit'] = credit
         return context
-    
+
 
 
 class SummaryView(ListView):
@@ -649,7 +658,7 @@ class SummaryView(ListView):
 
         total_std_pass = StudentInfo.objects.filter(
             std_grade_point_total_subject_avg__gte=1).count()
-        
+
         context['total_std_pass_count'] = StudentInfo.objects.filter(
             std_grade_point_total_subject_avg__gte=1).count()
         context['total_std_fail_count'] = StudentInfo.objects.filter(
@@ -682,11 +691,11 @@ class SummaryView(ListView):
         try:
             context['total_pass_male'] = (
                 total_std_pass_male/total_std_count_male)*100
-            
+
         except :
             context['total_pass_male'] = 0
-            
-            
+
+
 
         try:
             total_pass_male = (
@@ -734,7 +743,7 @@ class SummaryView(ListView):
 
 
 
-        
+
 
 
         '''
@@ -827,4 +836,3 @@ class SummaryView(ListView):
         context["total_std_count_10"] = StudentInfo.objects.filter(
             std_class=10).count()
         return context
-    
