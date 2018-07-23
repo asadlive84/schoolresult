@@ -3,8 +3,15 @@
 
 *You can input your subject result and get you result sheet individually.
 
+![GitHub Logo](https://github.com/asadlive84/schoolresult/blob/master/school/media/Screenshot%20from%202018-07-23%2011-55-26.png)
+Format: ![Alt Text](url)
+
+
 
 * Institute wise result and ranked
+
+
+
 * Class wise and ranked
 * Subject Analysis
 * Individually Result Print
