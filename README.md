@@ -1,5 +1,5 @@
-# School Result Django Application
-**Django School Basic Result Application
+# School Result Django Application #
+**Django School Basic Result Application**
 
 *You can input your subject result and get you result sheet **pdf format** individually.*
 # main featurs
