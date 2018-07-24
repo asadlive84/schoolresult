@@ -84,7 +84,7 @@ class StdSubject(StdCommon):
     subject_theory_full_marks = models.FloatField('Theory Marks', blank=True, null=True)
     subject_mcq_full_marks = models.FloatField('MCQ', blank=True, null=True)
     subject_practical_marks = models.FloatField('Practical', blank=True, null=True)
-    subject_total_marks = models.FloatField('Total Marks', blank=True, null=True, default=100, help_text='Plz dont input any number')
+    subject_total_marks = models.FloatField('Total Marks', blank=True, null=True, help_text='Plz dont input any number')
 
 
     subject_form_searh_name=models.CharField('Subject Search Form name', max_length=500, blank=True, null=True)
@@ -248,7 +248,7 @@ class Marks(StdCommon):
     subject_name = models.ForeignKey(StdSubject, on_delete=models.CASCADE)
 
 
-    subject_theory=models.FloatField('Theory', blank=True, null=True,default=0)
+    subject_theory=models.FloatField('Theory', blank=True, null=True)
     subject_mcq = models.FloatField('MCQ', blank=True, null=True)
     subject_practical=models.FloatField('Practical', blank=True, null=True)
 
@@ -298,35 +298,71 @@ class Marks(StdCommon):
         '''
         #subject_theory, subject_mcq, subject_practical,subject_total_marks
         #subject_name,subject_theory_full_marks,subject_mcq_full_marks, subject_practical_marks
+        
+        theory=0
         mcq=0
         practical=0
         fail_sub_sub=['Pass']
 
-        
-       
+        if self.subject_name.subject_theory_full_marks != None:
+            try:
+                theory = self.subject_theory
+            except:
+                theory=0
 
+        elif self.subject_name.subject_theory_full_marks == None:
+            self.subject_theory=None
+            
+
+
+
+
+
+        
         if self.subject_name.subject_mcq_full_marks != None:
-            mcq = self.subject_mcq
-        else:
+            try:
+                mcq = self.subject_mcq
+            except:
+                mcq=0
+        elif self.subject_name.subject_mcq_full_marks == None:
             self.subject_mcq=None
+            
 
         
         if self.subject_name.subject_practical_marks != None:
-            practical = self.subject_practical
-        else:
+            try:
+                practical = self.subject_practical
+            except:
+                practical=0
+        elif self.subject_name.subject_practical_marks == None:
             self.subject_practical=None
+
             
-        self.subject_total_marks = mcq+practical+self.subject_theory
+        try:
+            self.subject_total_marks = mcq+practical+theory
+        except:
+            if mcq == None:
+                mcq=0
+            elif practical == None:
+                practical=0
+            elif theory == None:
+                theory=0
+
+            self.subject_total_marks = mcq+practical+theory
+            
 
         #self.subject_gpa_sub='Pass'
 
 
-        theory_pass_marks = (self.subject_name.subject_theory_full_marks/100)*33
+        try:
+            theory_pass_marks = (self.subject_name.subject_theory_full_marks/100)*33
 
-        if self.subject_theory >= round(theory_pass_marks+.1):
-            fail_sub_sub.append('Pass')
-        elif self.subject_theory < theory_pass_marks or self.subject_theory == 0:
-            fail_sub_sub.append('F')
+            if self.subject_theory >= round(theory_pass_marks+.1):
+                fail_sub_sub.append('Pass')
+            elif self.subject_theory < theory_pass_marks or self.subject_theory == 0:
+                fail_sub_sub.append('F')
+        except:
+            self.subject_theory=None
 
 
         try:
@@ -348,7 +384,7 @@ class Marks(StdCommon):
             elif self.subject_practical >= practical_pass_marks or self.subject_practical == 0:
                 fail_sub_sub.append('F')
         except:
-            self.subject_mcq = None
+            self.subject_practical = None
 
 
 

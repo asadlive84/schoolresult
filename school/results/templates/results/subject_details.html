@@ -156,16 +156,25 @@
             
             <div class="mx-auto" style="width:100%">
                 <table class="table table-hover  table-striped">
-                    <thead>
+                    <thead class="btn-success">
                         <tr>
-                            <th>SL</th>
-                            <th>Roll</th>
-                            <th>Name</th>
-                            <th>GPA</th>
-                            <th>Grade</th>
-                            <th>Marks</th>
+                            <th rowspan="2">No</th>
+                            <th rowspan="2">Roll</th>
+                            <th rowspan="2">Student Name</th>
+                            <th rowspan="2">GPA</th>
+                            <th rowspan="2">Grade</th>
+                            <th style="text-align:center" colspan="4">Marks</th>
+                            <th rowspan="2">Count Marks</th>
+                            <th rowspan="4">Class</th>
                             
-                            <th>Class</th>
+                        </tr>
+                        <tr>
+                            <th>Theory</th>
+
+                            <th>MCQ</th>
+                            <th>Practical</th>
+                            <th>Total</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -216,6 +225,21 @@
                                 {% elif sub.subject_gradepoint < 1 %} F 
                                 {% endif %}
                             </td>
+
+                            <td>
+                                {{sub.subject_theory|floatformat}}
+                            </td>
+                            <td>
+                                {{sub.subject_mcq|floatformat}}
+                            </td>
+
+                            <td>
+                                {{sub.subject_practical|floatformat}}
+                            </td>
+                            <td>
+                            {{sub.subject_total_marks|floatformat}}
+                            </td>
+
 
                             <td>{{sub.subject_marks|floatformat}}</td>
 

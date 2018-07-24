@@ -33,7 +33,7 @@ class SubjectInstanceInline(admin.StackedInline):
     #raw_id_fields = ("subject_name",)
 
     
-class SubjectInstance(admin.StackedInline):
+class SubjectInstance(admin.TabularInline):
     model = StdSubject
     fk_name = 'teacher'
     extra = 8
