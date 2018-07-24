@@ -63,6 +63,17 @@ left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-attach
 
 table#mytable, table#mytable td { border: none !important; font-size: 14px; line-height: 22px}
 
+
+#container{width:100%; text-align:center; } 
+
+#left
+{ float:left; width:200px; height: 20px; background: # } 
+#center{ display: inline-block; margin:0 auto; width:200px; height: 20px; background:}
+ #right
+ { float:right; width:160px;
+height: 20px; background: # }
+
+
     </style>
 </head>
 
@@ -216,11 +227,27 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
 
                 <tr class="table-success">
-                    <td>Total Marks</td>
-                    <td>
-                        {{ total_marks|floatformat}} </td>
+                    {% if fail >= 1 %}
+                    <td>Total Marks - Fail</td>
+                    <td style="color:red">{{ total_marks|floatformat}}
+                    <span style="font-size:9px;font-style:italic;color:red">not included 
+                        <span style="font-size:14px">
+                            Fail {{fail}}
+                        </span> 
+                        subject marks</span>
+                    </td>
+                                        
 
-                    </tr>
+
+
+                    {% else %}
+                    <td>Total Marks</td>
+                    <td>{{ total_marks|floatformat}} </td>
+
+                    {% endif %}
+                    
+
+                </tr>
 
 
 
@@ -253,11 +280,11 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
 
 
- <div class="" style="width:100%;margin-top:240px;text-align:center;border:1px solid black">
+ <div class="" style="width:60%;margin-top:240px;margin-left:auto;margin-right:auto;text-align:center;border:1px solid black">
 
 
         {% if fail >= 1 %}
-        <p >Result Fail {{fail}} Subject</p>
+        <p style="font-size:12px" >Result : Fail {{fail}} Subject</p>
 
 
 
@@ -294,16 +321,24 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
 
 
-            <table style="width:100%" style="font-size:12px;padding:14px;border-spacing: 15px;"  class="table_sheet">
+            <table style="width:100%" style="text-align:center:12px;padding:14px;border-spacing: 15px;"  class="table_sheet">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Subject Code</th>
-                    <th>Subject Name</th>
-                    <th>Full Marks</th>
-                    <th>Marks</th>
-                    <th>Grade Point</th>
-                    <th>Grade</th>
+                    <th rowspan="2">No</th>
+                    <th style="text-align:center" rowspan="2">Subject Code</th>
+                    <th style="text-align:center" rowspan="2">Subject Name</th>
+                    <th style="text-align:center" rowspan="2">Full Marks</th>
+                    <th  style="text-align:center" colspan="4">Marks</th>
+                    <th rowspan="2">Count Marks</th>
+                    <th rowspan="4">Grade Point</th>
+                    <th rowspan="4">Grade</th>
+                </tr>
+                <tr>
+                    <th>Theory</th>
+                    <th>MCQ</th>
+                    <th>Practical</th>
+                    <th>Total</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -341,16 +376,24 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
                     {% endif %}
 
 
+                    
                     <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
 
-                    <td>{{i.subject_marks|floatformat}}</td>
+                    <td style="text-align:center">{{i.subject_theory|floatformat}}</td>
+                    <td style="text-align:center">{{i.subject_mcq|floatformat}}</td>
+                    <td style="text-align:center">{{i.subject_practical|floatformat}}</td>
+                    <td style="text-align:center">{{i.subject_total_marks|floatformat}}</td>
 
-                    <td>{{i.subject_gradepoint|floatformat}}</td>
+                    <td style="text-align:center">{{i.subject_marks|floatformat}}</td>
+
+                   
+
+                    <td style="text-align:center"> {{i.subject_gradepoint|floatformat}}</td>
 
                     {% if i.subject_gpa == "F" %}
-                    <td style="color:red">{{i.subject_gpa}}</td>
+                    <td style="color:red;text-align:center">{{i.subject_gpa}}</td>
                     {% else %}
-                    <td>{{i.subject_gpa}}</td>
+                    <td style="text-align:center">{{i.subject_gpa}}</td>
                     {% endif %}
 
                 </tr>
@@ -364,31 +407,31 @@ table#mytable, table#mytable td { border: none !important; font-size: 14px; line
 
 
 
+        <div id="container">
+            <hr>
+            <div id="left">
+                    <p style="font-size:12px">Result checked by</p>
+                    <p style="font-size:11px;margin-top:-12px">Md. Bellal Hossain</p>
+                    <p style="font-size:9px;margin-top:-13px">
+                        <i>Asst. Teacher (Agriculture)</i>
+                    </p>
+            </div>
+            <div id="center">
+                    <p style="font-size:12px">Class teacher</p>
+                    <p style="font-size:11px;margin-top:-12px">Md. Bellal Hossain</p>
+                    <p style="font-size:9px;margin-top:-13px">
+                        <i>Asst. Teacher (Agriculture)</i>
+                    </p>
+            </div>
 
-    <div style="width:800px;overflow:hidden;display:inline-block">
-        <hr style="width:81.25%; margin-left:-30px">
-
-        <div style="width:230px;float:left">
-            <p style="font-size:12px">Result checked by</p>
-            <p style="font-size:11px;margin-top:-12px">Md. Bellal Hossain</p>
-            <p style="font-size:9px;margin-top:-13px">
-                <i>Asst. Teacher (Agriculture)</i>
-            </p>
+            <div id="right">
+                <p style="font-size:12px">Head of the institute</p>
+            </div>
         </div>
 
-        <div style="float:center;margin-top:19px;width:100px">
-            <p style="font-size:12px">Class Teacher</p>
-            <p style="font-size:11px;margin-top:-12px;text-align:center">Md. Bellal Hossain</p>
-            <p style="font-size:9px;margin-top:-13px">
-                <i>Asst. Teacher (Agriculture)</i>
-            </p>
-        </div>
 
-        <div style="width:200px; float:right ">
 
-            <p style="font-size:12px">Head of the institute</p>
-        </div>
-    </div>
+
 
 
 <p style="font-size:8px">Print Time: {{time}}

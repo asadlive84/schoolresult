@@ -113,12 +113,12 @@
 
     
     {% if fail >= 1 %}
-<p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-danger text-white card-title">Result: Fail {{fail}} Subject</p>
+    <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-danger text-white card-title">Result: Fail {{fail}} Subject</p>
 
 
 
     {% else %}
-<p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-success text-white card-title">Result: {% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total Marks-
+    <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-success text-white card-title">Result: {% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total Marks-
     {{ total_marks|floatformat}} {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5) | Total Marks- {{ total_marks|floatformat}}
     {% endif %}
 </p>
@@ -131,10 +131,22 @@
 
             {% if fail >= 1 %}
             <tr class="table-danger">
-                <td>Result</td>
-                <td>Fail {{fail}} Subject</td>
-        
+                <td>
+                    Marks
+                </td>
+
+                <td>{{ total_marks|floatformat}}
+                    <i style="color:red" class="fas fa-exclamation-triangle"></i>
+                    <span style="font-size:15px;font-style:italic;color:red">not included failed {{fail}} subject marks</span>
+                </td>
             </tr>
+
+           
+
+                
+                
+        
+           
 
                 
             
@@ -200,7 +212,7 @@
                         <th rowspan="2">Subject Name</th>
                         <th rowspan="2">Full Marks</th>
                         <th colspan="4">Marks</th>
-                        <th rowspan="2">Marks</th>
+                        <th rowspan="2">Count Marks</th>
                         <th rowspan="4">Grade Point</th>
                         <th rowspan="4">Grade</th>
                     </tr>

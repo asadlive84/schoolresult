@@ -116,12 +116,15 @@ class StudentDetails(DetailView):
         context = super(StudentDetails, self).get_context_data(**kwargs)
         std_gpa=StudentInfo.objects.get(id=std)
 
+
+
         for i in std_gpa.marks_set.filter(subject_name__subject_type__startswith='R').order_by('-pub_date'):
 
-            if i.subject_name not in same_subject:
-                same_subject.append(i.subject_name)
-                if i.subject_gpa == 'F':
-                    failed = failed+1
+                if i.subject_name != same_subject:
+                    same_subject.append(i.subject_name)
+                    if i.subject_gpa == 'F':
+                        failed = failed+1
+
 
         '''
         context['subject_max_number'] = std_gpa.marks_set.all(
@@ -172,6 +175,7 @@ class StudentDetails(DetailView):
 
 
         context['fail'] = failed
+        
 
         context['credit'] = credit
 
