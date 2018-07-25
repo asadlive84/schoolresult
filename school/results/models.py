@@ -362,11 +362,11 @@ class Marks(StdCommon):
 
         '''
             Practical and MCQ number and grade point automatic add
-
-
         '''
         #subject_theory, subject_mcq, subject_practical,subject_total_marks
         #subject_name,subject_theory_full_marks,subject_mcq_full_marks, subject_practical_marks
+
+        #if self.subject_name.subjet_class == '9' or self.subject_name.subjet_class == '10':
         
         theory=0
         mcq=0
@@ -420,153 +420,286 @@ class Marks(StdCommon):
             self.subject_total_marks = mcq+practical+theory
             
 
-        #self.subject_gpa_sub='Pass'
+        if self.subject_name.subjet_class == '6' or self.subject_name.subjet_class == '7' or self.subject_name.subjet_class == '8' and (self.subject_name.first_part_theory_full_marks == None and self.subject_name.second_part_theory_full_marks == None and self.subject_name.first_part_mcq_full_marks == None and self.subject_name.second_part_mcq_full_marks == None):
+            pass_marks = (self.subject_name.subject_total_marks/100)*33
+
+            simple_fail=[]
+
+            try:
+                if self.subject_theory >= round(pass_marks+.1):
+                    simple_fail.append('Pass')
+                elif self.subject_theory < pass_marks or self.subject_theory == 0:
+                    simple_fail.append('F')
+
+                self.subject_gpa_sub = 'Pass'
+                for fail in simple_fail:
+                    if fail == 'F':
+                        self.subject_gpa_sub = 'F'
+                        break
+
+            #input number from subject total number
+                if self.subject_gpa_sub == 'F':
+                    self.subject_marks = 0
+                else:
+                    self.subject_marks = self.subject_total_marks
+
+            except:
+                #self.subject_total_marks=2
+                self.subject_marks = self.subject_total_marks
 
 
-        try:
-            theory_pass_marks = (self.subject_name.subject_theory_full_marks/100)*33
+        if self.subject_name.subjet_class == '9' or self.subject_name.subjet_class == '10' and (self.subject_name.first_part_theory_full_marks == None and self.subject_name.second_part_theory_full_marks == None and self.subject_name.first_part_mcq_full_marks == None and self.subject_name.second_part_mcq_full_marks == None):
+            try:
+                theory_pass_marks = (self.subject_name.subject_theory_full_marks/100)*33
 
-            if self.subject_theory >= round(theory_pass_marks+.1):
-                fail_sub_sub.append('Pass')
-            elif self.subject_theory < theory_pass_marks or self.subject_theory == 0:
-                fail_sub_sub.append('F')
-        except:
-            self.subject_theory=None
+                if self.subject_theory >= round(theory_pass_marks+.1):
+                    fail_sub_sub.append('Pass')
+                elif self.subject_theory < theory_pass_marks or self.subject_theory == 0:
+                    fail_sub_sub.append('F')
+            except:
+                self.subject_theory = None
+
+            try:
+                mcq_pass_marks = (self.subject_name.subject_mcq_full_marks/100)*33
+
+                if self.subject_mcq >= round(mcq_pass_marks+.1):
+                    fail_sub_sub.append('Pass')
+                elif self.subject_mcq < mcq_pass_marks or self.subject_mcq == 0:
+                    fail_sub_sub.append('F')
+            except:
+                self.subject_mcq = None
+
+            try:
+                practical_pass_marks = (
+                    self.subject_name.subject_practical_marks/100)*33
+                if self.subject_practical >= round(practical_pass_marks+.1):
+                    fail_sub_sub.append('Pass')
+                elif self.subject_practical >= practical_pass_marks or self.subject_practical == 0:
+                    fail_sub_sub.append('F')
+            except:
+                self.subject_practical = None
+
+            self.subject_gpa_sub = 'Pass'
+            for fail in fail_sub_sub:
+                if fail == 'F':
+                    self.subject_gpa_sub = 'F'
+                    break
+
+            #input number from subject total number
+            if self.subject_gpa_sub == 'F':
+                self.subject_marks = 0
+            else:
+                self.subject_marks = self.subject_total_marks
 
 
-        try:
-            mcq_pass_marks = (self.subject_name.subject_mcq_full_marks/100)*33
+        '''
+            Bangla and English for six to ten
+        '''
 
-            if self.subject_mcq >= round(mcq_pass_marks+.1):
-                fail_sub_sub.append('Pass')
-            elif self.subject_mcq < mcq_pass_marks or self.subject_mcq == 0:
-                fail_sub_sub.append('F')
-        except:
-            self.subject_mcq= None
+        if self.subject_name.first_part_theory_full_marks != None and self.subject_name.second_part_theory_full_marks != None and ( self.subject_name.subjet_class == '9' or self.subject_name.subjet_class == '10' ):
+
+            if self.subject_name.first_part_theory_full_marks != None and self.subject_name.second_part_theory_full_marks != None and self.subject_name.first_part_mcq_full_marks != None and self.subject_name.second_part_mcq_full_marks != None:
+
+                try:
+                    total_theory_q_marks=self.subject_name.first_part_theory_full_marks + self.subject_name.second_part_theory_full_marks
+                    total_theory = self.first_part_theory + self.second_part_theory
+                    
+                except:
+                    #total_theory = 10
+                    #total_theory_q_marks = 0
+                    pass
+
+                try:
+                    total_mcq_q_marks = self.subject_name.first_part_mcq_full_marks + self.subject_name.second_part_mcq_full_marks
+                    total_mcq = self.first_part_mcq + self.second_part_mcq
+                except:
+                    #total_mcq = 10
+                    #total_mcq_q_marks = 0
+                    pass
+
+
+                pass_fail=[]
+                
+                thoery_pass_marks=(total_theory_q_marks/100)*33
+                mcq_pass_marks = (total_mcq_q_marks/100)*33
+
+                if total_theory >= round(thoery_pass_marks+.1):
+                    pass_fail.append('Pass')
+                elif total_theory < round(thoery_pass_marks+.1):
+                    pass_fail.append('F')
+
+                if total_mcq >= round(mcq_pass_marks+.1):
+                    pass_fail.append('Pass')
+                elif total_mcq < round(mcq_pass_marks+.1):
+                    pass_fail.append('F')
+
+                self.subject_total_marks = total_theory + total_mcq
+
+                self.subject_gpa_sub = 'Pass'
+
+                for i in pass_fail:
+                    if i == 'F':
+                        self.subject_gpa_sub = 'F'
+                        break
+
+                if self.subject_gpa_sub == 'F':
+                    self.subject_marks = 0
+                else:
+                    self.subject_marks = self.subject_total_marks
+
+
+            elif self.subject_name.first_part_theory_full_marks != None and self.subject_name.second_part_theory_full_marks != None:
+                try:
+                    total_theory_q_marks = self.subject_name.first_part_theory_full_marks + self.subject_name.second_part_theory_full_marks
+                    total_theory = self.first_part_theory + self.second_part_theory
+
+                except:
+                    total_theory = 0
+                    total_theory_q_marks = 0
+
+               
+
+                pass_fail = []
+
+                thoery_pass_marks = (total_theory_q_marks/100)*33
+                
+
+                if total_theory >= round(thoery_pass_marks+.1):
+                    pass_fail.append('Pass')
+                elif total_theory < round(thoery_pass_marks+.1):
+                    pass_fail.append('F')
+
+
+
+                self.subject_total_marks = total_theory 
+
+                self.subject_gpa_sub = 'Pass'
+
+                for i in pass_fail:
+                    if i == 'F':
+                        self.subject_gpa_sub = 'F'
+                        break
+
+                if self.subject_gpa_sub == 'F':
+                    self.subject_marks = 0
+                else:
+                    self.subject_marks = self.subject_total_marks
+
+
+            if self.subject_name.subjet_class == '6' or self.subject_name.subjet_class == '7' or self.subject_name.subjet_class == '8':
+
+                if self.subject_name.first_part_theory_full_marks != None:
+                    theory_one = self.first_part_theory
+                    fist_theory_q_marks=self.subject_name.first_part_theory_full_marks
+                else:
+                    theory_one = 0
+                    fist_theory_q_marks=0
+
+                
+                if self.subject_name.second_part_theory_full_marks != None:
+                    theory_two =  self.second_part_theory
+                    second_theory_marks=self.subject_name.second_part_theory_full_marks
+                else:
+                    theory_two=0
+                    second_theory_marks = 0
+
+                
+                if self.subject_name.first_part_mcq_full_marks != None:
+                    mcq_one=self.first_part_mcq 
+                    first_mcq_q_marks=self.subject_name.first_part_mcq_full_marks
+                else:
+                    mcq_one=0
+                    first_mcq_q_marks=0
+
+                if self.subject_name.second_part_mcq_full_marks != None:
+                    mcq_two=self.second_part_mcq
+                    mcq_tow_q_marks=self.subject_name.second_part_mcq_full_marks
+                else:
+                    mcq_two=0
+                    mcq_tow_q_marks=0
+
+                question_marks = fist_theory_q_marks + second_theory_marks+first_mcq_q_marks+mcq_tow_q_marks
+                total_marks_sum = theory_one+theory_two+mcq_one+mcq_two
+
+                pass_fail = []
+
+                thoery_pass_marks = (question_marks/100)*33
+                
+                if total_marks_sum >= round(thoery_pass_marks+.1):
+                    pass_fail.append('Pass')
+                elif total_marks_sum < round(thoery_pass_marks+.1):
+                    pass_fail.append('F')
+
+                
+                self.subject_total_marks = total_marks_sum
+
+                self.subject_gpa_sub = 'Pass'
+
+                for i in pass_fail:
+                    if i == 'F':
+                        self.subject_gpa_sub = 'F'
+                        break
+
+                if self.subject_gpa_sub == 'F':
+                    self.subject_marks = 0
+                else:
+                    self.subject_marks = self.subject_total_marks
+
             
 
+                
+
+
+
+
         
-        try:
-            practical_pass_marks = (self.subject_name.subject_practical_marks/100)*33
-            if self.subject_practical >= round(practical_pass_marks+.1):
-                fail_sub_sub.append('Pass')
-            elif self.subject_practical >= practical_pass_marks or self.subject_practical == 0:
-                fail_sub_sub.append('F')
-        except:
+
+
+
+
+
+        if self.subject_name.subject_theory_full_marks == None:
+            self.subject_theory = None
+
+        if self.subject_name.subject_mcq_full_marks == None:
+            self.subject_mcq = None
+
+        if self.subject_name.subject_practical_marks == None:
             self.subject_practical = None
 
 
-
-
-
-
-
-
-        self.subject_gpa_sub = 'Pass'
-        for fail in fail_sub_sub:
-            if fail == 'F':
-                self.subject_gpa_sub = 'F'
-                break
-
-
-
-        #input number from subject total number
-        if self.subject_gpa_sub == 'F':
-            self.subject_marks = 0
-        else:
-
-            self.subject_marks = self.subject_total_marks
-
-
-
-
-
-        part_fail_subject=[]
-        first_mcq_part1=0
-        first_theory_part=0
-        second_mcq_part=0
-        second_theory_part=0
-
-        if self.subject_name.first_part_theory_full_marks != None:
-
-            fist_theory_pass = (self.subject_name.first_part_theory_full_marks/100)*33
-
-            try:
-                first_theory_part = self.first_part_theory
-
-                if first_theory_part >= (round(fist_theory_pass+.1)):
-                    part_fail_subject.append('P')
-                elif first_theory_part < (round(fist_theory_pass+.1)):
-                    part_fail_subject.append('F')
-
-            except:
-                first_theory_part=0
-
-        if self.subject_name.first_part_mcq_full_marks != None:
-            fist_mcq_pass = (self.subject_name.first_part_mcq_full_marks/100)*33
-
-            try:
-                first_mcq_part1 = self.first_part_mcq
-
-                if first_mcq_part1 >= (round(fist_mcq_pass+.1)):
-                    part_fail_subject.append('P')
-                elif first_mcq_part1 < (round(fist_mcq_pass+.1)):
-                    part_fail_subject.append('F')
-
-            except:
-                first_mcq_part1=0
-
-
-        if self.subject_name.second_part_theory_full_marks != None:
-
-            second_theory_pass = (self.subject_name.second_part_theory_full_marks/100)*33
-
-            try:
-                second_theory_part = self.second_part_theory
-
-                if second_theory_part >= (round(second_theory_pass+.1)):
-                    part_fail_subject.append('P')
-                elif second_theory_part < (round(second_theory_pass+.1)):
-                    part_fail_subject.append('F')
-
-
-            except:
-                second_theory_part = 0
-
-        if self.subject_name.second_part_mcq_full_marks != None:
-            second_mcq_pass = (self.subject_name.second_part_mcq_full_marks/100)*33
-
-            try:
-                second_mcq_part = self.second_part_mcq
-
-                if second_mcq_part >= (round(second_mcq_pass+.1)):
-                    part_fail_subject.append('P')
-                elif second_mcq_part < (round(second_mcq_pass+.1)):
-                    part_fail_subject.append('F')
-
-            except:
-                second_mcq_part = 0
-
-        self.subject_total_marks = first_theory_part + first_mcq_part1 + second_theory_part + second_mcq_part
-
-        self.subject_gpa_sub='Pass'
-
-        for i in part_fail_subject:
-            if i =='F':
-                self.subject_gpa_sub='F'
-                break
-
-
-        #input number from subject total number
-        if self.subject_gpa_sub == 'F':
-            self.subject_marks = 0
-        else:
-
-            self.subject_marks = self.subject_total_marks
+        
 
 
             
 
+        if self.subject_name.first_part_theory_full_marks != None and self.subject_name.first_part_name != None:
+            part_fail_subject = []
+            first_mcq_part1 = 0
+            first_theory_part = 0
+            second_mcq_part = 0
+            second_theory_part = 0
+
+            
+
+        
+
+
+        if self.subject_name.first_part_theory_full_marks == None:
+            self.first_part_theory=None
+            
+        if self.subject_name.first_part_mcq_full_marks == None:
+            
+            self.first_part_mcq = None
+            
+        if self.subject_name.second_part_theory_full_marks == None:
+
+            self.second_part_theory = None
+            
+            
+        if self.subject_name.second_part_mcq_full_marks == None:
+
+           self.second_part_mcq = None
             
 
 
