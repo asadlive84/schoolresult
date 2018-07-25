@@ -13,6 +13,28 @@
 
 
 
+
+
+
+{% if error %}
+
+<div class='row'>
+    <div class="col-md-12 centered">
+        <div style="text-align:center">
+            <h2 style="text-align:center;font-size:75px;padding:10px">
+                <i class="fas fa-ambulance"></i>
+            </h2>
+        <div class="alert alert-danger">
+        <strong>Opps!</strong> Subject {{object.subject_name}} Info under review....
+        </div>
+        </div>
+    </div>
+</div>
+
+
+{% else %}
+
+
 <div class="row">
     <div class="col-md-12">
         <div class="div">
@@ -29,6 +51,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 <div class="row">
@@ -52,6 +76,12 @@
             <tr class="table-primary">
                 <td>Subject Name</td>
                 <td>{{object.subject_name}}</td>
+
+            </tr>
+
+            <tr class="table-info">
+                <td>Full Marks</td>
+                <td>{{object.subject_full_marks|floatformat}}</td>
 
             </tr>
 
@@ -289,7 +319,7 @@
     </div>
 </div>
 
-
+{% endif %}
 
 
 

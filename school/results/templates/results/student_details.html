@@ -18,6 +18,25 @@
 </div>
 
 
+{% if error %}
+
+<div class='row'>
+    <div class="col-md-12 centered">
+        <div style="text-align:center">
+            <h2 style="text-align:center;font-size:75px;padding:10px">
+                <i style="font-size: 98px;" class="fas fa-frog"></i>
+                <i style="font-size: 50px;" class="fas fa-ambulance"></i>
+            </h2>
+        <div class="alert alert-danger">
+            <strong>Opps!</strong> Student Info under review....
+        </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% else %}
 <div class="row">
 <div class="col-md-6 centered">
 
@@ -235,14 +254,25 @@
                         <td>{{i.subject_name.subject_code}}</td>
 
                         {% if i.subject_gpa == "F" %}
+
                         <td  style="color:red; text-align:left">
 
                         {% if i.subject_name.subject_type == 'O' %} 
                         {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
                         
-                        {% else %} 
+                        {% else %}
+
                         {{i.subject_name.subject_name}} 
+                        {% if i.subject_name.first_part_name %}
+                        
+                         {{i.subject_name.first_part_name}}
+                        <br> {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}}
+                        
+                        {% endif%}
+                            
                         {% endif %}
+
+                        
                         </td>
 
                         {% else %}
@@ -250,17 +280,53 @@
                         {% if i.subject_name.subject_type == 'O' %} 
                         {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
                         {% else %} 
-                        {{i.subject_name.subject_name}} 
+                        {{i.subject_name.subject_name}} {{i.subject_name.first_part_name}}
+                        <br>
+                        <span style="margin-top:40px!important">
+                            {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}}
+                        </span>
+                        
+
                         {% endif %}
                         </td>
                         {% endif %}
 
 
+                        
+
+
+
+
+
                        
                         <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
 
-                       <td style="text-align:right">{{i.subject_theory|floatformat}}</td>
-                       <td style="text-align:right">{{i.subject_mcq|floatformat}}</td>
+                       <td style="text-align:right">
+                           {{i.subject_theory|floatformat}}
+
+                            {% if i.first_part_theory %}
+                            <p>{{i.first_part_theory|floatformat}} </p>
+                            {% endif %}
+
+                            {% if i.second_part_theory %}
+                            <p>{{i.second_part_theory|floatformat}}</p>
+                            {% endif %}
+                        </td>
+
+                       <td style="text-align:right">
+                           {{i.subject_mcq|floatformat}}
+
+                            {% if i.first_part_mcq %}
+                            
+                            <p>{{i.first_part_mcq|floatformat}}</p>
+                            
+                            {% endif %} 
+                            
+                            {% if i.second_part_mcq %}
+                            <p>{{i.second_part_mcq|floatformat}}</p>
+                            {% endif %}
+                        </td>
+
                        <td style="text-align:right">{{i.subject_practical|floatformat}}</td>
                        <td style="text-align:right">{{i.subject_total_marks|floatformat}}</td>
 
@@ -305,5 +371,7 @@
         </a>
     </div>
 </div>
+
+{% endif %}
 
 {% endblock main_content %}

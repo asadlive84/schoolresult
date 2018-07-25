@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
 from .grade_sheet import SubjectGrade, SubjectGradePoint
 from django.utils import timezone
@@ -50,6 +51,9 @@ class StdCommon(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        abstract = True
+
 
 
 class SubjectTecher(StdCommon):
@@ -86,6 +90,25 @@ class StdSubject(StdCommon):
     subject_practical_marks = models.FloatField('Practical', blank=True, null=True)
     subject_total_marks = models.FloatField('Total Marks', blank=True, null=True, help_text='Plz dont input any number')
 
+    '''
+        Bangla and English first 2nd part marks added
+    '''
+
+    first_part_name = models.CharField('First Subject Name', max_length=100, blank=True, null=True)
+    first_part_theory_full_marks = models.FloatField('First Part Theory Marks', blank=True, null=True)
+    first_part_mcq_full_marks = models.FloatField('First Part MCQ Marks', blank=True, null=True)
+
+    second_part_name = models.CharField('Second Subject Name', max_length=100, blank=True, null=True)
+    second_part_theory_full_marks = models.FloatField('First Part Theory Marks', blank=True, null=True)
+    second_part_mcq_full_marks = models.FloatField('Second MCQ Marks', blank=True, null=True)
+
+
+    first_second_full_marks = models.FloatField('1st and 2nd Part Total marks', blank=True, null=True)
+
+
+
+
+
 
     subject_form_searh_name=models.CharField('Subject Search Form name', max_length=500, blank=True, null=True)
     
@@ -101,9 +124,15 @@ class StdSubject(StdCommon):
 
 
         try:
-            self.subject_full_marks = self.subject_theory_full_marks + self.subject_mcq_full_marks
-        except:
             self.subject_full_marks = self.subject_theory_full_marks
+        except:
+            self.subject_full_marks = 0
+
+
+        try:
+            self.subject_full_marks = self.subject_full_marks + self.subject_mcq_full_marks
+        except:
+            self.subject_full_marks = self.subject_full_marks
 
         try:
             self.subject_full_marks = self.subject_full_marks + self.subject_practical_marks
@@ -113,6 +142,40 @@ class StdSubject(StdCommon):
         self.subject_total_marks = self.subject_full_marks
 
 
+        if self.subject_total_marks==None or self.subject_total_marks ==0:
+            '''
+            First and 2nd part adding marks
+
+        '''
+            try:
+                self.first_second_full_marks=self.first_part_theory_full_marks
+                try:
+                    self.first_second_full_marks = self.first_second_full_marks+ self.first_part_mcq_full_marks
+                except:
+                    self.first_second_full_marks = self.first_second_full_marks
+            except:
+                self.first_second_full_marks = self.first_second_full_marks
+
+            if self.first_second_full_marks != None:
+                try:
+                    self.first_second_full_marks = self.first_second_full_marks + self.second_part_theory_full_marks
+                    
+                except:
+                   self.first_second_full_marks = self.first_second_full_marks
+
+
+                try:
+                    self.first_second_full_marks = self.first_second_full_marks+ self.second_part_mcq_full_marks
+                except:
+                    self.first_second_full_marks = self.first_second_full_marks
+
+                self.subject_total_marks = self.first_second_full_marks
+
+            elif self.first_second_full_marks == None:
+                self.first_second_full_marks == None
+
+            self.subject_total_marks = self.subject_total_marks
+            self.subject_full_marks=self.subject_total_marks
         
         
     
@@ -129,7 +192,7 @@ class StudentInfo(StdCommon):
     
 
     std_name = models.CharField('Student Name',max_length=100, help_text='Type only student Full Name like as Nazmul Islam or Nazrul Islam', blank=True, null=True)
-    std_class = models.CharField('Student Class',max_length=2, choices=STD_CLASS, default=6, help_text='Select a class')
+    std_class = models.CharField('Student Class',max_length=2, choices=STD_CLASS, default=10, help_text='Select a class')
     std_roll = models.IntegerField('Roll Number',help_text='Type Student Roll Number (Only Number)')
     std_group=models.CharField('Group', choices=STD_GROUP, max_length=1, default='G')
     std_gender=models.CharField('Gender', max_length=10, choices=STD_GENDER, default='MALE')
@@ -251,6 +314,12 @@ class Marks(StdCommon):
     subject_theory=models.FloatField('Theory', blank=True, null=True)
     subject_mcq = models.FloatField('MCQ', blank=True, null=True)
     subject_practical=models.FloatField('Practical', blank=True, null=True)
+
+
+    first_part_theory = models.FloatField('1st Theory', blank=True, null=True)
+    first_part_mcq = models.FloatField('1st MCQ', blank=True, null=True)
+    second_part_theory = models.FloatField('2nd Theory', blank=True, null=True)
+    second_part_mcq = models.FloatField('2nd MCQ', blank=True, null=True)
 
     subject_total_marks = models.FloatField('Total Marks', blank=True, null=True)
     subject_gpa_sub = models.CharField('Subject GPA Sub', max_length=5, blank=True, null=True, help_text="Please keep blank")
@@ -408,10 +477,104 @@ class Marks(StdCommon):
 
             self.subject_marks = self.subject_total_marks
 
-        '''
 
 
-        '''
+
+
+        part_fail_subject=[]
+        first_mcq_part1=0
+        first_theory_part=0
+        second_mcq_part=0
+        second_theory_part=0
+
+        if self.subject_name.first_part_theory_full_marks != None:
+
+            fist_theory_pass = (self.subject_name.first_part_theory_full_marks/100)*33
+
+            try:
+                first_theory_part = self.first_part_theory
+
+                if first_theory_part >= (round(fist_theory_pass+.1)):
+                    part_fail_subject.append('P')
+                elif first_theory_part < (round(fist_theory_pass+.1)):
+                    part_fail_subject.append('F')
+
+            except:
+                first_theory_part=0
+
+        if self.subject_name.first_part_mcq_full_marks != None:
+            fist_mcq_pass = (self.subject_name.first_part_mcq_full_marks/100)*33
+
+            try:
+                first_mcq_part1 = self.first_part_mcq
+
+                if first_mcq_part1 >= (round(fist_mcq_pass+.1)):
+                    part_fail_subject.append('P')
+                elif first_mcq_part1 < (round(fist_mcq_pass+.1)):
+                    part_fail_subject.append('F')
+
+            except:
+                first_mcq_part1=0
+
+
+        if self.subject_name.second_part_theory_full_marks != None:
+
+            second_theory_pass = (self.subject_name.second_part_theory_full_marks/100)*33
+
+            try:
+                second_theory_part = self.second_part_theory
+
+                if second_theory_part >= (round(second_theory_pass+.1)):
+                    part_fail_subject.append('P')
+                elif second_theory_part < (round(second_theory_pass+.1)):
+                    part_fail_subject.append('F')
+
+
+            except:
+                second_theory_part = 0
+
+        if self.subject_name.second_part_mcq_full_marks != None:
+            second_mcq_pass = (self.subject_name.second_part_mcq_full_marks/100)*33
+
+            try:
+                second_mcq_part = self.second_part_mcq
+
+                if second_mcq_part >= (round(second_mcq_pass+.1)):
+                    part_fail_subject.append('P')
+                elif second_mcq_part < (round(second_mcq_pass+.1)):
+                    part_fail_subject.append('F')
+
+            except:
+                second_mcq_part = 0
+
+        self.subject_total_marks = first_theory_part + first_mcq_part1 + second_theory_part + second_mcq_part
+
+        self.subject_gpa_sub='Pass'
+
+        for i in part_fail_subject:
+            if i =='F':
+                self.subject_gpa_sub='F'
+                break
+
+
+        #input number from subject total number
+        if self.subject_gpa_sub == 'F':
+            self.subject_marks = 0
+        else:
+
+            self.subject_marks = self.subject_total_marks
+
+
+            
+
+            
+
+
+
+
+
+
+       
         grade_point = SubjectGradePoint(
             self.subject_marks, self.subject_name.subject_full_marks).subgrade()
         gpa = SubjectGrade(self.subject_marks,
@@ -437,17 +600,10 @@ class Marks(StdCommon):
             self.subject_gradepoint = grade_point
             self.subject_gpa = gpa
 
-        
-
-
-        
-
-
-        
-
 
         super().save(*args, **kwargs)
-
+    
+    
 
 
 

@@ -1,5 +1,9 @@
 from .views import Homepage
 from django.urls import path,re_path
+from django.conf import settings
+
+
+
 from .views import StudentDetails, StudentAdd, ResultUpdate, StudentUpdateView, StudentAddmarks, student_add_marks, Pdf, SubjectSeaechView, SubjectDetailView, AllRankViewSearch, TeacherAllView, TeacherDetailView,SummaryView
 urlpatterns = [
     path('', Homepage.as_view(), name='home'),
@@ -34,3 +38,6 @@ urlpatterns = [
 
     
 ]
+
+
+

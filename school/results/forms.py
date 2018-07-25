@@ -63,7 +63,7 @@ class ResultSearchForm(forms.Form):
         ('10', 'Ten'),
     )
 
-    std_roll_form = forms.IntegerField(label="Roll Number")
+    std_roll_form = forms.IntegerField(label="Roll Number",min_value=1, max_value=500)
     std_class_form = forms.ChoiceField(choices=STD_CLASS, label="Select Class")
 
 

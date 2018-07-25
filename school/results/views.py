@@ -130,49 +130,43 @@ class StudentDetails(DetailView):
         context['subject_max_number'] = std_gpa.marks_set.all(
         ).aggregate(Max('subject_marks'))
         '''
-        context['subject_max_number'] = std_gpa.marks_set.annotate(Max('subject_marks'))[0]
+        
+        try:
+            context['subject_max_number'] = std_gpa.marks_set.annotate(Max('subject_marks'))[
+                0]
 
-        context['sub_avg_number'] = std_gpa.marks_set.all().aggregate(
-            sp=Avg('subject_marks')).get('sp', '0')
+            context['sub_avg_number'] = std_gpa.marks_set.all().aggregate(sp=Avg('subject_marks')).get('sp', '0')
 
-        context['subject_min_number'] = std_gpa.marks_set.annotate(
-            Min('subject_marks')).order_by('subject_marks')[0]
+            context['subject_min_number'] = std_gpa.marks_set.annotate(Min('subject_marks')).order_by('subject_marks')[0]
 
+            context['ranks'] = Rank.objects.get(std=std_gpa)
 
+            subject_grade = ((std_gpa.marks_set.filter(subject_gradepoint__gte=1).aggregate(sp=Sum('subject_gradepoint')).get('sp', 0)))
 
+            total_marks = ((std_gpa.marks_set.all().aggregate(sp=Sum('subject_marks')).get('sp', 0)))
 
-        context['ranks']=Rank.objects.get(std=std_gpa)
+            if subject_grade == None or total_marks == None:
+                context['toatal_grade_point'] = 0
+                context['total_marks'] = 0
+            else:
+                if int(std_gpa.std_class) == 6 or int(std_gpa.std_class) == 7:
 
+                    context['toatal_grade_point'] = subject_grade/7
+                    context['total_marks'] = total_marks
 
+                elif int(std_gpa.std_class) == 8:
+                    context['toatal_grade_point'] = subject_grade/7
+                    context['total_marks'] = total_marks
 
-
-        subject_grade= ((std_gpa.marks_set.filter(
-            subject_gradepoint__gte=1).aggregate(sp=Sum('subject_gradepoint')).get('sp', 0)))
-
-        total_marks = ((std_gpa.marks_set.all().aggregate(
-            sp=Sum('subject_marks')).get('sp', 0)))
-
-
-
-        if subject_grade == None or total_marks == None:
-            context['toatal_grade_point'] = 0
-            context['total_marks'] = 0
-        else:
-            if int(std_gpa.std_class) == 6 or int(std_gpa.std_class) == 7 :
-
-                context['toatal_grade_point'] = subject_grade/7
-                context['total_marks'] = total_marks
-
-            elif int(std_gpa.std_class) == 8:
-                context['toatal_grade_point'] = subject_grade/7
-                context['total_marks'] = total_marks
-
-            elif int(std_gpa.std_class) == 9 or int(std_gpa.std_class) == 10:
-                context['toatal_grade_point'] = subject_grade/9
-                context['total_marks'] = total_marks
+                elif int(std_gpa.std_class) == 9 or int(std_gpa.std_class) == 10:
+                    context['toatal_grade_point'] = subject_grade/9
+                    context['total_marks'] = total_marks
 
 
 
+            
+        except:
+            context['error']='problem'
 
         context['fail'] = failed
         
@@ -453,55 +447,51 @@ class SubjectDetailView(DetailView):
         context['sub_std'] = sub_object.marks_set.all().order_by(
             '-subject_gradepoint', '-subject_marks')
 
-        context['sub_teacher'] = sub_object.marks_set.all().order_by(
-            '-subject_gradepoint')
+        try:
+            context['sub_teacher'] = sub_object.marks_set.all().order_by(
+                '-subject_gradepoint')
 
+            context['sub_std_count'] = sub_object.marks_set.all().order_by(
+                '-subject_gradepoint').count()
 
+            context['sub_std_pass'] = sub_object.marks_set.filter(
+                subject_gradepoint__gte=1).order_by('-subject_gradepoint').count()
 
-        context['sub_std_count'] = sub_object.marks_set.all().order_by(
-            '-subject_gradepoint').count()
+            #percentige math calculation
+            sub_std_count = sub_object.marks_set.all().order_by(
+                '-subject_gradepoint').count()
 
+            sub_std_pass = (sub_object.marks_set.filter(
+                subject_gradepoint__gte=1).order_by('-subject_gradepoint').count())
 
-        context['sub_std_pass'] = sub_object.marks_set.filter(
-            subject_gradepoint__gte=1).order_by('-subject_gradepoint').count()
+            context['pass_percent'] = (sub_std_pass/sub_std_count)*100
+            context['fail_percent'] = (
+                (sub_std_count-sub_std_pass)/sub_std_count)*100
 
-        #percentige math calculation
-        sub_std_count = sub_object.marks_set.all().order_by(
-            '-subject_gradepoint').count()
+            context['sub_std_fail'] = sub_object.marks_set.filter(
+                subject_gradepoint__lte=0).order_by('-subject_gradepoint').count()
 
-        sub_std_pass = (sub_object.marks_set.filter(
-            subject_gradepoint__gte=1).order_by('-subject_gradepoint').count())
+            context['sub_std_aplus'] = sub_object.marks_set.filter(
+                subject_gradepoint__gte=5).order_by('-subject_gradepoint').count()
+            context['sub_std_a'] = sub_object.marks_set.filter(
+                subject_gradepoint__gte=4, subject_gradepoint__lt=5).order_by('-subject_gradepoint').count()
 
+            context['sub_std_aminus'] = sub_object.marks_set.filter(
+                subject_gradepoint__gte=3.5, subject_gradepoint__lt=4).order_by('-subject_gradepoint').count()
+            context['sub_std_b'] = sub_object.marks_set.filter(
+                subject_gradepoint__gte=3, subject_gradepoint__lt=3.5).order_by('-subject_gradepoint').count()
 
-        context['pass_percent']=(sub_std_pass/sub_std_count)*100
-        context['fail_percent'] = ((sub_std_count-sub_std_pass)/sub_std_count)*100
+            context['sub_std_c'] = sub_object.marks_set.filter(
+                subject_gradepoint__gte=2, subject_gradepoint__lt=3).order_by('-subject_gradepoint').count()
+            context['sub_std_d'] = sub_object.marks_set.filter(
+                subject_gradepoint__gte=1, subject_gradepoint__lt=2).order_by('-subject_gradepoint').count()
 
-
-
-
-
-
-        context['sub_std_fail'] = sub_object.marks_set.filter(subject_gradepoint__lte=0).order_by('-subject_gradepoint').count()
-
-        context['sub_std_aplus'] = sub_object.marks_set.filter(
-            subject_gradepoint__gte=5).order_by('-subject_gradepoint').count()
-        context['sub_std_a'] = sub_object.marks_set.filter(
-            subject_gradepoint__gte=4, subject_gradepoint__lt=5).order_by('-subject_gradepoint').count()
-
-        context['sub_std_aminus'] = sub_object.marks_set.filter(
-            subject_gradepoint__gte=3.5, subject_gradepoint__lt=4).order_by('-subject_gradepoint').count()
-        context['sub_std_b'] = sub_object.marks_set.filter(
-            subject_gradepoint__gte=3, subject_gradepoint__lt=3.5).order_by('-subject_gradepoint').count()
-
-        context['sub_std_c'] = sub_object.marks_set.filter(
-            subject_gradepoint__gte=2, subject_gradepoint__lt=3).order_by('-subject_gradepoint').count()
-        context['sub_std_d'] = sub_object.marks_set.filter(
-            subject_gradepoint__gte=1, subject_gradepoint__lt=2).order_by('-subject_gradepoint').count()
-
-        context['sub_avg_marks'] = sub_object.marks_set.all().aggregate(
-            sp=Avg('subject_marks')).get('sp', '0')
-        context['sub_avg_gradepoint'] = sub_object.marks_set.all().aggregate(
-            sp=Avg('subject_gradepoint')).get('sp', '0')
+            context['sub_avg_marks'] = sub_object.marks_set.all().aggregate(
+                sp=Avg('subject_marks')).get('sp', '0')
+            context['sub_avg_gradepoint'] = sub_object.marks_set.all().aggregate(
+                sp=Avg('subject_gradepoint')).get('sp', '0')
+        except:
+            context['error']='problem'
 
         context['credit'] = credit
         return context
@@ -840,3 +830,11 @@ class SummaryView(ListView):
         context["total_std_count_10"] = StudentInfo.objects.filter(
             std_class=10).count()
         return context
+
+
+class ErrorPage(TemplateView):
+    template_name='asad.html'
+
+
+def my_custom_page_not_found_view(request):
+    pass
