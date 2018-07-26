@@ -6,11 +6,13 @@
 
 
 
-
-
+<div class="row">
+<div class="col-md-12 ">
+<h1 style="text-align:center" class="mx-auto">Half Yearly Examination 2018 Class Wise Rank Search </h1>
+</div>
 
 <div class="col-md-3 offset-md-4  centered">
-<h2>Half Yearly Examination 2018 Class Wise Rank Search </h2>
+
     <form action="" method="POST">
         {% csrf_token %} {{form | crispy}}
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -229,7 +231,22 @@
                     {% for std in std_search%}
                     <tr>
                         <td>{{forloop.counter}}</td>
-                        <td>{{std.class_rank|ordinal}}</td>
+
+
+                        {% if std.std_fail_subject >= 1 %}
+                        <td >
+                        <a style="color:red" href="{% url 'std_details' std.id%}">{{std.std_name}}</a>
+                        <span class="badge badge-danger">F{{std.std_fail_subject}}</span>
+                        </td>
+                        {% else %}
+                        <td>
+                        <a href="{% url 'std_details' std.id%}">{{std.std_name}}</a>
+                        </td>
+                        {% endif %}
+
+
+
+
                         <td>
                             <a href="{% url 'std_details' std.id%}">{{std.std_name}}</a>
                         </td>
@@ -247,7 +264,7 @@
 
                         {% elif std.std_roll == std.class_rank %}
 
-                        <td> Rank label
+                        <td style="font-size:14px"> Rank label
                             <i class="fas fa-arrows-alt-v"></i>
                         </td>
                                                 
@@ -261,8 +278,21 @@
                         <td>{{std.school_rank|ordinal}}</td>
 
                         <td>{{std.get_std_class_display}}</td>
+
+                        {% if std.std_fail_subject >= 1 %}
+                        <td style="color:red;font-size:12px">
+                            Fail {{std.std_fail_subject}} Subject
+                        </td>
+                        {% else %}
+                        <td>
+                            {{std.std_grade_point_total_subject_avg|floatformat:'2'}}
+                        </td>
+                        {% endif %}
                         
-                        <td>{{std.std_grade_point_total_subject_avg|floatformat:'2'}}</td>
+                       
+
+
+
                         <td>{{std.std_total_marks|floatformat}}</td>
                         
 
@@ -310,7 +340,7 @@
 
             {% elif std_search == None %}
 
-            <h4 style="text-align:center;font-size:15px;padding:10px" class="card bg-dark text-white card-title">Fulhata Secondary School Result Application</h4>
+            <h4 style="text-align:center;font-size:15px;padding:10px; width:400px;margin:0 auto" class="card bg-dark text-white card-title ">Fulhata Secondary School Result Application</h4>
 
 
             {% else %}
@@ -326,7 +356,7 @@
 
 
 
-
+</div>
 
 
 {% endblock main_content %}

@@ -32,7 +32,9 @@
 
                             {% if rank.std.std_fail_subject >= 1 %}
                             <td >
-                                <a style="color:red" href="{%url 'std_details' rank.std.id%}">{{rank.std}}</a>
+                            <a style="color:red" href="{%url 'std_details' rank.std.id%}">{{rank.std}}
+                            <span class="badge badge-danger">F{{rank.std.std_fail_subject}}</span>
+                            </a>
                             </td>
                             {% else %}
                             <td>
@@ -85,7 +87,8 @@
                             </td> 
                             {% endif %}
                             
-                            <td>{{rank.std.std_total_marks|floatformat}}</td>
+                            <!--<td>{{rank.std.std_total_marks|floatformat}}</td>!-->
+                            <td>{{rank.std.std_marks_with_fail_sub|floatformat}}</td>
                             
                         </tr>
                      {% endfor %}

@@ -8,14 +8,14 @@ from .views import StudentDetails, StudentAdd, ResultUpdate, StudentUpdateView, 
 urlpatterns = [
     path('', Homepage.as_view(), name='home'),
 
-    path('subject-search.js/', SubjectSeaechView.as_view(), name='subject_search'),
+    path('subject-search/', SubjectSeaechView.as_view(), name='subject_search'),
 
-    path('class_wise_rank_search.asp/', AllRankViewSearch.as_view(
+    path('class_wise_rank_search/', AllRankViewSearch.as_view(
         template_name='results/all_rank_search.html'), name='all_rank_search'),
 
-    re_path(r'^(?P<pk>\d+)/subject-detail.php/$', SubjectDetailView.as_view(), name='subject_details'),
+    re_path(r'^(?P<pk>\d+)/subject-detail/$', SubjectDetailView.as_view(), name='subject_details'),
 
-    re_path(r'^(?P<pk>\d+)/student-result-details.asp/$', StudentDetails.as_view(), name='std_details'),
+    re_path(r'^(?P<pk>\d+)/student-result-details/$', StudentDetails.as_view(), name='std_details'),
 
     path('student_add/', StudentAdd.as_view(), name='std_add'),
     re_path(r'student_update/(?P<pk>\d+)/$', StudentUpdateView.as_view(), name='std_update'),
@@ -31,7 +31,7 @@ urlpatterns = [
 
     path('teacher_list/', TeacherAllView.as_view(), name='teacher_list'),
 
-    re_path(r'^(?P<pk>\d+)/teacher-profile.java/', TeacherDetailView.as_view(), name='teacher_detail'),
+    re_path(r'^(?P<pk>\d+)/teachers-profile/', TeacherDetailView.as_view(), name='teacher_detail'),
 
     path('summary/', SummaryView.as_view(), name='summary'),
     

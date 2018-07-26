@@ -27,10 +27,29 @@
     <div class="card">
 
         <div class="card-body">
-        {% if std_search %} 
-        <a style="" href="{% url 'std_details' std_search.id %}">
-        <h4 style="text-align:center;font-size:15px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-success text-white card-title">{{std_search.std_name}}</h4>
+        {% if std_search %}
+        
+
+        {% if std_search.std_fail_subject < 1 %}
+       
+        <h4 style="text-align:center;font-size:15px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-success text-white card-title"><a style="color:#fff" href="{% url 'std_details' std_search.id %}">{{std_search.std_name}}</a></h4>
         </a>
+                
+        {% elif std_search.std_fail_subject >= 1 %}
+        <h4 style="text-align:center;font-size:15px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-danger text-white card-title">
+            <a style="color:#fff" href="{% url 'std_details' std_search.id %}">{{std_search.std_name}}
+            <span class="badge badge-info">F {{std_search.std_fail_subject}} </span>
+            </a>
+        </h4>
+        
+        
+        {% endif %}
+
+
+    
+
+
+
         <p style="text-align:center;font-size:16px;color:white;padding:10px" class="col-md-10 offset-md-1 card bg-primary text-white
             card-text" >Class {{std_search.get_std_class_display}} | Roll {{std_search.std_roll}}</p>
 

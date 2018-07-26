@@ -54,7 +54,7 @@
     <div class="col-md-6 centered">
 
 
-    <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-info text-white card-title">
+<p style="text-align:center;font-size:19px;color:white;padding:10px; letter-spacing: 1px;" class=" card bg-info text-white card-title">
     <i class="fas fa-user-graduate"> {{object.std_name}}</i>
 
 
@@ -168,8 +168,8 @@
                 </td>
 
                 <td>{{ total_marks|floatformat}}
-                    <i style="color:red" class="fas fa-exclamation-triangle"></i>
-                    {{fail}} 
+<span class="badge badge-danger">F{{fail}} </span>
+                    
                 </td>
             </tr>
 
