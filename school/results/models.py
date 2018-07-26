@@ -368,59 +368,53 @@ class Marks(StdCommon):
 
         #if self.subject_name.subjet_class == '9' or self.subject_name.subjet_class == '10':
         
-        theory=0
-        mcq=0
-        practical=0
-        fail_sub_sub=['Pass']
-
-        if self.subject_name.subject_theory_full_marks != None:
-            try:
-                theory = self.subject_theory
-            except:
-                theory=0
-
-        elif self.subject_name.subject_theory_full_marks == None:
-            self.subject_theory=None
-            
-
-
-
-
-
         
-        if self.subject_name.subject_mcq_full_marks != None:
-            try:
-                mcq = self.subject_mcq
-            except:
-                mcq=0
-        elif self.subject_name.subject_mcq_full_marks == None:
-            self.subject_mcq=None
-            
-
-        
-        if self.subject_name.subject_practical_marks != None:
-            try:
-                practical = self.subject_practical
-            except:
-                practical=0
-        elif self.subject_name.subject_practical_marks == None:
-            self.subject_practical=None
-
-            
-        try:
-            self.subject_total_marks = mcq+practical+theory
-        except:
-            if mcq == None:
-                mcq=0
-            elif practical == None:
-                practical=0
-            elif theory == None:
-                theory=0
-
-            self.subject_total_marks = mcq+practical+theory
             
 
         if self.subject_name.subjet_class == '6' or self.subject_name.subjet_class == '7' or self.subject_name.subjet_class == '8' and (self.subject_name.first_part_theory_full_marks == None and self.subject_name.second_part_theory_full_marks == None and self.subject_name.first_part_mcq_full_marks == None and self.subject_name.second_part_mcq_full_marks == None):
+
+            theory = 0
+            mcq = 0
+            practical = 0
+            fail_sub_sub = ['Pass']
+
+            if self.subject_name.subject_theory_full_marks != None:
+                try:
+                    theory = self.subject_theory
+                except:
+                    theory = 0
+
+            elif self.subject_name.subject_theory_full_marks == None:
+                self.subject_theory = None
+
+            if self.subject_name.subject_mcq_full_marks != None:
+                try:
+                    mcq = self.subject_mcq
+                except:
+                    mcq = 0
+            elif self.subject_name.subject_mcq_full_marks == None:
+                self.subject_mcq = None
+
+            if self.subject_name.subject_practical_marks != None:
+                try:
+                    practical = self.subject_practical
+                except:
+                    practical = 0
+            elif self.subject_name.subject_practical_marks == None:
+                self.subject_practical = None
+
+            try:
+                self.subject_total_marks = mcq+practical+theory
+            except:
+                if mcq == None:
+                    mcq = 0
+                elif practical == None:
+                    practical = 0
+                elif theory == None:
+                    theory = 0
+
+            self.subject_total_marks = mcq+practical+theory
+
             pass_marks = (self.subject_name.subject_total_marks/100)*33
 
             simple_fail=[]
@@ -449,6 +443,52 @@ class Marks(StdCommon):
 
 
         if self.subject_name.subjet_class == '9' or self.subject_name.subjet_class == '10' and (self.subject_name.first_part_theory_full_marks == None and self.subject_name.second_part_theory_full_marks == None and self.subject_name.first_part_mcq_full_marks == None and self.subject_name.second_part_mcq_full_marks == None):
+
+            theory = 0
+            mcq = 0
+            practical = 0
+            fail_sub_sub = ['Pass']
+
+            if self.subject_name.subject_theory_full_marks != None:
+                try:
+                    theory = self.subject_theory
+                except:
+                    theory = 0
+
+            elif self.subject_name.subject_theory_full_marks == None:
+                self.subject_theory = None
+
+            if self.subject_name.subject_mcq_full_marks != None:
+                try:
+                    mcq = self.subject_mcq
+                except:
+                    mcq = 0
+            elif self.subject_name.subject_mcq_full_marks == None:
+                self.subject_mcq = None
+
+            if self.subject_name.subject_practical_marks != None:
+                try:
+                    practical = self.subject_practical
+                except:
+                    practical = 0
+            elif self.subject_name.subject_practical_marks == None:
+                self.subject_practical = None
+
+            try:
+                self.subject_total_marks = mcq+practical+theory
+            except:
+                if mcq == None:
+                    mcq = 0
+                elif practical == None:
+                    practical = 0
+                elif theory == None:
+                    theory = 0
+
+            self.subject_total_marks = mcq+practical+theory
+
+
+
+
             try:
                 theory_pass_marks = (self.subject_name.subject_theory_full_marks/100)*33
 
@@ -496,7 +536,7 @@ class Marks(StdCommon):
             Bangla and English for six to ten
         '''
 
-        if self.subject_name.first_part_theory_full_marks != None and self.subject_name.second_part_theory_full_marks != None and ( self.subject_name.subjet_class == '9' or self.subject_name.subjet_class == '10' ):
+        if self.subject_name.first_part_theory_full_marks != None and (self.subject_name.subjet_class == '9' or self.subject_name.subjet_class == '10'):
 
             if self.subject_name.first_part_theory_full_marks != None and self.subject_name.second_part_theory_full_marks != None and self.subject_name.first_part_mcq_full_marks != None and self.subject_name.second_part_mcq_full_marks != None:
 
@@ -505,7 +545,7 @@ class Marks(StdCommon):
                     total_theory = self.first_part_theory + self.second_part_theory
                     
                 except:
-                    #total_theory = 10
+                    total_theory = 0
                     #total_theory_q_marks = 0
                     pass
 
@@ -513,7 +553,7 @@ class Marks(StdCommon):
                     total_mcq_q_marks = self.subject_name.first_part_mcq_full_marks + self.subject_name.second_part_mcq_full_marks
                     total_mcq = self.first_part_mcq + self.second_part_mcq
                 except:
-                    #total_mcq = 10
+                    total_mcq = 10
                     #total_mcq_q_marks = 0
                     pass
 
@@ -525,6 +565,7 @@ class Marks(StdCommon):
 
                 if total_theory >= round(thoery_pass_marks+.1):
                     pass_fail.append('Pass')
+
                 elif total_theory < round(thoery_pass_marks+.1):
                     pass_fail.append('F')
 
@@ -585,8 +626,7 @@ class Marks(StdCommon):
                 else:
                     self.subject_marks = self.subject_total_marks
 
-
-            if self.subject_name.subjet_class == '6' or self.subject_name.subjet_class == '7' or self.subject_name.subjet_class == '8':
+        if self.subject_name.first_part_theory_full_marks!= None and (self.subject_name.subjet_class == '6' or self.subject_name.subjet_class == '7' or self.subject_name.subjet_class == '8'):
 
                 if self.subject_name.first_part_theory_full_marks != None:
                     theory_one = self.first_part_theory
