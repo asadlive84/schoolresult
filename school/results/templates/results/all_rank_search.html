@@ -231,6 +231,7 @@
                     {% for std in std_search%}
                     <tr>
                         <td>{{forloop.counter}}</td>
+<td>{{std.class_rank|ordinal}}</td>
 
 
                         {% if std.std_fail_subject >= 1 %}
@@ -247,9 +248,7 @@
 
 
 
-                        <td>
-                            <a href="{% url 'std_details' std.id%}">{{std.std_name}}</a>
-                        </td>
+                       
 
                         <td>{{std.std_roll}}</td>
 

@@ -391,6 +391,19 @@ class RankListView(ListView):
         context = super(RankListView, self).get_context_data(**kwargs)
 
         #ranks_all= Rank.objects.all().order_by('school_rank')
+        total_std_count = StudentInfo.objects.all().count()
+
+        total_std_pass = StudentInfo.objects.filter(
+            std_grade_point_total_subject_avg__gte=1).count()
+
+        context['total_std_pass_count'] = StudentInfo.objects.filter(
+            std_grade_point_total_subject_avg__gte=1).count()
+        context['total_std_fail_count'] = StudentInfo.objects.filter(
+            std_grade_point_total_subject_avg__lt=1).count()
+
+        context['total_pass'] = (total_std_pass/total_std_count)*100
+        context['total_fail'] = (
+            (total_std_count-total_std_pass)/total_std_count)*100
 
 
         context['credit'] = credit

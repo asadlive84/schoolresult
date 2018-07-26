@@ -8,7 +8,14 @@
 
         <div class="div">
             <p>Total Student: {{rank_count}} <i>(all class)</i></p>
-<h2 class="mx-auto" style="width:70%;font-size:25px">Half Yearly Examination 2018 School Rank List</h2>
+            <h2 class="mx-auto" style="width:70%;font-size:25px">Half Yearly Examination 2018 School Rank List</h2>
+            <div class="progress" style="height:50px">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:{{total_pass}}%">Pass {{total_pass|floatformat}} %
+            </div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width:{{total_fail}}%">Fail {{total_fail|floatformat}} %
+            </div>
+
+        </div>
             <hr>
             <table class="table table-hover table-bordered">
                 <thead>
