@@ -64,7 +64,7 @@ left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-attach
 table#mytable, table#mytable td { border: none !important; font-size: 14px; line-height: 22px}
 
 
-#container{width:100%; text-align:center; } 
+#container{width:100%; text-align:center; margin-bottom: 30px} 
 
 #left
 { float:left; width:200px; height: 20px; background: # } 
@@ -116,7 +116,10 @@ height: 20px; background: # }
             </div>
         </div>
 
-<p class="new_css" style="text-align:center;font-size:16px">Half Yearly Examination 2018 Result Card</p>
+<p class="new_css" style="text-align:center;font-size:16px">
+ {% if object.std_class == '10' %} Pre Test Examination 2018  {% else %} Half Yearly Examination 2018 {% endif %}
+ Result Card
+</p>
 
 
 
@@ -229,12 +232,8 @@ height: 20px; background: # }
                 <tr class="table-success">
                     {% if fail >= 1 %}
                     <td>Total Marks - Fail</td>
-                    <td style="color:red">{{ total_marks|floatformat}}
-                    <span style="font-size:9px;font-style:italic;color:red">not included 
-                        <span style="font-size:14px">
-                            Fail {{fail}}
-                        </span> 
-                        subject marks</span>
+                    <td style="color:red">{{ total_marks_with_fail_sub|floatformat}}
+                   
                     </td>
                                         
 
@@ -242,7 +241,7 @@ height: 20px; background: # }
 
                     {% else %}
                     <td>Total Marks</td>
-                    <td>{{ total_marks|floatformat}} </td>
+                    <td>{{ total_marks_with_fail_sub|floatformat}} </td>
 
                     {% endif %}
                     
@@ -329,7 +328,7 @@ height: 20px; background: # }
                     <th style="text-align:center" rowspan="2">Subject Name</th>
                     <th style="text-align:center" rowspan="2">Full Marks</th>
                     <th  style="text-align:center" colspan="4">Marks</th>
-                    <th rowspan="2">Count Marks</th>
+                    
                     <th rowspan="4">Grade Point</th>
                     <th rowspan="4">Grade</th>
                 </tr>
@@ -348,43 +347,25 @@ height: 20px; background: # }
 
                     <td>{{i.subject_name.subject_code}}</td>
 
+                    <!--subject name with fail style-->
                     {% if i.subject_gpa == "F" %}
-                    <td style="color:red;font-size:12px">
-                        {% if i.subject_name.subject_type == 'O' %}
-                        {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
-
-                        {% else %}
-                        {{i.subject_name.subject_name}} 
-                        {% if i.subject_name.first_part_name %}
-                        {{i.subject_name.first_part_name}}
+                    <td style="text-align:left;color:red">
+                        {% if i.subject_name.subject_type == 'O' %} {{i.subject_name.subject_name}}
+                        <span style="font-size:7px!important;font-style:italic">({{i.subject_name.get_subject_type_display}})</span>
+                        {% else %} {% if i.subject_name.first_part_name%} {{i.subject_name.subject_name}} {{i.subject_name.first_part_name}}
+                        <br> {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}} {% else %} {{i.subject_name.subject_name}} {% endif%}
                         {% endif %}
-                        {% if i.subject_name.second_part_name %}
-                        <br> {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}}
-                          
-                        {% endif %}
-                        
-                        
-                        
-                        
-                        {% endif %}
-
                     </td>
-
-
                     {% else %}
                     <td style="text-align:left">
-                        {% if i.subject_name.subject_type == 'O' %} {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
-                        {% else %} 
-                        {{i.subject_name.subject_name}} {{i.subject_name.first_part_name}}
-                        <br>
-                        {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}}
-                       
-
-
+                        {% if i.subject_name.subject_type == 'O' %} {{i.subject_name.subject_name}}
+                        <span style="font-size:11px;font-style:italic">({{i.subject_name.get_subject_type_display}})</span>
+                        {% else %} {% if i.subject_name.first_part_name%} {{i.subject_name.subject_name}} {{i.subject_name.first_part_name}}
+                        <br> {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}} {% else %} {{i.subject_name.subject_name}} {% endif%}
                         {% endif %}
                     </td>
                     {% endif %}
-
+                    <!--end subject name with fail style-->
 
                     
                     <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
@@ -416,7 +397,7 @@ height: 20px; background: # }
                     <td style="text-align:center">{{i.subject_practical|floatformat}}</td>
                     <td style="text-align:center">{{i.subject_total_marks|floatformat}}</td>
 
-                    <td style="text-align:center">{{i.subject_marks|floatformat}}</td>
+                    
 
                    
 
@@ -439,7 +420,7 @@ height: 20px; background: # }
 
 
 
-        <div id="container">
+        <div id="container" style="clear:both">
             <hr>
             <div id="left">
                     <p style="font-size:12px">Result checked by</p>
@@ -450,9 +431,9 @@ height: 20px; background: # }
             </div>
             <div id="center">
                     <p style="font-size:12px">Class teacher</p>
-                    <p style="font-size:11px;margin-top:-12px">Md. Bellal Hossain</p>
+                    <p style="font-size:11px;margin-top:-12px"></p>
                     <p style="font-size:9px;margin-top:-13px">
-                        <i>Asst. Teacher (Agriculture)</i>
+                        
                     </p>
             </div>
 
@@ -466,14 +447,18 @@ height: 20px; background: # }
 
 
 
-<p style="font-size:8px">Print Time: {{time}}
-<i> updated: {{object.update_date|naturaltime}} prepared: {{object.pub_date|naturaltime}}</i>
-        </p>
+        <div style="display:block;">
+            <p style="font-size:8px">
+ App Developed & Maintained by
+<a style="color:black;text-decoration:none" href="https://web.facebook.com/asadlive.sohel1">Asaduzzaman Sohel</a><br>
+<i>Print Time: {{time}}</i> 
+                
+            </p>
 
-<p style="font-size:8px" class="m-0 text-center text-white">App Developed & Maintained by
-    <a style="color:black;text-decoration:none" href="https://web.facebook.com/asadlive.sohel1">Asaduzzaman Sohel</a>
-</p>
+            <p style="font-size:8px" class="m-0 text-center text-white">
+            </p>
 
+        </div>
 
 
     </div>

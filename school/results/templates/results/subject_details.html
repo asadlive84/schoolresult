@@ -194,7 +194,7 @@
                             <th rowspan="2">GPA</th>
                             <th rowspan="2">Grade</th>
                             <th style="text-align:center" colspan="4">Marks</th>
-                            <th rowspan="2">Count Marks</th>
+                           <!-- <th rowspan="2">Count Marks</th>-->
                             <th rowspan="4">Class</th>
                             
                         </tr>
@@ -258,9 +258,33 @@
 
                             <td>
                                 {{sub.subject_theory|floatformat}}
+
+                                {% if sub.first_part_theory %}
+                                {{sub.subject_name.first_part_name}}-
+                                {{sub.second_part_theory|floatformat }}
+                                {% endif %}
+
+                                {% if sub.first_part_theory %}
+                                <br>
+                                {{sub.subject_name.second_part_name}}-
+                                
+                                {{sub.first_part_theory|floatformat}}
+                                {% endif %}
+
                             </td>
                             <td>
                                 {{sub.subject_mcq|floatformat}}
+                                
+                                {% if sub.first_part_mcq %}
+                                {{sub.subject_name.first_part_name}}-
+                                {{sub.first_part_mcq|floatformat}}
+                                {% endif %}
+
+                                {% if sub.second_part_mcq %}
+                                <br>
+                                {{sub.subject_name.second_part_name}}-
+                                {{sub.second_part_mcq|floatformat}}
+                                {% endif %}
                             </td>
 
                             <td>
@@ -271,7 +295,7 @@
                             </td>
 
 
-                            <td>{{sub.subject_marks|floatformat}}</td>
+                            <!--<td>{{sub.subject_marks|floatformat}}</td>-->
 
                             
                             <td>{{sub.std_name.std_class}}</td>

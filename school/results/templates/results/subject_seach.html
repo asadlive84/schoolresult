@@ -49,14 +49,15 @@
            
 
 
-        {% elif std_search == None %}
+        {% elif error == None %}
 
         <h4 style="text-align:center;font-size:15px;padding:10px" class="card bg-dark text-white card-title">Fulhata Secondary School Result Application</h4>
 
+        
 
 
 
-             {% else %}
+        {% elif error == 'error' %}
             <h4 style="text-align:center;font-size:15px;padding:10px" class="card bg-danger text-white card-title">Subject Not Found</h4>
         {% endif %}
 

@@ -118,6 +118,8 @@ class StudentDetails(DetailView):
 
 
 
+
+
         for i in std_gpa.marks_set.filter(subject_name__subject_type__startswith='R').order_by('-pub_date'):
 
                 if i.subject_name != same_subject:
@@ -132,12 +134,14 @@ class StudentDetails(DetailView):
         '''
         
         try:
-            context['subject_max_number'] = std_gpa.marks_set.annotate(Max('subject_marks'))[
-                0]
+            context['subject_max_number'] = std_gpa.marks_set.filter(
+                subject_gradepoint__gte=1).annotate(
+                Max('subject_gradepoint')).order_by('-subject_gradepoint', 'subject_marks')[0]
 
-            context['sub_avg_number'] = std_gpa.marks_set.all().aggregate(sp=Avg('subject_marks')).get('sp', '0')
+            context['sub_avg_number'] = std_gpa.marks_set.aggregate(sp=Avg('subject_marks')).get('sp', '0')
 
-            context['subject_min_number'] = std_gpa.marks_set.annotate(Min('subject_marks')).order_by('subject_marks')[0]
+            context['subject_min_number'] = std_gpa.marks_set.filter(
+                subject_gradepoint__gte=1).annotate(Min('subject_marks')).order_by('subject_gradepoint', 'subject_marks')[0]
 
             context['ranks'] = Rank.objects.get(std=std_gpa)
 
@@ -292,17 +296,21 @@ class Pdf(DetailView):
                     if i.subject_gpa == 'F':
                         failed = failed+1
 
-            subject_max_number= std_gpa.marks_set.annotate(Max('subject_marks'))[0]
+            subject_max_number = std_gpa.marks_set.filter(
+                subject_gradepoint__gte=1).annotate(
+                Max('subject_gradepoint')).order_by('-subject_gradepoint', 'subject_marks')[0]
 
-            sub_avg_number= std_gpa.marks_set.all().aggregate(sp=Avg('subject_marks')).get('sp', '0')
+            sub_avg_number = std_gpa.marks_set.aggregate(sp=Avg('subject_marks')).get('sp', '0')
 
-            subject_min_number= std_gpa.marks_set.annotate(Min('subject_marks')).order_by('subject_marks')[0]
-
+            subject_min_number = std_gpa.marks_set.filter(
+                subject_gradepoint__gte=1).annotate(Min('subject_marks')).order_by('subject_gradepoint', 'subject_marks')[0]
             ranks = Rank.objects.get(std=std_gpa)
 
             subject_grade = ((std_gpa.marks_set.filter(subject_gradepoint__gte=1).aggregate(sp=Sum('subject_gradepoint')).get('sp', 0)))
 
             total_marks = ((std_gpa.marks_set.all().aggregate(sp=Sum('subject_marks')).get('sp', 0)))
+            total_marks_with_fail_sub = ((std_gpa.marks_set.all().aggregate(
+                sp=Sum('subject_total_marks')).get('sp', 0)))
 
             if subject_grade == None or total_marks == None:
                 toatal_grade_point = 0
@@ -334,6 +342,7 @@ class Pdf(DetailView):
                 'subject_max_number': subject_max_number,
                 'total_marks': total_marks,
                 'fail': fail,
+                'total_marks_with_fail_sub': total_marks_with_fail_sub,
                 'toatal_grade_point': toatal_grade_point,
                 'time':time,
                 'credit':credit,
@@ -403,17 +412,18 @@ class SubjectSeaechView(TemplateView, FormMixin):
         form = self.form_class(request.POST)
         if form.is_valid():
 
+            
             try:
-                self.object_search = StdSubject.objects.get(
-                    subject_form_searh_name=form.cleaned_data['subject_name'], subjet_class=form.cleaned_data['subject_class'])
+                self.object_search = StdSubject.objects.get(subject_form_searh_name=form.cleaned_data['subject_name'], subjet_class=form.cleaned_data['subject_class'])
+
                 context['std_search_count'] = self.object_search.marks_set.all().count()
 
                 context['std_search'] = self.object_search
                 context['credit'] = credit
             except:
-                self.object_search = None
-                context['std_search_count'] =False
-
+                context['error'] = 'error'
+            
+                
 
 
 

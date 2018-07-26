@@ -7,7 +7,11 @@
     <div>
         <div class="row" >
 <div class="col-md-4" style="border:1px solid black; padding:13px">
-                <h2>Total Student: {{total_std_count}}</h2>
+<h2>Total Student: {{total_std_count}}
+    <span class="badge badge-secondary">OK</span>
+</h2>
+
+
                 <p>Passed {{total_std_pass_count}}
                         <span class="badge badge-success">{{total_pass|floatformat:'2'}}%</span>
                 </p>
@@ -34,7 +38,9 @@
             </div>
 
 <div class="col-md-4" style="border:1px solid black; padding:13px">
-                <h2>Male Student: {{total_std_count_male}}</h2>
+<h2>Male Student: {{total_std_count_male}}
+    <span class="badge badge-secondary">OK</span>
+</h2>
                 <p>Passed {{total_std_pass_count}}
                     <span class="badge badge-success">{{total_pass_male|floatformat:'2'}}%</span>
                  </p>
@@ -62,7 +68,9 @@
 
 
 <div class="col-md-4" style="border:1px solid black; padding:13px">
-                    <h2>Female Student: {{total_std_count_female}}</h2>
+<h2>Female Student: {{total_std_count_female}}
+    <span class="badge badge-secondary">OK</span>
+</h2>
 <p>Passed {{total_std_pass_count_female}}
                     <span class="badge badge-success">{{total_pass_female|floatformat:'2'}}%</span>
                 </p>

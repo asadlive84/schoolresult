@@ -99,7 +99,8 @@ class StdSubject(StdCommon):
     first_part_mcq_full_marks = models.FloatField('First Part MCQ Marks', blank=True, null=True)
 
     second_part_name = models.CharField('Second Subject Name', max_length=100, blank=True, null=True)
-    second_part_theory_full_marks = models.FloatField('First Part Theory Marks', blank=True, null=True)
+    second_part_theory_full_marks = models.FloatField(
+        'Second Part Theory Marks', blank=True, null=True)
     second_part_mcq_full_marks = models.FloatField('Second MCQ Marks', blank=True, null=True)
 
 
@@ -200,6 +201,8 @@ class StudentInfo(StdCommon):
 
 
     std_total_marks = models.FloatField('Total Marks', default=0, blank=True, null=True)
+    std_marks_with_fail_sub = models.FloatField(
+        'Total Marks', default=0, blank=True, null=True)
 
     std_gpa = models.CharField('GPA', max_length=50,default='F', blank=True, null=True)
 
@@ -242,6 +245,8 @@ class StudentInfo(StdCommon):
 
         total_number = Marks.objects.filter(std_name=std_id).aggregate(
             total_number=Sum('subject_marks')).get('total_number', 0)
+        self.std_marks_with_fail_sub = Marks.objects.filter(std_name=std_id).aggregate(
+             total_number_f=Sum('subject_total_marks')).get('total_number_f', 0)
 
         subject_grade = ((Marks.objects.filter(std_name=std_id, subject_gradepoint__gte=1).aggregate(sp=Sum('subject_gradepoint')).get('sp', 0)))
 
@@ -292,7 +297,7 @@ class StudentInfo(StdCommon):
             elif self.std_class == '9' or self.std_class == '10':
                 self.std_grade_point_total_subject_avg = '%2f' % (subject_grade/9)
         
-        
+       
        
         super(StudentInfo, self).save(*args, **kwargs) # Call the real save() method
 

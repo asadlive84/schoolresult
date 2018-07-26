@@ -1,7 +1,9 @@
+
 {% extends "results/base.html" %} 
+{% block title %}{{object.std_name}} Results {% endblock %}
 {% block main_content %}
 {% load humanize %}
-{% block title %}{{object.std_name}} Results Sheet {% endblock %}
+
 
 
 <div class="col-md-6 offset-md-3  centered">
@@ -14,7 +16,16 @@
             
         </h2>
         <hr>
-<p style="font-size:22px;padding:20px;text-align:center">Half Yearly Examination 2018 </p>
+<p style="font-size:22px;padding:20px;text-align:center">
+    
+    {% if object.std_class == '10' %}
+    Pre Test Examination 2018
+    {% else %}
+    Half Yearly Examination 2018
+      
+    {% endif %}
+    
+</p>
 
     </div>
 </div>
@@ -30,7 +41,7 @@
                 <i style="font-size: 50px;" class="fas fa-ambulance"></i>
             </h2>
         <div class="alert alert-danger">
-            <strong>Opps!</strong> Student Info under review....
+        <strong>Opps!</strong> "{{object.std_name}}" Info under review....
         </div>
         </div>
     </div>
@@ -40,10 +51,10 @@
 
 {% else %}
 <div class="row">
-<div class="col-md-6 centered">
+    <div class="col-md-6 centered">
 
 
-<p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-info text-white card-title">
+    <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-info text-white card-title">
     <i class="fas fa-user-graduate"> {{object.std_name}}</i>
 
 
@@ -62,7 +73,7 @@
 
 
 
-    <div>
+    
 
         <table class="table">
 
@@ -127,7 +138,7 @@
             </tbody>
         </table>
 
-    </div>
+    
 </div>
 
 <div class="col-md-6 centered">
@@ -158,7 +169,7 @@
 
                 <td>{{ total_marks|floatformat}}
                     <i style="color:red" class="fas fa-exclamation-triangle"></i>
-                    <span style="font-size:15px;font-style:italic;color:red">not included failed {{fail}} subject marks</span>
+                    {{fail}} 
                 </td>
             </tr>
 
@@ -210,30 +221,37 @@
     </tbody>
 </table>
 </div>
+
+
 </div>
 
 
-<hr>
-
 
 <div class="row">
-    <div class="mx-auto  centered">
+   
+<div class="col-lg-12 ">
             {% if object.marks_set.all %}
+<hr>
             <p style="font-size:18px;padding:5px;text-align:center">
+                
                 <i class=" fas fa-chevron-circle-down"></i> Result Details
             </p>
               
-            <table class="table table-hover table-bordered" style="text-align:center;font-size:10px">
+<table class="table mx-auto table-hover table-bordered" style="text-align:center;font-size:10px">
               
 
+                {% if fail >= 1 %}
+                <thead class="btn-danger">
+                {% else %}
                 <thead class="btn-success">
+                {% endif %}
                     <tr>
                         <th rowspan="2">No</th>
                         <th rowspan="2">Subject Code</th>
                         <th rowspan="2">Subject Name</th>
                         <th rowspan="2">Full Marks</th>
                         <th colspan="4">Marks</th>
-                        <th rowspan="2">Count Marks</th>
+                       <!-- <th rowspan="2">Count Marks</th>-->
                         <th rowspan="4">Grade Point</th>
                         <th rowspan="4">Grade</th>
                     </tr>
@@ -255,84 +273,75 @@
                         <td>{{forloop.counter}}</td>
                         <td>{{i.subject_name.subject_code}}</td>
 
+
+                        <!--subject name with fail style-->
                         {% if i.subject_gpa == "F" %}
-
-                        <td  style="color:red; text-align:left">
-
-                        {% if i.subject_name.subject_type == 'O' %} 
-                        {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
-                        
-                        {% else %}
-
-                        {{i.subject_name.subject_name}} 
-                        {% if i.subject_name.first_part_name %}
-                        
-                         {{i.subject_name.first_part_name}}
-                        <br> {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}}
-                        
-                        {% endif%}
-                            
-                        {% endif %}
-
-                        
+                        <td style="text-align:center;color:red">
+                            {% if i.subject_name.subject_type == 'O' %}
+                            {{i.subject_name.subject_name}} 
+                            <span style="font-size:7px!important;font-style:italic">({{i.subject_name.get_subject_type_display}})
+                            </span>
+                            {% else %}
+                            {% if i.subject_name.first_part_name%} 
+                            {{i.subject_name.subject_name}} {{i.subject_name.first_part_name}}
+                            <br> {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}} 
+                            {% else %} {{i.subject_name.subject_name}} 
+                            {% endif%}
+                            {% endif %}
                         </td>
 
                         {% else %}
-                        <td style="text-align:left">
-                        {% if i.subject_name.subject_type == 'O' %} 
-                        {{i.subject_name.subject_name}} ({{i.subject_name.get_subject_type_display}})
-                        {% else %} 
-                        {{i.subject_name.subject_name}} {{i.subject_name.first_part_name}}
-                        <br>
-                        <span style="margin-top:40px!important">
-                            {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}}
-                        </span>
-                        
 
-                        {% endif %}
+                        <td style="text-align:center">
+                            {% if i.subject_name.subject_type == 'O' %} {{i.subject_name.subject_name}}
+                            <span style="font-size:7px!important;font-style:italic">({{i.subject_name.get_subject_type_display}})</span>
+                            {% else %} {% if i.subject_name.first_part_name%} {{i.subject_name.subject_name}} {{i.subject_name.first_part_name}}
+                            <br> {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}} {% else %} {{i.subject_name.subject_name}} {% endif%}
+                            {% endif %}
                         </td>
                         {% endif %}
+                        <!--end subject name with fail style-->
 
+                         
+                       
 
-                        
-
-
-
-
-
+                     
                        
                         <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
 
-                       <td style="text-align:right">
-                           {{i.subject_theory|floatformat}}
+                       <td style="text-align:center">
+                            {{i.subject_theory|floatformat}}
 
                             {% if i.first_part_theory %}
-                            <p>{{i.first_part_theory|floatformat}} </p>
+                            {{i.first_part_theory|floatformat}}
+                           
                             {% endif %}
 
                             {% if i.second_part_theory %}
-                            <p>{{i.second_part_theory|floatformat}}</p>
+                            <br>
+                            {{i.second_part_theory|floatformat}}
                             {% endif %}
                         </td>
 
-                       <td style="text-align:right">
+                       <td style="text-align:center">
                            {{i.subject_mcq|floatformat}}
 
                             {% if i.first_part_mcq %}
                             
-                            <p>{{i.first_part_mcq|floatformat}}</p>
+                            {{i.first_part_mcq|floatformat}}
                             
                             {% endif %} 
                             
                             {% if i.second_part_mcq %}
-                            <p>{{i.second_part_mcq|floatformat}}</p>
+                            <br>
+                            {{i.second_part_mcq|floatformat}}
                             {% endif %}
                         </td>
 
-                       <td style="text-align:right">{{i.subject_practical|floatformat}}</td>
-                       <td style="text-align:right">{{i.subject_total_marks|floatformat}}</td>
+                        <td style="text-align:center">{{i.subject_practical|floatformat}}</td>
+                        <td style="text-align:center">{{i.subject_total_marks|floatformat}}</td>
 
-                        <td style="text-align:right">{{i.subject_marks|floatformat}}</td>
+                        <!--<td style="text-align:right">{{i.subject_marks|floatformat}}</td>-->
 
 
                         <td>{{i.subject_gradepoint|floatformat}}</td>
@@ -362,7 +371,7 @@
     </div>
 </div>
 
-<p>{{object.std_total_marks}} {{object.total_marks_sum}}</p>
+
 
 <div>
     <div>
@@ -373,7 +382,7 @@
         </a>
     </div>
 </div>
-
+<p style="font-size:2px">{{object.std_total_marks}} {{object.total_marks_sum}}</p>
 {% endif %}
 
 {% endblock main_content %}
