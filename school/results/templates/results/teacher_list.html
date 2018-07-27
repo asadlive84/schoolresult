@@ -26,9 +26,9 @@
 
                 <p class="card-text">{{teacher.teach_major_subject}}</p>
                 <p class="card-text">Phone Number: {{teacher.teach_phone_number}}</p>
-<button data-toggle="collapse" class="btn btn-success" data-target="#demo">Subject's List</button>
+<button data-toggle="collapse" class="btn btn-success" data-target="#demo{{teacher.id}}">Subject's List</button>
 
-                <div id="demo" class="collapse">
+                <div id="demo{{teacher.id}}" class="collapse">
                 {% for sub in teacher.teacher.all %}
                 <p style="margin-top:20px">
 

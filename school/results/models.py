@@ -350,8 +350,9 @@ class Marks(StdCommon):
     subject_gpa_sub = models.CharField('Subject GPA Sub', max_length=5, blank=True, null=True, help_text="Please keep blank")
 
 
-    subject_marks = models.DecimalField(
-        max_digits=5, decimal_places=2, help_text='Please give proper number', blank=True, null=True)
+    subject_marks = models.DecimalField('Full Marks', max_digits=5,
+    decimal_places=2, help_text='Please give proper number', blank=True,
+    null=True)
 
     subject_gradepoint = models.DecimalField(
         'Grade Point', max_digits=3, decimal_places=1, blank=True, null=True, help_text="Please keep blank")
@@ -404,27 +405,20 @@ class Marks(StdCommon):
             fail_sub_sub = ['Pass']
 
             if self.subject_name.subject_theory_full_marks != None:
-                try:
-                    theory = self.subject_theory
-                except:
-                    theory = 0
+                theory = self.subject_theory 
 
             elif self.subject_name.subject_theory_full_marks == None:
                 self.subject_theory = None
 
             if self.subject_name.subject_mcq_full_marks != None:
-                try:
-                    mcq = self.subject_mcq
-                except:
-                    mcq = 0
+                mcq = self.subject_mcq
             elif self.subject_name.subject_mcq_full_marks == None:
                 self.subject_mcq = None
+                
 
             if self.subject_name.subject_practical_marks != None:
-                try:
-                    practical = self.subject_practical
-                except:
-                    practical = 0
+               practical = self.subject_practical
+
             elif self.subject_name.subject_practical_marks == None:
                 self.subject_practical = None
 
@@ -448,9 +442,9 @@ class Marks(StdCommon):
             simple_fail=[]
 
             try:
-                if self.subject_theory >= round(pass_marks+.1):
+                if self.subject_total_marks >= round(pass_marks+.1):
                     simple_fail.append('Pass')
-                elif self.subject_theory < pass_marks or self.subject_theory == 0:
+                elif self.subject_total_marks < pass_marks:
                     simple_fail.append('F')
 
                 self.subject_gpa_sub = 'Pass'
@@ -480,7 +474,7 @@ class Marks(StdCommon):
             if self.subject_name.subject_theory_full_marks != None:
                 try:
                     theory = self.subject_theory
-                    theory=0
+
                 except:
                     theory = 0
 

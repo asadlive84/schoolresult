@@ -467,8 +467,12 @@ class SubjectDetailView(DetailView):
         context = super(SubjectDetailView, self).get_context_data(**kwargs)
         subject_id = self.kwargs['pk']
         sub_object=StdSubject.objects.get(pk=subject_id)
+
+        '''
         context['sub_std'] = sub_object.marks_set.all().order_by(
             '-subject_gradepoint', '-subject_marks')
+        '''
+        context['sub_std'] = sub_object.marks_set.all().order_by()
 
         try:
             context['sub_teacher'] = sub_object.marks_set.all().order_by(
