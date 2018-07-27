@@ -36,8 +36,10 @@ class SubjectInstance(admin.StackedInline):
     model = StdSubject
     fk_name = 'teacher'
     extra = 8
+    '''
     exclude = ['subject_form_searh_name',
                'subject_full_marks', 'subject_total_marks', 'first_second_full_marks']
+    '''
 
 
 

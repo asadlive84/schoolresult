@@ -126,14 +126,34 @@ class StdSubject(StdCommon):
 
         try:
             self.subject_full_marks = self.subject_theory_full_marks
+            theory_full=self.subject_theory_full_marks
         except:
             self.subject_full_marks = 0
+            self.subject_theory_full_marks=None
+            theory_full=0
+
+        if self.subject_theory_full_marks == None:
+            self.subject_theory_full_marks = None
 
 
+        '''
+        MCQ Marks added
+        '''
         try:
+            if self.subject_full_marks==None:
+                self.subject_full_marks=0
             self.subject_full_marks = self.subject_full_marks + self.subject_mcq_full_marks
         except:
+            if self.subject_full_marks==None:
+                self.subject_full_marks=0
             self.subject_full_marks = self.subject_full_marks
+
+
+        '''
+
+        Practical Marks
+
+        '''
 
         try:
             self.subject_full_marks = self.subject_full_marks + self.subject_practical_marks
@@ -143,7 +163,7 @@ class StdSubject(StdCommon):
         self.subject_total_marks = self.subject_full_marks
 
 
-        if self.subject_total_marks==None or self.subject_total_marks ==0:
+        if self.subject_total_marks == None or self.subject_total_marks ==0:
             '''
             First and 2nd part adding marks
 
@@ -418,7 +438,10 @@ class Marks(StdCommon):
                 elif theory == None:
                     theory = 0
 
-            self.subject_total_marks = mcq+practical+theory
+            try:
+                self.subject_total_marks = mcq+practical+theory
+            except:
+                self.subject_total_marks = mcq+practical
 
             pass_marks = (self.subject_name.subject_total_marks/100)*33
 
@@ -457,6 +480,7 @@ class Marks(StdCommon):
             if self.subject_name.subject_theory_full_marks != None:
                 try:
                     theory = self.subject_theory
+                    theory=0
                 except:
                     theory = 0
 
