@@ -132,7 +132,7 @@ class StudentDetails(DetailView):
         context['subject_max_number'] = std_gpa.marks_set.all(
         ).aggregate(Max('subject_marks'))
         '''
-        
+
         try:
             context['subject_max_number'] = std_gpa.marks_set.filter(
                 subject_gradepoint__gte=1).annotate(
@@ -168,12 +168,12 @@ class StudentDetails(DetailView):
 
 
 
-            
+
         except:
             context['error']='problem'
 
         context['fail'] = failed
-        
+
 
         context['credit'] = credit
 
@@ -425,7 +425,7 @@ class SubjectSeaechView(TemplateView, FormMixin):
         form = self.form_class(request.POST)
         if form.is_valid():
 
-            
+
             try:
                 self.object_search = StdSubject.objects.get(subject_form_searh_name=form.cleaned_data['subject_name'], subjet_class=form.cleaned_data['subject_class'])
 
@@ -435,8 +435,8 @@ class SubjectSeaechView(TemplateView, FormMixin):
                 context['credit'] = credit
             except:
                 context['error'] = 'error'
-            
-                
+
+
 
 
 

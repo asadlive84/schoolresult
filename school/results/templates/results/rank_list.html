@@ -1,4 +1,4 @@
-{% extends "results/base.html" %} 
+{% extends "results/base.html" %}
 
 {% block main_content %}
 {% load humanize %}
@@ -20,7 +20,7 @@
             <table class="table table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th>SL</th>
+                       <!-- <th>SL</th>-->
                         <th>School Rank</th>
                         <th>Name</th>
                         <th>Class Rank</th>
@@ -33,8 +33,8 @@
                 <tbody>
                     {% for rank in  object_list%}
                         <tr>
-                            <td>{{forloop.counter}}</td>
-                           
+                           <!-- <td>{{forloop.counter}}</td>-->
+
                             <td>{{rank.school_rank |ordinal}}</td>
 
                             {% if rank.std.std_fail_subject >= 1 %}
@@ -52,17 +52,17 @@
 
 
 
-                           
+
 
                             {% if  rank.std.std_roll < rank.class_rank %}
                             <td style="color:red"> {{rank.class_rank|ordinal}}
                                 <i class="fas fa-arrow-down"></i> class rank down </td>
 
                             {% elif rank.std.std_roll > rank.class_rank %}
-                            
-                            <td style="color:seagreen"> 
+
+                            <td style="color:seagreen">
                                 {{rank.class_rank|ordinal}}
-                                <i class="fas fa-arrow-up"></i> class rank up 
+                                <i class="fas fa-arrow-up"></i> class rank up
                             </td>
 
                             {% elif rank.std.std_roll == rank.class_rank %}
@@ -71,32 +71,47 @@
                             <i class="fas fa-arrows-alt-v"></i> class rank labeled
                             </td>
 
-                           
+
 
                             {% else %}
-                              
+
                             {% endif %}
 
-                            
+
 
 
 
                             <td>{{rank.std.std_class}}</td>
                             <td>{{rank.std.std_roll}}</td>
-                            
-                            {% if rank.std.std_fail_subject >= 1 %}
+
+                            {% if rank.std.std_fail_subject >= 1 and rank.std.std_gpa != 'Withheld' %}
                             <td style="color:red">
                                 Fail {{rank.std.std_fail_subject}} Subject
                             </td>
+
+                            {% elif rank.std.std_gpa == 'Withheld' %}
+
+                             <td style="color:red">
+                                Withheld (Absent)
+                            </td>
+
+
+
                             {% else %}
                             <td>
+                                {% if rank.std.std_grade_point_total_subject_avg > 5 %}
+                                {{rank.std.std_grade_point_total_subject_avg|floatformat:0}}.00
+
+                                {% else %}
                                 {{rank.std.std_grade_point_total_subject_avg|floatformat:'2'}}
-                            </td> 
+
+                                {% endif %}
+                            </td>
                             {% endif %}
-                            
+
                             <!--<td>{{rank.std.std_total_marks|floatformat}}</td>!-->
                             <td>{{rank.std.std_marks_with_fail_sub|floatformat}}</td>
-                            
+
                         </tr>
                      {% endfor %}
                  </tbody>
@@ -119,10 +134,10 @@
         <li class="page-item active">
 <a class="page-link" href="#"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a>
 </li>
-           
+
         </li>
-            
-       
+
+
 
         {% if page_obj.has_next %}
         <li class="page-item">

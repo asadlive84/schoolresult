@@ -1,5 +1,5 @@
-{% extends "results/base.html" %} 
-{% load crispy_forms_tags %} 
+{% extends "results/base.html" %}
+{% load crispy_forms_tags %}
 {% block main_content %}
 
 {% load humanize %}
@@ -29,7 +29,7 @@
 
         <div class="card-body">
             {% if std_search %}
-            
+
 <h2 class="mx-auto" style="width:550px;font-size:25px">Class {{class_name}} Rank List and analysis</h2>
 
 
@@ -54,7 +54,7 @@
 
 <div class="div">
     <div class="row">
-        
+
         <div class="col-md-6">
             <table class="table mx-auto" style="width:400px">
 
@@ -78,7 +78,7 @@
             <tr class="table-info">
                 <td>Total Passed</td>
                 <td>{{total_pass_std_count}}
-    
+
                 <span class="badge badge-success">{{pass_percent|floatformat:'2'}}%</span>
             </td>
 
@@ -87,7 +87,7 @@
 
             <tr class="table-danger">
                 <td>Total Fail</td>
-                <td>{{fail_std_count}} 
+                <td>{{fail_std_count}}
                 <span class="badge badge-danger">{{fail_percent|floatformat:'2'}}%</span>
 
                 </td>
@@ -109,7 +109,7 @@
 
             </tr>
 
-            
+
 
             <tr class="table-danger">
                 <td>Male pass</td>
@@ -124,14 +124,14 @@
                 <td>Male Fail</td>
                 <td>{{male_std_fail}}</td>
             </tr>
-           
+
 
             <tr class="table-danger">
                 <td>Female Fail</td>
                 <td>{{female_std_fail}}</td>
             </tr>
 
-            
+
 
         </table>
     </div>
@@ -144,7 +144,7 @@
 
 
 
-        
+
         <tr class="table-success">
             <td>A+</td>
             <td>{{std_gpa_aplus}}</td>
@@ -193,7 +193,7 @@
 
 
 
-       
+
 
         </div>
     </div>
@@ -206,10 +206,10 @@
 
         <div class="div">
 
-                
-           
 
-            
+
+
+
             <table class="table table-hover table-bordered">
                 <thead>
                     <tr>
@@ -218,11 +218,11 @@
                         <th>Student Name</th>
                         <th>Roll</th>
                         <th>Rank Status</th>
-                        
-                    
+
+
                         <th>School Rank</th>
                         <th>Class</th>
-                       
+
                         <th>GPA</th>
                         <th>Marks</th>
                     </tr>
@@ -231,7 +231,7 @@
                     {% for std in std_search%}
                     <tr>
                         <td>{{forloop.counter}}</td>
-<td>{{std.class_rank|ordinal}}</td>
+                        <td>{{std.class_rank|ordinal}}</td>
 
 
                         {% if std.std_fail_subject >= 1 %}
@@ -248,17 +248,17 @@
 
 
 
-                       
+
 
                         <td>{{std.std_roll}}</td>
 
                         {% if std.std_roll > std.class_rank %}
                         <td style="color:#3498db">
-                            <i class="fas fa-arrow-up"></i>Rank Up 
+                            <i class="fas fa-arrow-up"></i>Rank Up
                         </td>
 
                         {% elif std.std_roll < std.class_rank%}
-                        
+
                         <td style="color:red"><i class="fas fa-arrow-down"></i>  Rank Down </td>
 
                         {% elif std.std_roll == std.class_rank %}
@@ -266,36 +266,45 @@
                         <td style="font-size:14px"> Rank label
                             <i class="fas fa-arrows-alt-v"></i>
                         </td>
-                                                
+
                         {% endif %}
 
-                        
-                        
-                       
-                        
+
+
+
+
 
                         <td>{{std.school_rank|ordinal}}</td>
 
                         <td>{{std.get_std_class_display}}</td>
 
-                        {% if std.std_fail_subject >= 1 %}
+
+                        {% if std.std_fail_subject >= 1 and std.std_gpa != 'Withheld' %}
                         <td style="color:red;font-size:12px">
                             Fail {{std.std_fail_subject}} Subject
                         </td>
-                        {% else %}
+                        {% elif std.std_gpa == 'Withheld' %}
+                        <td style="color:red;font-size:12px">
+                            Withheld (absent)
+                        </td>
+                         {% else %}
                         <td>
+                            {% if std.std_grade_point_total_subject_avg > 5 %}
+                            {{std.std_grade_point_total_subject_avg|floatformat:0}}.00
+                            {% else %}
                             {{std.std_grade_point_total_subject_avg|floatformat:'2'}}
+                            {% endif %}
                         </td>
                         {% endif %}
-                        
-                       
+
+
 
 
 
                         <td>{{std.std_total_marks|floatformat}}</td>
-                        
 
-                       
+
+
                     </tr>
                     {% endfor %}
                 </tbody>
