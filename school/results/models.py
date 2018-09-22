@@ -381,13 +381,13 @@ class Marks(StdCommon):
         return self.std_name.std_name+' Class: '+str(self.std_name.std_class)+' Roll: '+str(self.std_name.std_roll) +' ' + self.subject_name.subject_name +' '+str(self.subject_marks)
     '''
     def __str__(self):
-        x ='%.f' % self.subject_marks
-        return x+' - '+self.subject_name.subject_name
+        return f'{self.subject_name.subject_name}  {self.subject_marks}, {self.subject_gradepoint}, {self.subject_gpa}'
 
     class Meta:
         verbose_name = ("Mark Details")
         verbose_name_plural = ("Result Sheet Details")
         ordering = ['subject_name']
+        unique_together = (("std_name", "subject_name"),)
 
     def subject_grade(self):
         grade = SubjectGrade(self.subject_marks,self.subject_name.subject_full_marks).subgrade()
