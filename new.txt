@@ -35,7 +35,7 @@ from openpyxl import load_workbook
 ...     i[3].value
 
 
-
+here we changed some line to see the result of our work==================>>>>>>>>
 
 >>> x=0
 >>> if x<=85:
