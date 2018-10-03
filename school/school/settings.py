@@ -25,7 +25,7 @@ SECRET_KEY = 'zx7!$^+%6e7vaw*eiravid3255ubt!)r+a(&e)9o=ul#zt6a3h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['fulhatafhs.pythonanywhere.com']
 
 
 # Application definition
@@ -139,3 +139,4 @@ LOGOUT_REDIRECT_URL = 'home'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  # 'data' is my media folder
 MEDIA_URL = '/media/'
+STATIC_ROOT='/home/fulhatafhs/schoolresult/school/static'

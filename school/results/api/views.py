@@ -10,6 +10,6 @@ class UserViewSet(generics.ListAPIView):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = StudentInfo.objects.all().order_by('std_roll')
+    queryset = StudentInfo.objects.all().order_by('-std_grade_point_total_subject_avg','std_roll')
     serializer_class = StudentSerializers
-    permission_classes = (IsAdminUser,)
+    #permission_classes = (IsAdminUser,)

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    
+
 
     <title>{% block title %}Home {% endblock  %}Fulhata Secondary School Online Result Syestem</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
@@ -38,12 +38,12 @@
 
 
 
-@media only screen and (max-width: 450px) { 
-    body { background-color: lightblue; 
- th,td{ 
-     font-size: 10px; 
+@media only screen and (max-width: 450px) {
+    body { background-color: lightblue;
+ th,td{
+     font-size: 10px;
     }
-    } 
+    }
 }
 
 .navbar-nav li a{
@@ -70,7 +70,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">Search Result</a>
                     </li>
-                                    
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'subject_search' %}">Subject Search</a>
                     </li>
@@ -86,11 +86,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'summary' %}">Summary</a>
                     </li>
-                    <li class="nav-item ">
+                    <!--<li class="nav-item ">
                         <a class="nav-link" href="{% url 'admin:index' %}">Log in</a>
-                    </li>
-                   
-                   
+                    </li>-->
+
+
                 </ul>
             </div>
         </div>
@@ -98,13 +98,13 @@
 
     <!-- Header - set the background image for the header in the line below
     <header class="py-5 bg-image-full" style="background-image: url('https://unsplash.it/1900/1080?image=997');">
-        
+
     </header>
      -->
 
     <!-- Content section -->
     <section class="py-5">
-        
+
 
         <div class="container">
             <div class="row">
@@ -112,16 +112,21 @@
                     <img class="img-fluid d-block mx-auto" style="height:5em" src="{% static 'results/img/logo.png' %}" alt="">
                 </div>
             </div>
+            <div class="alert alert-success mx-auto  centered" style="width:426px">
+                    <h3>Results are published  <span class="badge badge-success">Six, Seven, Eight, Nine and Ten</span></h3>
+
+            </div>
+
             <hr>
             {% block main_content %}
-              
+
             {% endblock main_content %}
         </div>
     </section>
 
- 
 
-   
+
+
 
     <!-- Footer -->
     <footer class="py-5 bg-dark">

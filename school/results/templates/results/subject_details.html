@@ -1,12 +1,12 @@
-{% extends "results/base.html" %} 
-{% load crispy_forms_tags %} 
+{% extends "results/base.html" %}
+{% load crispy_forms_tags %}
 {% load humanize %}
 
 {% block main_content %}
 <div class="mx-auto  centered">
 <h1>Half Yearly Examination 2018 Subject
 <b>{{object.subject_name}}</b> Analysis || Class: {{object.get_subjet_class_display}}</h1>
-<p style="font-size:12px"><i>updated: {{object.update_date}} {{object.update_date|naturaltime}} | published: {{object.pub_date}} {{object.pub_date | naturaltime}}</i></p>    
+<p style="font-size:12px"><i>updated: {{object.update_date}} {{object.update_date|naturaltime}} | published: {{object.pub_date}} {{object.pub_date | naturaltime}}</i></p>
 <hr>
 
 </div>
@@ -58,7 +58,7 @@
 <div class="row">
     <div class="col-md-8">
         <table class="table " style="width:">
-            
+
             <tr class="table-success">
                 <td>Subject Teacher Name</td>
                 <td>
@@ -85,7 +85,7 @@
 
             </tr>
 
-            
+
             <tr class="table-success">
                 <td>Class</td>
                 <td>{{object.get_subjet_class_display}}</td>
@@ -183,7 +183,7 @@
 <div>
     <div class="row">
         <div class="col-md-12">
-            
+
             <div class="mx-auto" style="width:100%">
                 <table class="table table-hover  table-striped">
                     <thead class="btn-success">
@@ -196,7 +196,7 @@
                             <th style="text-align:center" colspan="4">Marks</th>
                            <!-- <th rowspan="2">Count Marks</th>-->
                             <th rowspan="4">Class</th>
-                            
+
                         </tr>
                         <tr>
                             <th>Theory</th>
@@ -209,7 +209,7 @@
                     </thead>
                     <tbody>
                         {% for sub in sub_std %}
-                        
+
                          <tr>
                             <td>{{forloop.counter}}</td>
 
@@ -224,19 +224,19 @@
                             <td style="color:red">
                                 <a style="color:red" href="{% url 'std_details' sub.std_name.id%}">{{sub.std_name}}</a> <span class="badge badge-danger"> F</span>
                             </td>
-                              
+
                             {% endif %}
-                            
 
 
-                            
-                            
+
+
+
                             {% if sub.subject_gradepoint >= 1 %}
 
                             <td>{{sub.subject_gradepoint}}
-                                
+
                             </td>
-                            
+
 
                             {% else %}
                             <td style="color:red">Fail</td>
@@ -246,13 +246,13 @@
 
                             <td>
                                 {% if sub.subject_gradepoint >= 5 %}
-                                 A+ 
-                                {% elif sub.subject_gradepoint >= 4 and sub.subject_gradepoint <= 4 %} A 
-                                {% elif sub.subject_gradepoint >= 3.5 and sub.subject_gradepoint <= 3.5 %} A- 
-                                {% elif sub.subject_gradepoint >= 3 and sub.subject_gradepoint <= 3 %} B 
-                                {% elif sub.subject_gradepoint >= 2 and sub.subject_gradepoint <= 2 %} C 
-                                {% elif sub.subject_gradepoint >= 1 and sub.subject_gradepoint <= 1 %} D 
-                                {% elif sub.subject_gradepoint < 1 %} F 
+                                 A+
+                                {% elif sub.subject_gradepoint >= 4 and sub.subject_gradepoint <= 4 %} A
+                                {% elif sub.subject_gradepoint >= 3.5 and sub.subject_gradepoint <= 3.5 %} A-
+                                {% elif sub.subject_gradepoint >= 3 and sub.subject_gradepoint <= 3 %} B
+                                {% elif sub.subject_gradepoint >= 2 and sub.subject_gradepoint <= 2 %} C
+                                {% elif sub.subject_gradepoint >= 1 and sub.subject_gradepoint <= 1 %} D
+                                {% elif sub.subject_gradepoint < 1 %} F
                                 {% endif %}
                             </td>
 
@@ -261,20 +261,21 @@
 
                                 {% if sub.first_part_theory %}
                                 {{sub.subject_name.first_part_name}}-
-                                {{sub.second_part_theory|floatformat }}
+                                 {{sub.first_part_theory|floatformat}}
+
                                 {% endif %}
 
                                 {% if sub.first_part_theory %}
                                 <br>
                                 {{sub.subject_name.second_part_name}}-
-                                
-                                {{sub.first_part_theory|floatformat}}
+
+                                {{sub.second_part_theory|floatformat }}
                                 {% endif %}
 
                             </td>
                             <td>
                                 {{sub.subject_mcq|floatformat}}
-                                
+
                                 {% if sub.first_part_mcq %}
                                 {{sub.subject_name.first_part_name}}-
                                 {{sub.first_part_mcq|floatformat}}
@@ -297,15 +298,15 @@
 
                             <!--<td>{{sub.subject_marks|floatformat}}</td>-->
 
-                            
+
                             <td>{{sub.std_name.std_class}}</td>
                         </tr>
-                        
+
 
                         {% endfor %}
 
 
-                       
+
                     </tbody>
                 </table>
 
@@ -337,7 +338,7 @@
         </li>
     </ul>
     {% endif %} {% endblock %}
-                
+
             </div>
         </div>
     </div>

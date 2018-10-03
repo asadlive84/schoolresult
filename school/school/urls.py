@@ -43,7 +43,7 @@ urlpatterns = [
 
 
     path('all-school-rank/',RankListView.as_view() , name='rank'),
-    
+
 ]
 
 handler404 = 'results.views.ErrorPage'

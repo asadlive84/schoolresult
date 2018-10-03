@@ -1,5 +1,5 @@
 
-{% extends "results/base.html" %} 
+{% extends "results/base.html" %}
 {% block title %}{{object.std_name}} Results {% endblock %}
 {% block main_content %}
 {% load humanize %}
@@ -9,22 +9,22 @@
 <div class="col-md-6 offset-md-3  centered">
     <div>
         <h1 style="text-align:center" class="title_custom">
-            Fulhata Secondary School 
+            Fulhata Secondary School
         </h1>
         <h2 style="text-align:center" class="title_custom_two">
-            Eiin No: 115030, Founded: 1946 <br> Contact: fulhatahs@gmail.com, 01725666116 Morrelganj, Bagerhat.
-            
+            Eiin No: 115030, Founded: 1946 <br>Contact:fulhatahs@gmail.com, 01713797938 Morrelganj, Bagerhat.
+
         </h2>
         <hr>
 <p style="font-size:22px;padding:20px;text-align:center">
-    
+
     {% if object.std_class == '10' %}
     Pre Test Examination 2018
     {% else %}
     Half Yearly Examination 2018
-      
+
     {% endif %}
-    
+
 </p>
 
     </div>
@@ -73,7 +73,7 @@
 
 
 
-    
+
 
         <table class="table">
 
@@ -112,12 +112,12 @@
                 {% elif ranks.class_rank == object.std_roll %}
                 <tr class="table-light">
                     <td>Class Rank- {{object.get_std_class_display}}</td>
- 
+
                     <td style="color:blue">{{ranks.class_rank|ordinal}} - Rank Label
                     <i class="fas fa-arrows-alt-v"></i> </td>
                 </tr>
 
-                 
+
                 {% elif ranks.class_rank >  object.std_roll %}
                 <tr class="table-danger">
                     <td>Class Rank- {{object.get_std_class_display}}</td>
@@ -125,9 +125,9 @@
                     <i style="color:red" class="fas fa-angle-down"></i> </td>
                     {% endif %}
                 </tr>
-                    
 
-                
+
+
                 <tr class="table-success">
                     <td>School Rank</td>
                     <td>{{ranks.school_rank|ordinal}}</td>
@@ -138,23 +138,35 @@
             </tbody>
         </table>
 
-    
+
 </div>
 
 <div class="col-md-6 centered">
 
-    
-    {% if fail >= 1 %}
+    {% if object.std_gpa == 'Withheld' %}
+
+    <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-danger text-white card-title">Result: Withheld (absent)</p>
+
+    {% endif %}
+
+
+    {% if fail >= 1 and object.std_gpa != 'Withheld' %}
     <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-danger text-white card-title">Result: Fail {{fail}} Subject</p>
 
 
 
-    {% else %}
-    <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-success text-white card-title">Result: {% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total Marks-
+
+
+    {% elif object.std_gpa != 'Withheld' %}
+    <p style="text-align:center;font-size:15px;color:white;padding:10px" class=" card bg-success text-white card-title">Result: {% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}}.00 (out of 5)  | Total Marks-
     {{ total_marks|floatformat}} {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5) | Total Marks- {{ total_marks|floatformat}}
     {% endif %}
-</p>
-    
+
+
+
+
+    </p>
+
     {% endif %}
 
 <table class="table">
@@ -169,35 +181,35 @@
 
                 <td>{{ total_marks|floatformat}}
 <span class="badge badge-danger">F{{fail}} </span>
-                    
+
                 </td>
             </tr>
 
-           
 
-                
-                
-        
-           
 
-                
-            
-                {% else %}
+
+
+
+
+
+
+
+               {% elif  object.std_gpa != 'Withheld' %}
                 <tr class="table-success">
                         <td>Result</td>
-                        <td>{% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}} (out of 5) All Subject A+ | Total
+                        <td>{% if toatal_grade_point > 5 %} GPA- {{toatal_grade_point | floatformat:0}}.00 (out of 5) | Total
                                 Marks- {{ total_marks|floatformat}} {% else %} GPA- {{toatal_grade_point | floatformat:2}} (out of 5)</td>
-            
+
                 </tr>
 
                 <tr class="table-success">
                         <td>Total Marks</td>
                         <td>
                                 {{ total_marks|floatformat}} {% endif %}</td>
-            
+
                     </tr>
-                 
-                
+
+
                 {% endif %}
 
 
@@ -228,19 +240,19 @@
 
 
 <div class="row">
-   
+
 <div class="col-lg-12 ">
             {% if object.marks_set.all %}
 <hr>
             <p style="font-size:18px;padding:5px;text-align:center">
-                
+
                 <i class=" fas fa-chevron-circle-down"></i> Result Details
             </p>
-              
-<table class="table mx-auto table-hover table-bordered" style="text-align:center;font-size:10px">
-              
 
-                {% if fail >= 1 %}
+<table class="table mx-auto table-hover table-bordered" style="text-align:center;font-size:10px">
+
+
+                {% if fail >= 1 or  object.std_gpa == 'Withheld'%}
                 <thead class="btn-danger">
                 {% else %}
                 <thead class="btn-success">
@@ -257,11 +269,11 @@
                     </tr>
                     <tr>
                         <th>Theory</th>
-                        
+
                         <th>MCQ</th>
                         <th>Practical</th>
                         <th>Total</th>
-                       
+
                     </tr>
                 </thead>
 
@@ -276,23 +288,36 @@
 
                         <!--subject name with fail style-->
                         {% if i.subject_gpa == "F" %}
-                        <td style="text-align:center;color:red">
+                        <td style="text-align:left;color:red">
+
                             {% if i.subject_name.subject_type == 'O' %}
-                            {{i.subject_name.subject_name}} 
+                            {{i.subject_name.subject_name}}
                             <span style="font-size:7px!important;font-style:italic">({{i.subject_name.get_subject_type_display}})
                             </span>
                             {% else %}
-                            {% if i.subject_name.first_part_name%} 
+                            {% if i.subject_name.first_part_name%}
                             {{i.subject_name.subject_name}} {{i.subject_name.first_part_name}}
-                            <br> {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}} 
-                            {% else %} {{i.subject_name.subject_name}} 
+                            <br> {{i.subject_name.subject_name}} {{i.subject_name.second_part_name}}
+                            {% else %} {{i.subject_name.subject_name}}
                             {% endif%}
                             {% endif %}
+
+                            {% if i.absent_check == 'Y'%}
+
+                            <span style="color:red;font-size:7px;font-style:italic">Absent</span>
+
+                            {% endif %}
+
                         </td>
 
                         {% else %}
 
-                        <td style="text-align:center">
+                        <td style="text-align:left;">
+                            {% if i.absent_check == 'Y'%}
+
+                            <span style="color:red;font-size:7px;font-style:italic">Absent</span>
+
+                            {% endif %}
                             {% if i.subject_name.subject_type == 'O' %} {{i.subject_name.subject_name}}
                             <span style="font-size:7px!important;font-style:italic">({{i.subject_name.get_subject_type_display}})</span>
                             {% else %} {% if i.subject_name.first_part_name%} {{i.subject_name.subject_name}} {{i.subject_name.first_part_name}}
@@ -302,11 +327,11 @@
                         {% endif %}
                         <!--end subject name with fail style-->
 
-                         
-                       
 
-                     
-                       
+
+
+
+
                         <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
 
                        <td style="text-align:center">
@@ -314,7 +339,7 @@
 
                             {% if i.first_part_theory %}
                             {{i.first_part_theory|floatformat}}
-                           
+
                             {% endif %}
 
                             {% if i.second_part_theory %}
@@ -327,11 +352,11 @@
                            {{i.subject_mcq|floatformat}}
 
                             {% if i.first_part_mcq %}
-                            
+
                             {{i.first_part_mcq|floatformat}}
-                            
-                            {% endif %} 
-                            
+
+                            {% endif %}
+
                             {% if i.second_part_mcq %}
                             <br>
                             {{i.second_part_mcq|floatformat}}
@@ -345,42 +370,44 @@
 
 
                         <td>{{i.subject_gradepoint|floatformat}}</td>
-                        
+
                         {% if i.subject_gpa == "F" %}
                         <td style="color:red">{{i.subject_gpa}}</td>
                         {% else %}
                         <td>{{i.subject_gpa}}</td>
 
                         {% endif %}
-            
+
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            
+
             {% else %}
             <p>no update</p>
             {% endif %}
-            
-            
+
+
             <hr>
             <p style="font-size:12px">
 <i>updated: {{object.update_date}} {{object.update_date|naturaltime}} |  published: {{object.pub_date}} {{object.pub_date | naturaltime}}</i>
             </p>
-            
+
     </div>
 </div>
 
 
 
 <div>
+    <!--
     <div>
-<a href="{% url 'pdf' object.id%}" target="_blank">
+            <a href="{% url 'pdf' object.id%}" target="_blank">
             <button type="button" class="btn btn-success">
             <i class="fas fa-book-open"></i> Print Result Card
             </button>
         </a>
     </div>
+    -->
 </div>
 <p style="font-size:2px">{{object.std_total_marks}} {{object.total_marks_sum}}</p>
 {% endif %}

@@ -8,16 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{object.std_name}} Exam Result Report</title>
-    <link href='https://fonts.googleapis.com/css?family=Amiko' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Actor' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Amita' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Allura' rel='stylesheet'>
+
 
 
     <style type="text/css">
         @page {
             size: A4;
             margin: 1cm;
+            font-family: 'Amita';font-size: 19px;
+            font-family: 'Allura';font-size: 19px;
+            font-family: 'Actor';font-size: 19px;
+            font-family: 'Actor';font-size: 19px;
         }
         body {
             font-family: 'Actor';font-size: 19px;
@@ -64,10 +65,10 @@ left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-attach
 table#mytable, table#mytable td { border: none !important; font-size: 14px; line-height: 22px}
 
 
-#container{width:100%; text-align:center; margin-bottom: 30px} 
+#container{width:100%; text-align:center; margin-bottom: 30px}
 
 #left
-{ float:left; width:200px; height: 20px; background: # } 
+{ float:left; width:200px; height: 20px; background: # }
 #center{ display: inline-block; margin:0 auto; width:200px; height: 20px; background:}
  #right
  { float:right; width:160px;
@@ -233,9 +234,9 @@ height: 20px; background: # }
                     {% if fail >= 1 %}
                     <td>Total Marks - Fail</td>
                     <td style="color:red">{{ total_marks_with_fail_sub|floatformat}}
-                   
+
                     </td>
-                                        
+
 
 
 
@@ -244,7 +245,7 @@ height: 20px; background: # }
                     <td>{{ total_marks_with_fail_sub|floatformat}} </td>
 
                     {% endif %}
-                    
+
 
                 </tr>
 
@@ -328,7 +329,7 @@ height: 20px; background: # }
                     <th style="text-align:center" rowspan="2">Subject Name</th>
                     <th style="text-align:center" rowspan="2">Full Marks</th>
                     <th  style="text-align:center" colspan="4">Marks</th>
-                    
+
                     <th rowspan="4">Grade Point</th>
                     <th rowspan="4">Grade</th>
                 </tr>
@@ -367,13 +368,13 @@ height: 20px; background: # }
                     {% endif %}
                     <!--end subject name with fail style-->
 
-                    
+
                     <td>{{i.subject_name.subject_full_marks|floatformat}}</td>
 
 
                     <td style="text-align:center">{{i.subject_theory|floatformat}}
                     {% if i.first_part_theory %}
-                    {{i.first_part_theory|floatformat}} 
+                    {{i.first_part_theory|floatformat}}
                     {% endif %}  {% if i.second_part_theory %}
                     <br>
                     {{i.second_part_theory|floatformat}}
@@ -393,13 +394,13 @@ height: 20px; background: # }
                     {% endif %}
                     </td>
 
-                    
+
                     <td style="text-align:center">{{i.subject_practical|floatformat}}</td>
                     <td style="text-align:center">{{i.subject_total_marks|floatformat}}</td>
 
-                    
 
-                   
+
+
 
                     <td style="text-align:center"> {{i.subject_gradepoint|floatformat}}</td>
 
@@ -433,7 +434,7 @@ height: 20px; background: # }
                     <p style="font-size:12px">Class teacher</p>
                     <p style="font-size:11px;margin-top:-12px"></p>
                     <p style="font-size:9px;margin-top:-13px">
-                        
+
                     </p>
             </div>
 
@@ -451,8 +452,8 @@ height: 20px; background: # }
             <p style="font-size:8px">
  App Developed & Maintained by
 <a style="color:black;text-decoration:none" href="https://web.facebook.com/asadlive.sohel1">Asaduzzaman Sohel</a><br>
-<i>Print Time: {{time}}</i> 
-                
+<i>Print Time: {{time}}</i>
+
             </p>
 
             <p style="font-size:8px" class="m-0 text-center text-white">
