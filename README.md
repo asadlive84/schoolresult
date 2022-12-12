@@ -1,5 +1,5 @@
 # School Result Django Application #
-**Django School Basic Result Application**
+**Django School Basic Result Application** demo [link](http://fulhatafhs.pythonanywhere.com/)
 
 Live link: http://fulhatahighschool.pythonanywhere.com/
 
